@@ -20,8 +20,12 @@ var lastRangeId = 0;
 escolherRange(3);
 
 function escolherRange(rangeId) {
-	$('#pag' + lastRangeId).removeClass('active');
-	$('#pag' + rangeId).addClass('active');
+	$('#pag' + lastRangeId).each(function(index, object) {
+		$(object).removeClass('active');
+	});
+	$('#pag' + rangeId).each(function(index, object) {
+		$(object).addClass('active');
+	});
 	lastRangeId = rangeId;
 	selectedRange = ranges[rangeId];
 	gerarNumero();
