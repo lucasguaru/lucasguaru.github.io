@@ -1,0 +1,17 @@
+#div-random-number {
+	width: 800px;
+	margin: auto;
+	padding-top: 100px;
+	padding-bottom: 50px;
+}
+
+#random-number {
+	font-size: 700%;
+}
+#div-form {
+	display: none;
+	width: 700px;
+	margin: auto;
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
