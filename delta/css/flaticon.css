@@ -1,0 +1,61 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 26/07/2016 09:46
+  	*/
+
+@font-face {
+  font-family: "Flaticon";
+  src: url("../fonts/flaticon.eot");
+  src: url("../fonts/flaticon.eot#iefix") format("embedded-opentype"),
+  url("../fonts/flaticon.woff") format("woff"),
+  url("../fonts/flaticon.ttf") format("truetype"),
+  url("../fonts/flaticon.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("../fonts/flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+  font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+}
+
+.flaticon-bicycle-parking:before { content: "\f100"; }
+.flaticon-buildings:before { content: "\f101"; }
+.flaticon-bus-stop:before { content: "\f102"; }
+.flaticon-car-parking:before { content: "\f103"; }
+.flaticon-cctv:before { content: "\f104"; }
+.flaticon-coffee-shop:before { content: "\f105"; }
+.flaticon-disabled:before { content: "\f106"; }
+.flaticon-factory:before { content: "\f107"; }
+.flaticon-fast-food:before { content: "\f108"; }
+.flaticon-ferris-wheel:before { content: "\f109"; }
+.flaticon-food-cart:before { content: "\f10a"; }
+.flaticon-gas-station:before { content: "\f10b"; }
+.flaticon-hospital:before { content: "\f10c"; }
+.flaticon-hostel:before { content: "\f10d"; }
+.flaticon-hydrant:before { content: "\f10e"; }
+.flaticon-lift:before { content: "\f10f"; }
+.flaticon-museum:before { content: "\f110"; }
+.flaticon-park:before { content: "\f111"; }
+.flaticon-park-1:before { content: "\f112"; }
+.flaticon-parking-meter:before { content: "\f113"; }
+.flaticon-phone-booth:before { content: "\f114"; }
+.flaticon-playground:before { content: "\f115"; }
+.flaticon-restroom:before { content: "\f116"; }
+.flaticon-shopping-bag:before { content: "\f117"; }
+.flaticon-supermarket:before { content: "\f118"; }
+.flaticon-ticket:before { content: "\f119"; }
+.flaticon-traffic-light:before { content: "\f11a"; }
+.flaticon-traffic-light-1:before { content: "\f11b"; }
+.flaticon-train:before { content: "\f11c"; }
+.flaticon-vending-machine:before { content: "\f11d"; }
