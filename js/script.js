@@ -32,7 +32,8 @@ function escolherRange(rangeId) {
 }
 
 function gerarNumero() {
-	var number = ankiGenerate(selectedRange);
+	// var number = ankiGenerate(selectedRange);
+	var number = ankiGenerate();
 }
 
 $(document).ready(function() {
