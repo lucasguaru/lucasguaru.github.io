@@ -28,21 +28,11 @@ function escolherRange(rangeId) {
 	});
 	lastRangeId = rangeId;
 	selectedRange = ranges[rangeId];
-	gerarNumero(true);
+	gerarNumero();
 }
 
-function gerarNumero(isFirst) {
-	clearAnkiHint();
-	ankiGenerated(isFirst);
-	var number = getRandom(selectedRange);
-	$('#random-number').text(number);
-}
-
-function getRandom(selectedRange) {
-	var index = Math.floor(Math.random() * selectedRange.length);
-	console.log('selectedRange.length: ' + selectedRange.length + ' - index: ' + index);
-	anki(selectedRange[index]);
-	return selectedRange[index];
+function gerarNumero() {
+	var number = ankiGenerate(selectedRange);
 }
 
 $(document).ready(function() {
@@ -50,3 +40,4 @@ $(document).ready(function() {
 		gerarNumero();
 	});
 });
+
