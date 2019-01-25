@@ -47,7 +47,8 @@ function generateNumber() {
     let elTime = getTimeElapsed();
     if (selected != null) {
         if (selected.avg == 0) {
-            selected.avg = elTime;
+            // selected.avg = elTime;
+            selected.avg = 3000;
         } else {
             selected.avg = parseInt((selected.avg + elTime)/2);
         }
