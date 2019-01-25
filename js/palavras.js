@@ -86,7 +86,7 @@ var palavras = {
     '85': 'Galo',
     '86': 'Giz',
     '87': 'Guache',
-    '88': 'Jeque',
+    '88': 'Jegue',
     '89': 'Jipe',
     '90': 'Pera',
     '91': 'Pato',
