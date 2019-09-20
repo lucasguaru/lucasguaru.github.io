@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Safra Empresas nas Stores</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .bg {
+            background-color: #1e2547;
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #fff;
+            font-size: 15px;
+        }
+        .logo, #loja {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            margin: 35px 0px 0px 0px;
+            padding: 0px;
+            overflow: hidden;
+        }
+        .safraHome.right {
+            top: 69px;
+            right: 10.5%;
+        }
+        .safraHome.left {
+            top: 50px;
+            left: 10.5%;
+        }
+    </style>
+</head>
+<body>
+    <div id="escolherApp" class="bg" style="display: none;">
+        <div class="logo">
+            <img class="safraHome left" src="../../lumis-theme/br/com/bancosafra/website/theme/bancosafra-website/img/logo-home.png">
+            <img class="safraHome right" src="../../lumis-theme/br/com/bancosafra/website/theme/bancosafra-website/img/logo-safra-empresas.png">
+        </div>
+        <div id="loja" style="display: block;">
+            <div class="apple">
+                <a href="#" onclick="irParaLoja('https://apps.apple.com/us/app/id417297468?ls=1')">
+                    <img src="../../lumis-theme/br/com/bancosafra/website/theme/bancosafra-website/img/app-store.png">
+                </a>
+            </div>
+            <div class="googlePlay">
+                <a href="#" onclick="irParaLoja('https://play.google.com/store/apps/details?id=br.livetouch.safra.empresas')">
+                    <img src="../../lumis-theme/br/com/bancosafra/website/theme/bancosafra-website/img/google-play.png">
+                </a>
+            </div>
+        </div>
+    </div>
+
+<script>
+    var url = location.href;
+    var baseUrl = url.substring(0, url.indexOf('/app/') + 5);
+    var params = url.substring(url.indexOf('?') + 1);
+
+    function irParaLoja(url) {
+        if (url.indexOf('?') > -1) {
+            url += "&" + params;
+        } else {
+            url += "?" + params;
+        }
+        location.href = url;
+    }
+
+    definirApp();
+
+    function definirApp() {
+        if (navigator.platform.match(/iPhone|iPod|iPad/) != null) {
+            location.href = baseUrl + "ios/?" + params;
+        } else if (navigator.userAgent.indexOf("Android") > 0) {
+            location.href = baseUrl + "android/?" + params;
+        } else {
+            var escolherApp = $("escolherApp");
+            escolherApp.style.display = "block";
+        }
+    }
+
+    function $(id) {
+        return document.getElementById(id);
+    }
+
+</script>
+    
+</body>
+</html>
