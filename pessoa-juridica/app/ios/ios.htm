@@ -29,19 +29,12 @@
 <script>
     function iniciarSafraEmpresas() {
         document.location = 'safraempresas://home';
-        var expirou = false;
         var t = setTimeout(function() {
-                           if (!expirou) {
-                                if (confirm('Parece que você não tem SafraEmpresas instalado, do you want to go download it now?')) {
-                                    document.location = 'https://apps.apple.com/us/app/id417297468?ls=1';
-                                }
-                           }
-        }, 300);
-        
-        var t2 = setTimeout(function() {
-                            expirou = true;
-                            clearTimeout(t);
-        }, 600);
+                           if (new Date().valueOf() - now > 100) return;
+                            if (confirm('Parece que você não tem SafraEmpresas instalado, do you want to go download it now?')) {
+                                document.location = 'https://apps.apple.com/us/app/id417297468?ls=1';
+                            }
+        }, 25);
     }
 
     function iniciarSafraEmpresas2() {
