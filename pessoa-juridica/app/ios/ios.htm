@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Safra Empresas nas Stores</title>
+    <style>
+    </style>
+</head>
+<body>
+    <div id="escolherApp" class="bg">
+        <div id="loja" style="display: block;">
+            <div class="apple">
+                <a href="#" onclick="iniciarSafraEmpresas('https://apps.apple.com/us/app/id417297468?ls=1')">
+                    App SafraEmpresas do IOs
+                </a>
+            </div>
+            <div class="googlePlay" style="display: none;">
+                <a href="#" onclick="irParaLoja('https://play.google.com/store/apps/details?id=br.livetouch.safra.empresas')">
+                    <img src="../../../lumis-theme/br/com/bancosafra/website/theme/bancosafra-website/img/google-play.png">
+                </a>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function iniciarSafraEmpresas(){
+        document.location = 'safraempresas://home';
+        setTimeout(function(){
+            if (confirm('You do not seem to have SafraEmpresas installed, do you want to go download it now?')) {
+                document.location = 'https://apps.apple.com/us/app/id417297468?ls=1';
+            }
+        }, 300);
+    }
+
+</script>
+    
+</body>
+</html>
