@@ -16,7 +16,7 @@
             <input class="adicionar" type="button" value="Adicionar" ng-click="homeCtrl.adicionarItem()">
         </div>
         <div class="resultado">
-            <div class="card" ng-repeat="item in homeCtrl.listaLinks | filter: inputSearch">
+            <div class="card" ng-repeat="item in homeCtrl.listaLinks | filter: inputSearch track by $index">
                 <div class="titulo">{{item.titulo}}</div>
                 <div class="descricao">{{item.descricao}}</div>
                 <div class="url">{{item.url}}</div>
