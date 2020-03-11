@@ -48,7 +48,6 @@ input[type=text].pesquisa {
 }
 
 .resultado {
-    border: 1px solid green;
     min-height: 600px;
     padding-top: 30px;
 }

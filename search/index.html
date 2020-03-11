@@ -16,8 +16,8 @@
         <div class="resultado">
             <div class="card" ng-repeat="item in result | filter: inputSearch">
                 <div class="titulo">{{item.titulo}}</div>
-                <div class="descricao">Reunimos as melhores práticas para criar o seu conteúdo com qualidade e rapidez, e tudo isso em um só lugar. Você ganha melhor visibilidade de seu site ou blog, geração automática de conteúdo rápido e de qualidade</div>
-                <div class="url">https://www.google.com/search?q=input+arredondado+css</div>
+                <div class="descricao">{{item.descricao}}</div>
+                <div class="url">{{item.url}}</div>
             </div>
         </div>
     </div>
