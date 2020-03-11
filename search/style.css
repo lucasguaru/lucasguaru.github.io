@@ -1,0 +1,60 @@
+input.pesquisa {
+    border-radius: 20px;
+    height: 30px;
+}
+
+input[type=text].pesquisa {
+    width: 400px;
+}
+
+.card {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+* {
+    font-family: arial,sans-serif;
+}
+
+.titulo {
+    font-size: 20px;
+    color: #609;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /* border: 1px solid green; */
+}
+
+.descricao {
+    color: #3C4043;
+    font-size: 14px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /* border: 1px solid green; */
+}
+
+.url {
+    color: #1a0dab;
+    cursor: pointer;
+    font-size: 14px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /* border: 1px solid green; */
+}
+
+.header {
+    max-width: 750px;
+    margin: auto;
+    text-align: center;
+}
+
+.resultado {
+    border: 1px solid green;
+    min-height: 600px;
+    padding-top: 30px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding-top: 60px;
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisa Interativa</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <script src="ng-script.js"></script>
+</head>
+<body ng-app="searchApp"  ng-controller="HomeController as HomeCtrl">
+    <div class="container">
+        <div class="header">
+            <input class="pesquisa" type="text" ng-model="inputSearch"> <input class="pesquisa" type="button" value="Pesquisar">
+        </div>
+        <div class="resultado">
+            <div class="card" ng-repeat="item in result | filter: inputSearch">
+                <div class="titulo">{{item.titulo}}</div>
+                <div class="descricao">Reunimos as melhores práticas para criar o seu conteúdo com qualidade e rapidez, e tudo isso em um só lugar. Você ganha melhor visibilidade de seu site ou blog, geração automática de conteúdo rápido e de qualidade</div>
+                <div class="url">https://www.google.com/search?q=input+arredondado+css</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
