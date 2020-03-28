@@ -1,7 +1,7 @@
 var canvas, ctx, ALTURA, LARGURA, frames = 0;
 var maxPulos = 3;
 var drawingPers = new Image();
-drawingPers.src = "img/joao.png"; // can also be a remote URL e.g. http://
+drawingPers.src = "img/joao-transp.png"; // can also be a remote URL e.g. http://
 drawingPers.onload = function() {
    personagem.carregou = true;
    personagem.drawing = this;
@@ -45,8 +45,8 @@ personagem = {
             this.qtPulos = 0;
         }
     },
-    pular: function() {
-        if (this.qtPulos++ < maxPulos) {
+    pular: function(ignora) {
+        if (this.qtPulos++ < maxPulos || ignora) {
             this.velocidade = -this.forcaDoPulo;
         }
     },
@@ -107,8 +107,8 @@ desafio = {
 };
 
 
-function clique() {
-    personagem.pular();
+function clique(ignora) {
+    personagem.pular(ignora);
     obstaculos.insere();
 }
 function main() {
@@ -120,6 +120,11 @@ function main() {
     ctx = canvas.getContext("2d");
     document.body.appendChild(canvas);
     document.body.addEventListener("mousedown", clique);
+    document.body.addEventListener("keypress", function(event) {
+        if (event.keyCode == 32 || event.keyCode == 38) {
+            clique(true);
+        }
+    });
 
     roda();
 }
