@@ -12,12 +12,12 @@ drawingDesaf.onload = function() {
    desafio.carregou = true;
    desafio.drawing = this;
 };
-ALTURA = window.innerHeight;
-LARGURA = window.innerWidth;
-if (LARGURA > 800) {
-    LARGURA = 800;
-    ALTURA = 600;
-}
+ALTURA = window.innerHeight - 2;
+LARGURA = window.innerWidth - 2;
+// if (LARGURA > 800) {
+//     LARGURA = 1200;
+//     ALTURA = 800;
+// }
 
 var chao = {
     y: ALTURA - 80,
@@ -61,10 +61,11 @@ obstaculos = {
     velocidade: 10,
     insere: function() {
         var m = Math.random();
+        var altura = 45 + (45 * m);
         this._obs.push({
             x: LARGURA,
-            y: ALTURA - 100,
-            altura: 45 + (45 * m),
+            y: ALTURA - (ALTURA * m) - 20,
+            altura: altura,
             largura: 55 + (55 * m)
         });
     },
