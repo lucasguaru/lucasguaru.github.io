@@ -1,7 +1,7 @@
 var canvas, ctx, ALTURA, LARGURA, frames = 0;
 var maxPulos = 3;
 var drawingPers = new Image();
-drawingPers.src = "img/joao-transp.png"; // can also be a remote URL e.g. http://
+drawingPers.src = "img/joao-dragao.png"; // can also be a remote URL e.g. http://
 drawingPers.onload = function() {
    personagem.carregou = true;
    personagem.drawing = this;
@@ -29,11 +29,11 @@ var chao = {
     }
 },
 personagem = {
-    x: 50,
+    x: 100,
     y: 0,
-    altura: 160,
-    largura: 130,
-    gravidade: 1.5,
+    altura: 110,
+    largura: 120,
+    gravidade: 1.2,
     velocidade: 0,
     forcaDoPulo: 23,
     qtPulos: 0,
@@ -46,11 +46,20 @@ personagem = {
         }
     },
     pular: function(ignora) {
-        if (this.qtPulos++ < maxPulos || ignora) {
+        if (this.qtPulos++ < maxPulos) {
             this.velocidade = -this.forcaDoPulo;
+        } else {
+            this.aumentarTamanho = true;
         }
     },
     desenha: function() {
+        if (this.aumentarTamanho) {
+            this.largura = this.largura + 7;
+            this.altura = this.altura + 7;
+        }
+        if (this.largura > 300) {
+            this.aumentarTamanho = false;
+        }
         if (this.carregou) {
             ctx.drawImage(this.drawing, this.x, this.y, this.largura, this.altura);
         }
