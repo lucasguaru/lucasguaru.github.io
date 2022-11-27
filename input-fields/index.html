@@ -5,60 +5,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
     <title>Input Fields</title>
+    <script src="js/script.js" defer></script>
 </head>
 
 <body>
-    <label for="txtInput">Enter your text:</label><br>
-    <div><textarea name="txtInput" id="txtInput" cols="40" rows="10">Enter your text: ${valor}
-<textarea name="${nomeInput}" id="txtInput" cols="${cols}" rows="10"></textarea></div>
-    <div><input type="button" value="Gerar Campos" onclick="gerarCampos()"></div>
-    <div id="inputFieldsArea" style="display:none">
-        <h2>Input Fields:</h2>
-        <div id="inputFieldsAreaAddFields"></div>
-        <div><input type="button" value="Gerar Resultado" onclick="gerarResultado()"></div>
-    </div>
-    <Br>
-    <div><textarea name="txtOutput" id="txtOutput" cols="40" rows="10"></textarea></div>
+    <main>
+        <div class="txtInput">
+            <div class="label"><label for="txtInput">Enter your text:</label></div>
+            <div class="textarea"><textarea name="txtInput" id="txtInput" cols="40" rows="10">Seu nome: ${nome}
+Sua idade: ${idade}</textarea></div>            
+        </div>
+        <div class="gerarCampos"><input type="button" value="Gerar Campos" onclick="gerarCampos()"></div>
+        <div id="inputFieldsArea" style="display:none">
+            <h3>Input Fields:</h3>
+            <div id="inputFieldsAreaAddFields"></div>
+            <div><input type="button" value="Gerar Resultado" onclick="gerarResultado()"></div>
+        </div>
+        
+        <div class="txtOutput">
+            <div class="textarea"><textarea name="txtOutput" id="txtOutput" cols="40" rows="10"></textarea></div>            
+        </div>
+    </main>
 </body>
-<script>
-    function $(id) {
-        return document.getElementById(id);
-    }
-    let txtInput = $("txtInput");
-    let inputFieldsArea = $("inputFieldsArea");
-    let inputFieldsAreaAddFields = $("inputFieldsAreaAddFields");
-    let txtOutput = $("txtOutput");
-    const regex = /\${(\w*)}/g;
-
-    function gerarCampos() {
-        let matches = txtInput.value.matchAll(regex);
-        for (const match of matches) {
-            addInputField(match[1])
-        }
-    }
-
-    function gerarResultado() {
-        let result = txtInput.value;
-        let matches = result.matchAll(regex);
-        for (const match of matches) {
-            result = result.replace(match[0], $("input" + match[1]).value);
-        }
-        txtOutput.value = result;
-    }
-
-    function addInputField(fieldName) {
-        var div = document.createElement("div");
-        var label = document.createElement("label");
-        label.innerHTML = fieldName + ": "
-        var input = document.createElement("input");
-        input.type = "text";
-        input.id = "input" + fieldName;
-        div.appendChild(label);
-        div.appendChild(input);
-        inputFieldsAreaAddFields.appendChild(div);
-        inputFieldsArea.style = "display:block"
-    }
-</script>
 
 </html>

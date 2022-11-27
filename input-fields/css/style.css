@@ -1,0 +1,33 @@
+* {
+    box-sizing: border-box;
+}
+.txtInput {
+    width: 100%;
+}
+.txtInput > div {
+    /* display: block; */    
+}
+.txtInput > div.label {
+    margin-bottom: 5px;
+}
+.txtInput > div.textarea > textarea {
+    width: 100%;
+    margin-bottom: 5px;
+}
+.inputField {
+    margin-bottom: 5px;
+}
+.gerarCampos {
+    margin-bottom: 5px;
+}
+#inputFieldsArea {
+    margin-bottom: 5px;
+}
+
+.txtOutput {
+    width: 100%;
+}
+.txtOutput > div.textarea > textarea {
+    width: 100%;
+    margin-bottom: 5px;
+}
