@@ -1,0 +1,79 @@
+<html>
+
+<head>
+  <script>
+    String.prototype.hashCode = function () {
+      var hash = 0,
+        i, chr;
+      if (this.length === 0) return hash;
+      for (i = 0; i < this.length; i++) {
+        chr = this.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+      }
+      return hash;
+    }
+  </script>
+</head>
+
+<body>
+  <textarea id="inputContent" cols="60" rows="15"></textarea><br><br>
+  <br />
+  <select id="selectRunType">
+    <option>Execute Script</option>
+    <option>For Each Line</option>
+  </select>
+  <br />
+  Use a variável <strong>line</strong> no For Each e <strong>input</strong> no Execute Script.
+  <br/>
+  O resultado vai na variável <strong>result</strong>
+  <br />
+  <textarea id="scriptContent" cols="60" rows="10"></textarea><br><br>
+  <textarea id="result" cols="60" rows="10"></textarea><br><br>
+  <button onclick="runScript()">Run Script</button>
+</body>
+<script>
+  function load() {
+    loadStorageAndSetOnElement("inputContent");
+    loadStorageAndSetOnElement("scriptContent");
+    loadStorageAndSetOnElement("selectRunType");
+  }
+  load();
+
+  function loadStorageAndSetOnElement(id) {
+    let value = localStorage.getItem(id) || "";
+    document.getElementById(id).value = value;
+  }
+
+  function getValueAndSaveOnStorage(id) {
+    let value = document.getElementById(id).value;
+    localStorage.setItem(id, value);
+    return value;
+  }
+
+  function runScript() {
+    let input = getValueAndSaveOnStorage("inputContent");
+    let script = getValueAndSaveOnStorage("scriptContent");
+    let selectRunType = getValueAndSaveOnStorage("selectRunType");
+    let result = execJavascript(input, script, selectRunType);
+    let resultTextArea = document.getElementById("result");
+    resultTextArea.value = result;
+    navigator.clipboard.writeText(result);
+  }
+
+  function execJavascript(input, script, runType) {
+    if (runType == "Execute Script") {
+      return eval(script);
+    } else if (runType == "For Each Line") {
+      let inputSplitted = input.split("\n");
+      let resultEval = "";
+      inputSplitted.forEach(line => {
+        let result = "";
+        resultEval += eval(script);
+      })
+      return resultEval;
+    }
+  }
+</script>
+
+</html>
