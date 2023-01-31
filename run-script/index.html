@@ -54,6 +54,7 @@
   function runScript() {
     let input = getValueAndSaveOnStorage("inputContent");
     let script = getValueAndSaveOnStorage("scriptContent");
+    console.log(script.hashCode());
     let selectRunType = getValueAndSaveOnStorage("selectRunType");
     let result = execJavascript(input, script, selectRunType);
     let resultTextArea = document.getElementById("result");
