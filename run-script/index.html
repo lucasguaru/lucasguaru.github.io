@@ -70,7 +70,9 @@
       let resultEval = "";
       inputSplitted.forEach(line => {
         let result = "";
-        resultEval += eval(script);
+        result = eval(script);
+        console.log(result);
+        resultEval += result;
       })
       return resultEval;
     }
