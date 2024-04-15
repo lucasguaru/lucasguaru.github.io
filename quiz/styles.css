@@ -51,4 +51,19 @@ body {
     #quiz-container {
         width: 100%; /* Permite que o container use toda a largura disponível */
     }
+
+    #answers li {
+        font-size: 1.5em; /* Aumenta ainda mais o tamanho da fonte para facilidade de leitura */
+    }
+}
+
+@media (orientation: portrait) {
+    /* Aumenta o tamanho da fonte quando o dispositivo está em pé */
+    body {
+        font-size: 18px; /* Torna o texto maior em dispositivos em retrato */
+    }
+
+    #answers li {
+        font-size: 1.8em; /* Aumenta o tamanho da fonte dos itens de resposta para melhor interação */
+    }
 }
