@@ -1,3 +1,6 @@
+div {
+    border: 1px solid red;
+}
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -10,7 +13,7 @@ body {
 
 #quiz-container {
     width: 100%; /* Usa a largura total em telas pequenas */
-    max-width: 300px; /* Limita a largura máxima em telas maiores */
+    max-width: 800px; /* Limita a largura máxima em telas maiores */
     text-align: center;
     box-sizing: border-box;
 }
@@ -33,27 +36,45 @@ body {
 @media (max-width: 768px) {
     body {
         font-size: 16px; /* Aumenta o tamanho da fonte para legibilidade */
-    }
-
-    #answers li {
-        padding: 15px; /* Aumenta o padding para toques fáceis */
-        font-size: 1.2em; /* Aumenta o tamanho da fonte para melhor legibilidade */
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        flex-direction: column; /* Muda a disposição para coluna se necessário */
-        height: auto;
-        padding: 20px; /* Mais espaço em volta do conteúdo */
+        margin: 5px;
     }
 
     #quiz-container {
-        width: 100%; /* Permite que o container use toda a largura disponível */
+        max-width: none;
+    }
+
+    #answers li {
+        padding: 5px; /* Aumenta o padding para toques fáceis */
+        font-size: 1.2em; /* Aumenta o tamanho da fonte para melhor legibilidade */
+        color: blue;
+        background-color: blue;
+    }
+    
+    div {
+        border: 1px solid green;
+    }
+}
+
+@media (max-width: 580px) {
+    /*body {
+        /* flex-direction: column; /* Muda a disposição para coluna se necessário */
+        /* height: auto;
+        /* padding: 5px; /* Mais espaço em volta do conteúdo */
+        /* margin: 5px;
+    } */
+
+    #quiz-container {
+        max-width: none!important;
     }
 
     #answers li {
         font-size: 1.5em; /* Aumenta ainda mais o tamanho da fonte para facilidade de leitura */
+        color: red;
+        background-color: red;
+    }
+    
+    div {
+        border: 1px solid blue;
     }
 }
 
@@ -65,5 +86,7 @@ body {
 
     #answers li {
         font-size: 1.8em; /* Aumenta o tamanho da fonte dos itens de resposta para melhor interação */
+        /* color: red;
+        background-color: red; */
     }
 }

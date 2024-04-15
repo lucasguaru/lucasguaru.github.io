@@ -1,0 +1,52 @@
+[
+    {
+        "question": "O que significa 'ringmaster' em inglês?",
+        "answers": ["Um tipo de anel", "O mestre de um circo", "Um cantor famoso", "Uma chave mestra"],
+        "correctAnswer": "O mestre de um circo"
+    },
+    {
+        "question": "O que 'jaw-dropping' pode descrever?",
+        "answers": ["Algo muito chato", "Algo que te surpreende muito", "Um tipo de dança", "Uma maneira de soltar coisas"],
+        "correctAnswer": "Algo que te surpreende muito"
+    },
+    {
+        "question": "O que significa 'heart-stopping'?",
+        "answers": ["Algo que é relaxante", "Algo muito emocionante ou chocante", "Uma condição médica", "Um tipo de exercício"],
+        "correctAnswer": "Algo muito emocionante ou chocante"
+    },
+    {
+        "question": "O que significa 'mind-bending'?",
+        "answers": ["Algo fácil de entender", "Algo muito confuso ou incrível", "Uma posição de yoga", "Uma maneira de controlar pensamentos"],
+        "correctAnswer": "Algo muito confuso ou incrível"
+    },
+    {
+        "question": "O que 'paraphernalia' pode se referir no contexto de um circo?",
+        "answers": ["Instrumentos musicais", "Equipamento ou objetos usados para uma atividade específica", "Itens de vestuário", "Livros e papéis"],
+        "correctAnswer": "Equipamento ou objetos usados para uma atividade específica"
+    },
+    {
+        "question": "O que a expressão 'laid your eyes upon' significa?",
+        "answers": ["Dormir", "Olhar para algo", "Deitar-se", "Fechar os olhos"],
+        "correctAnswer": "Olhar para algo"
+    },
+    {
+        "question": "O que 'can't wait to see' implica sobre os sentimentos de uma pessoa?",
+        "answers": ["Ela não está interessada", "Ela está muito animada e ansiosa", "Ela está assustada", "Ela está irritada"],
+        "correctAnswer": "Ela está muito animada e ansiosa"
+    },
+    {
+        "question": "O que 'get right into' sugere?",
+        "answers": ["Começar algo imediatamente", "Entrar em problemas", "Entrar em um lugar", "Consertar algo"],
+        "correctAnswer": "Começar algo imediatamente"
+    },
+    {
+        "question": "O que 'Day after day' sugere sobre a frequência de um evento?",
+        "answers": ["Acontece uma vez por ano", "Acontece às vezes", "Acontece todos os dias", "Nunca acontece"],
+        "correctAnswer": "Acontece todos os dias"
+    },
+    {
+        "question": "O que 'fly past the Moon and the Sun' sugere no contexto da música?",
+        "answers": ["Viajar pelo espaço", "Voar durante o dia e a noite", "Correr rapidamente", "Nadar"],
+        "correctAnswer": "Viajar pelo espaço"
+    }
+]

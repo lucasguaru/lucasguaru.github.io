@@ -45,11 +45,6 @@
         "correctAnswer": "Advérbio"
     },
     {
-        "question": "Como chamamos um polígono de quatro lados?",
-        "answers": ["Triângulo", "Retângulo", "Quadrado", "Polígono"],
-        "correctAnswer": "Quadrado"
-    },
-    {
         "question": "Qual é a resposta para a adição 7 + 8?",
         "answers": ["15", "14", "16", "13"],
         "correctAnswer": "15"
