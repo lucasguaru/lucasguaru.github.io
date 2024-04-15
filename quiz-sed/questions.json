@@ -1,0 +1,27 @@
+[
+    {
+        "question": "Como substituir a palavra 'hello' por 'world' em um arquivo usando sed?",
+        "answers": ["sed 's/hello/world/' file.txt", "sed 's/world/hello/' file.txt", "awk '{gsub(/hello/, \"world\")}' file.txt", "grep 'hello' file.txt"],
+        "correctAnswer": "sed 's/hello/world/' file.txt"
+    },
+    {
+        "question": "Qual comando sed apaga a linha 3 de um arquivo?",
+        "answers": ["sed '3d' file.txt", "sed '3s' file.txt", "sed 'd3' file.txt", "awk 'NR==3' file.txt"],
+        "correctAnswer": "sed '3d' file.txt"
+    },
+    {
+        "question": "Como inserir uma linha 'New Line' após a 5ª linha usando sed?",
+        "answers": ["sed '5a New Line' file.txt", "sed '5i New Line' file.txt", "sed '5c New Line' file.txt", "sed 'New Line 5a' file.txt"],
+        "correctAnswer": "sed '5a New Line' file.txt"
+    },
+    {
+        "question": "Qual comando sed substitui todas as ocorrências de 'abc' por 'xyz' em cada linha?",
+        "answers": ["sed 's/abc/xyz/g' file.txt", "sed 's/abc/xyz/' file.txt", "sed 's/xyz/abc/g' file.txt", "awk '{gsub(/abc/, \"xyz\")}' file.txt"],
+        "correctAnswer": "sed 's/abc/xyz/g' file.txt"
+    },
+    {
+        "question": "Como extrair linhas de 10 a 20 usando sed?",
+        "answers": ["sed -n '10,20p' file.txt", "sed '10-20d' file.txt", "awk 'NR>=10 && NR<=20' file.txt", "grep '10,20' file.txt"],
+        "correctAnswer": "sed -n '10,20p' file.txt"
+    }
+]

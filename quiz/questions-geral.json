@@ -1,0 +1,157 @@
+[
+    {
+        "question": "Quantos lados tem um triângulo?",
+        "answers": ["3", "4", "5", "6"],
+        "correctAnswer": "3"
+    },
+    {
+        "question": "Qual é o maior planeta do nosso sistema solar?",
+        "answers": ["Terra", "Marte", "Júpiter", "Saturno"],
+        "correctAnswer": "Júpiter"
+    },
+    {
+        "question": "Em qual estado da matéria a água está quando está gelada?",
+        "answers": ["Sólido", "Líquido", "Gasoso", "Plasma"],
+        "correctAnswer": "Sólido"
+    },
+    {
+        "question": "Qual é a capital do Brasil?",
+        "answers": ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"],
+        "correctAnswer": "Brasília"
+    },
+    {
+        "question": "O que é uma fábula?",
+        "answers": ["Uma história verdadeira", "Um livro de ciências", "Uma história com uma moral que geralmente tem animais como personagens", "Um tipo de dança"],
+        "correctAnswer": "Uma história com uma moral que geralmente tem animais como personagens"
+    },
+    {
+        "question": "Qual animal é conhecido como o 'rei da selva'?",
+        "answers": ["Elefante", "Leão", "Tigre", "Girafa"],
+        "correctAnswer": "Leão"
+    },
+    {
+        "question": "Quantos minutos tem uma hora?",
+        "answers": ["30", "60", "90", "120"],
+        "correctAnswer": "60"
+    },
+    {
+        "question": "O que as plantas precisam para fazer fotossíntese?",
+        "answers": ["Água e luz solar", "Solo e água", "Luz solar e vento", "Água e ar"],
+        "correctAnswer": "Água e luz solar"
+    },
+    {
+        "question": "Que tipo de palavra é 'rapidamente'?",
+        "answers": ["Adjetivo", "Advérbio", "Substantivo", "Verbo"],
+        "correctAnswer": "Advérbio"
+    },
+    {
+        "question": "Como chamamos um polígono de quatro lados?",
+        "answers": ["Triângulo", "Retângulo", "Quadrado", "Polígono"],
+        "correctAnswer": "Quadrado"
+    },
+    {
+        "question": "Qual é a resposta para a adição 7 + 8?",
+        "answers": ["15", "14", "16", "13"],
+        "correctAnswer": "15"
+    },
+    {
+        "question": "O que você deve usar para medir a temperatura?",
+        "answers": ["Régua", "Balança", "Termômetro", "Compasso"],
+        "correctAnswer": "Termômetro"
+    },
+    {
+        "question": "Qual continente é conhecido por ser o mais frio?",
+        "answers": ["Ásia", "Antártida", "Europa", "América do Norte"],
+        "correctAnswer": "Antártida"
+    },
+    {
+        "question": "O que um herbívoro come?",
+        "answers": ["Apenas plantas", "Apenas carne", "Tanto carne quanto plantas", "Apenas frutas"],
+        "correctAnswer": "Apenas plantas"
+    },
+    {
+        "question": "Qual é o resultado de 10 - 4?",
+        "answers": ["6", "4", "14", "8"],
+        "correctAnswer": "6"
+    },
+    {
+        "question": "Qual é o maior oceano do mundo?",
+        "answers": ["Atlântico", "Índico", "Pacífico", "Ártico"],
+        "correctAnswer": "Pacífico"
+    },
+    {
+        "question": "De que os livros são feitos?",
+        "answers": ["Plástico", "Metal", "Papel", "Tecido"],
+        "correctAnswer": "Papel"
+    },
+    {
+        "question": "Quantas semanas tem um ano?",
+        "answers": ["52", "48", "50", "54"],
+        "correctAnswer": "52"
+    },
+    {
+        "question": "Qual instrumento musical tem teclas pretas e brancas?",
+        "answers": ["Violino", "Guitarra", "Piano", "Flauta"],
+        "correctAnswer": "Piano"
+    },
+    {
+        "question": "Qual é o oposto de 'triste'?",
+        "answers": ["Feliz", "Cansado", "Rápido", "Grande"],
+        "correctAnswer": "Feliz"
+    },
+    {
+        "question": "Como chamamos a pessoa que escreve livros?",
+        "answers": ["Pintor", "Escritor", "Cantor", "Dançarino"],
+        "correctAnswer": "Escritor"
+    },
+    {
+        "question": "O que um mapa mostra?",
+        "answers": ["Músicas", "Histórias", "Lugares", "Receitas"],
+        "correctAnswer": "Lugares"
+    },
+    {
+        "question": "Qual é a forma de três lados?",
+        "answers": ["Círculo", "Quadrado", "Retângulo", "Triângulo"],
+        "correctAnswer": "Triângulo"
+    },
+    {
+        "question": "Onde vive um peixe?",
+        "answers": ["Deserto", "Floresta", "Oceano", "Montanha"],
+        "correctAnswer": "Oceano"
+    },
+    {
+        "question": "Qual destas é uma fruta?",
+        "answers": ["Cenoura", "Pepino", "Maçã", "Alface"],
+        "correctAnswer": "Maçã"
+    },
+    {
+        "question": "O que é necessário para crescer uma planta?",
+        "answers": ["Luz solar, água, solo e ar", "Óleo, luz solar, água", "Água e areia", "Sol e sal"],
+        "correctAnswer": "Luz solar, água, solo e ar"
+    },
+    {
+        "question": "Quem cuida dos dentes das pessoas?",
+        "answers": ["Dentista", "Professor", "Médico", "Chefe de cozinha"],
+        "correctAnswer": "Dentista"
+    },
+    {
+        "question": "Quantas sílabas tem a palavra 'elefante'?",
+        "answers": ["4", "3", "5", "2"],
+        "correctAnswer": "4"
+    },
+    {
+        "question": "Qual é a cor que se obtém misturando azul e amarelo?",
+        "answers": ["Verde", "Laranja", "Roxo", "Vermelho"],
+        "correctAnswer": "Verde"
+    },
+    {
+        "question": "Como se chama um livro com muitas palavras e seus significados?",
+        "answers": ["Enciclopédia", "Manual", "Dicionário", "Atlas"],
+        "correctAnswer": "Dicionário"
+    },
+    {
+        "question": "O que é uma equação?",
+        "answers": ["Uma pergunta de matemática que precisa ser resolvida", "Um tipo de desenho", "Um capítulo de um livro", "Uma receita de cozinha"],
+        "correctAnswer": "Uma pergunta de matemática que precisa ser resolvida"
+    }
+]
