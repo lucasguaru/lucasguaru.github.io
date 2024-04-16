@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const questionElement = document.getElementById('question');
                 const answersElement = document.getElementById('answers');
 
-                questionElement.textContent = questionData.question;
+                questionElement.textContent = (currentQuestionIndex + 1) + " - " + questionData.question;
                 answersElement.innerHTML = '';
 
                 const answers = questionData.answers;
@@ -34,8 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                 displayQuestion(data[currentQuestionIndex]);
                             }
                         } else {
-                            alert('Resposta errada! Tente novamente desde o começo.');
-                            currentQuestionIndex = 0;
+                            currentQuestionIndex = currentQuestionIndex -5;
+                            if (currentQuestionIndex < 0) currentQuestionIndex = 0;
+                            alert(`Resposta errada! Retorne a pergunta ${currentQuestionIndex + 1}.`);
                             displayQuestion(data[currentQuestionIndex]);
                         }
                     });
