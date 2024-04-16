@@ -1,0 +1,229 @@
+[
+    {
+        "question": "Qual é o propósito da palavra-chave 'static' em Java?",
+        "answers": ["Para criar constantes.", "Para criar métodos que podem ser acessados sem instanciar a classe.", "Para indicar que uma variável é privada.", "Para criar uma nova thread."],
+        "correctAnswer": "Para criar métodos que podem ser acessados sem instanciar a classe."
+    },
+    {
+        "question": "O que faz o método 'System.out.println()'?",
+        "answers": ["Imprime texto no console e insere uma nova linha no final.", "Lê entrada do console.", "Limpa o console.", "Imprime texto no console sem inserir uma nova linha."],
+        "correctAnswer": "Imprime texto no console e insere uma nova linha no final."
+    },
+    {
+        "question": "Como você pode criar uma variável inteira em Java?",
+        "answers": ["int x = 10;", "integer x = 10;", "var x = 10;", "int x := 10;"],
+        "correctAnswer": "int x = 10;"
+    },
+    {
+        "question": "Qual palavra-chave é usada para herdar uma classe em Java?",
+        "answers": ["super", "this", "extends", "implements"],
+        "correctAnswer": "extends"
+    },
+    {
+        "question": "Qual destes é um tipo de loop em Java?",
+        "answers": ["do-while", "repeat-until", "do-repeat", "for-do"],
+        "correctAnswer": "do-while"
+    },
+    {
+        "question": "O que é uma exceção em Java?",
+        "answers": ["Um tipo de variável", "Um erro durante a execução do programa", "Um valor retornado por um método", "Uma função"],
+        "correctAnswer": "Um erro durante a execução do programa"
+    },
+    {
+        "question": "Qual interface você usaria para ordenar uma coleção de objetos em Java?",
+        "answers": ["Comparable", "Comparator", "Serializable", "Cloneable"],
+        "correctAnswer": "Comparator"
+    },
+    {
+        "question": "O que significa API em Java?",
+        "answers": ["Application Programming Interface", "Application Performance Increase", "Analytical Programming Interface", "None of the above"],
+        "correctAnswer": "Application Programming Interface"
+    },
+    {
+        "question": "Como você declara uma constante em Java?",
+        "answers": ["using the 'const' keyword", "using the 'final' keyword", "using the 'static' keyword", "Java does not support constants"],
+        "correctAnswer": "using the 'final' keyword"
+    },
+    {
+        "question": "Qual é a saída correta para o código 'System.out.println(2 + 2 + \"2\");'?",
+        "answers": ["222", "6", "24", "22"],
+        "correctAnswer": "22"
+    },
+    {
+        "question": "O que faz o construtor em Java?",
+        "answers": ["Inicializa um novo objeto", "Declara um tipo de dado", "Cria uma nova variável de classe", "Nenhuma das anteriores"],
+        "correctAnswer": "Inicializa um novo objeto"
+    },
+    {
+        "question": "Qual palavra-chave é usada para acessar um membro da superclasse?",
+        "answers": ["super", "this", "extend", "inherit"],
+        "correctAnswer": "super"
+    },
+    {
+        "question": "Como você pode capturar múltiplas exceções em um único bloco catch?",
+        "answers": ["Usando o operador '|'", "Usando o operador '&'", "Não é possível em Java", "Usando múltiplos blocos catch"],
+        "correctAnswer": "Usando o operador '|'"
+    },
+    {
+        "question": "Em Java, como você verifica se uma string 's' é vazia?",
+        "answers": ["s.isEmpty()", "s == \"\"", "s.equals(\"\")", "Todos acima"],
+        "correctAnswer": "s.isEmpty()"
+    },
+    {
+        "question": "O que é o Garbage Collector em Java?",
+        "answers": ["Uma ferramenta de desenvolvimento", "Uma função para coletar dados do usuário", "O processo de desalocar memória automaticamente", "Um tipo de erro"],
+        "correctAnswer": "O processo de desalocar memória automaticamente"
+    },
+
+    {
+        "question": "Qual é o propósito do método 'finalize()' em Java?",
+        "answers": ["É chamado antes de um objeto ser garbage collected.", "É usado para finalizar loops.", "É chamado para finalizar threads.", "Nenhuma das anteriores."],
+        "correctAnswer": "É chamado antes de um objeto ser garbage collected."
+    },
+    {
+        "question": "O que é um bloco de inicialização em Java?",
+        "answers": ["Um bloco que inicializa uma nova instância de uma classe.", "Um método que é executado quando o programa inicia.", "Um bloco que é executado sempre que um objeto é criado.", "Um bloco que inicializa variáveis estáticas."],
+        "correctAnswer": "Um bloco que é executado sempre que um objeto é criado."
+    },
+    {
+        "question": "O que significa o termo 'sobrecarga de métodos' em Java?",
+        "answers": ["Modificar o comportamento de um método existente.", "Criar múltiplos métodos com o mesmo nome, mas diferentes parâmetros.", "Aumentar a eficiência de um método.", "Diminuir o uso de memória de um método."],
+        "correctAnswer": "Criar múltiplos métodos com o mesmo nome, mas diferentes parâmetros."
+    },
+    {
+        "question": "Como é implementada a herança múltipla em Java?",
+        "answers": ["Usando classes múltiplas.", "Usando interfaces.", "Java não suporta herança múltipla.", "Usando pacotes múltiplos."],
+        "correctAnswer": "Usando interfaces."
+    },
+    {
+        "question": "O que o operador 'instanceof' faz?",
+        "answers": ["Verifica se um objeto é uma instância de uma classe específica.", "Cria uma instância de uma classe.", "Compara duas instâncias de uma classe.", "Nenhuma das anteriores."],
+        "correctAnswer": "Verifica se um objeto é uma instância de uma classe específica."
+    },
+    {
+        "question": "Qual é o propósito de um 'transient' em Java?",
+        "answers": ["Impedir que uma variável seja serializada.", "Marcar uma variável como temporária.", "Fazer uma variável ser transmitida através de redes.", "Nenhuma das anteriores."],
+        "correctAnswer": "Impedir que uma variável seja serializada."
+    },
+    {
+        "question": "Qual é o propósito de 'synchronized' em Java?",
+        "answers": ["Prevenir a execução de um método por múltiplos threads ao mesmo tempo.", "Sincronizar dados entre threads.", "Sincronizar arquivos e diretórios.", "Nenhuma das anteriores."],
+        "correctAnswer": "Prevenir a execução de um método por múltiplos threads ao mesmo tempo."
+    },
+    {
+        "question": "O que é uma 'inner class' em Java?",
+        "answers": ["Uma classe dentro de outra classe.", "Uma classe que implementa uma interface.", "Uma classe que herda de outra classe.", "Uma classe que não pode ser herdada."],
+        "correctAnswer": "Uma classe dentro de outra classe."
+    },
+    {
+        "question": "O que o modificador 'volatile' faz em Java?",
+        "answers": ["Torna o código mais eficiente.", "Impede que uma variável seja serializada.", "Garante a visibilidade de mudanças em variáveis entre diferentes threads.", "Protege variáveis contra mudanças inesperadas."],
+        "correctAnswer": "Garante a visibilidade de mudanças em variáveis entre diferentes threads."
+    },
+    {
+        "question": "Como você pode criar uma thread em Java?",
+        "answers": ["Implementando a interface 'Runnable'.", "Extendendo a classe 'Thread'.", "Usando a classe 'ExecutorService'.", "Todas as anteriores."],
+        "correctAnswer": "Todas as anteriores."
+    },
+    {
+        "question": "Qual é a diferença entre '== e 'equals()' em Java?",
+        "answers": ["'==' compara referências, enquanto 'equals()' compara conteúdos.", "'==' compara conteúdos, enquanto 'equals()' compara referências.", "Não há diferença, ambos fazem a mesma coisa.", "Nenhuma das anteriores."],
+        "correctAnswer": "'==' compara referências, enquanto 'equals()' compara conteúdos."
+    },
+    {
+        "question": "O que são anotações em Java?",
+        "answers": ["Comentários no código.", "Marcadores que podem ser usados para adicionar metadados ao código.", "Erros no código.", "Nenhuma das anteriores."],
+        "correctAnswer": "Marcadores que podem ser usados para adicionar metadados ao código."
+    },
+    {
+        "question": "O que é o 'path' em Java?",
+        "answers": ["O método para imprimir algo na tela.", "Uma interface para trabalhar com arquivos e diretórios.", "Um caminho no sistema de arquivos.", "Todas as anteriores."],
+        "correctAnswer": "Todas as anteriores."
+    },
+    {
+        "question": "O que faz o método 'clone()' em Java?",
+        "answers": ["Duplica o código fonte de uma classe.", "Cria uma cópia exata de um objeto.", "Reinicia o estado de um objeto.", "Nenhuma das anteriores."],
+        "correctAnswer": "Cria uma cópia exata de um objeto."
+    },
+    {
+        "question": "O que é um pacote em Java?",
+        "answers": ["Uma coleção de classes e interfaces.", "Um software de terceiros.", "Um arquivo executável.", "Nenhuma das anteriores."],
+        "correctAnswer": "Uma coleção de classes e interfaces."
+    },
+
+    {
+        "question": "Como você pode impedir a herança de uma classe em Java?",
+        "answers": ["Usando a palavra-chave 'final'.", "Usando a palavra-chave 'private'.", "Usando a palavra-chave 'sealed'.", "Usando a palavra-chave 'static'."],
+        "correctAnswer": "Usando a palavra-chave 'final'."
+    },
+    {
+        "question": "Qual é o princípio de Liskov Substitution?",
+        "answers": ["Uma classe base deve ser substituível por qualquer uma de suas subclasses.", "Uma classe não deve ser substituível por suas subclasses.", "Subclasses devem ser totalmente independentes de suas classes base.", "Nenhuma das anteriores."],
+        "correctAnswer": "Uma classe base deve ser substituível por qualquer uma de suas subclasses."
+    },
+    {
+        "question": "O que é a reflexão em Java?",
+        "answers": ["Alterar o comportamento do código em tempo de execução.", "Espelhar o código em vários servidores.", "A capacidade de uma aplicação se observar e modificar sua estrutura.", "Nenhuma das anteriores."],
+        "correctAnswer": "A capacidade de uma aplicação se observar e modificar sua estrutura."
+    },
+    {
+        "question": "O que é a compilação Just-In-Time (JIT) em Java?",
+        "answers": ["Uma técnica para aumentar a eficiência da compilação.", "A compilação de código Java em código de máquina no momento da execução.", "Um método para compilar programas antes da execução.", "Nenhuma das anteriores."],
+        "correctAnswer": "A compilação de código Java em código de máquina no momento da execução."
+    },
+    {
+        "question": "Qual é a diferença entre 'early binding' e 'late binding'?",
+        "answers": ["'Early binding' refere-se à atribuição de valores em tempo de compilação, 'late binding' em tempo de execução.", "'Early binding' é para métodos estáticos, 'late binding' para métodos dinâmicos.", "Não há diferença, ambos são termos para o mesmo conceito.", "Nenhuma das anteriores."],
+        "correctAnswer": "'Early binding' refere-se à atribuição de valores em tempo de compilação, 'late binding' em tempo de execução."
+    },
+    {
+        "question": "O que é o 'double-checked locking' em Java?",
+        "answers": ["Um padrão de design para reduzir o uso de sincronização.", "Uma prática recomendada para todos os programas Java.", "Um tipo de erro comum em aplicações multithreaded.", "Nenhuma das anteriores."],
+        "correctAnswer": "Um padrão de design para reduzir o uso de sincronização."
+    },
+    {
+        "question": "Qual é o propósito do 'Java Memory Model'?",
+        "answers": ["Gerenciar a memória usada por programas Java.", "Descrever como as threads interagem através da memória.", "Prever erros de memória em programas Java.", "Nenhuma das anteriores."],
+        "correctAnswer": "Descrever como as threads interagem através da memória."
+    },
+    {
+        "question": "O que é 'type erasure' em Java?",
+        "answers": ["Remover tipos de uma aplicação Java.", "A conversão de tipos genéricos para Object durante a compilação.", "A otimização de tipos em tempo de execução.", "Nenhuma das anteriores."],
+        "correctAnswer": "A conversão de tipos genéricos para Object durante a compilação."
+    },
+    {
+        "question": "Qual é a finalidade do método 'wait()' em Java?",
+        "answers": ["Pausar a execução de uma thread permanentemente.", "Notificar uma thread para retomar a execução.", "Fazer uma thread esperar até ser notificada.", "Nenhuma das anteriores."],
+        "correctAnswer": "Fazer uma thread esperar até ser notificada."
+    },
+    {
+        "question": "Qual é a diferença entre 'fail-fast' e 'fail-safe' em iteradores Java?",
+        "answers": ["'Fail-fast' detecta falhas imediatamente, 'fail-safe' não.", "'Fail-fast' permite modificações durante iteração, 'fail-safe' não.", "Não há diferença, ambos são seguros.", "Nenhuma das anteriores."],
+        "correctAnswer": "'Fail-fast' detecta falhas imediatamente, 'fail-safe' não."
+    },
+    {
+        "question": "O que é 'method overloading'?",
+        "answers": ["Definir um método com o mesmo nome mas diferentes tipos de retorno.", "Criar métodos com o mesmo nome e parâmetros em classes diferentes.", "Definir múltiplos métodos dentro de uma classe com o mesmo nome mas diferentes parâmetros.", "Usar o mesmo método em múltiplas threads."],
+        "correctAnswer": "Definir múltiplos métodos dentro de uma classe com o mesmo nome mas diferentes parâmetros."
+    },
+    {
+        "question": "Como funciona a 'injeção de dependência' em Java?",
+        "answers": ["Permite que uma classe receba as instâncias de objetos de que precisa de outra classe.", "É uma técnica para duplicar objetos.", "É um processo automático gerido pelo Java Runtime.", "Nenhuma das anteriores."],
+        "correctAnswer": "Permite que uma classe receba as instâncias de objetos de que precisa de outra classe."
+    },
+    {
+        "question": "O que faz o método 'interrupt()' em uma thread?",
+        "answers": ["Para a thread imediatamente.", "Solicita que a thread pare na próxima oportunidade.", "Reinicia a thread.", "Duplica a thread."],
+        "correctAnswer": "Solicita que a thread pare na próxima oportunidade."
+    },
+    {
+        "question": "O que é 'aspect-oriented programming' em Java?",
+        "answers": ["Um paradigma de programação que aumenta a modularidade.", "Uma técnica para melhorar o desempenho.", "Uma ferramenta para gerenciar exceções.", "Nenhuma das anteriores."],
+        "correctAnswer": "Um paradigma de programação que aumenta a modularidade."
+    },
+    {
+        "question": "Qual é a diferença entre checadas e não checadas (unchecked) exceções?",
+        "answers": ["Checadas são detectadas em tempo de compilação, não checadas em tempo de execução.", "Não checadas são mais graves que checadas.", "Checadas são corrigidas automaticamente pelo compilador.", "Não há diferença significativa."],
+        "correctAnswer": "Checadas são detectadas em tempo de compilação, não checadas em tempo de execução."
+    }
+]

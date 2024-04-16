@@ -1,0 +1,277 @@
+[
+    {
+        "question": "O que significa 'apple' em inglês?",
+        "answers": ["Banana", "Maçã", "Pera", "Laranja"],
+        "correctAnswer": "Maçã"
+    },
+    {
+        "question": "O que significa 'dog' em inglês?",
+        "answers": ["Gato", "Cavalo", "Cachorro", "Coelho"],
+        "correctAnswer": "Cachorro"
+    },
+    {
+        "question": "O que significa 'sun' em inglês?",
+        "answers": ["Lua", "Sol", "Estrela", "Céu"],
+        "correctAnswer": "Sol"
+    },
+    {
+        "question": "O que significa 'house' em inglês?",
+        "answers": ["Casa", "Hotel", "Escola", "Hospital"],
+        "correctAnswer": "Casa"
+    },
+    {
+        "question": "O que significa 'tree' em inglês?",
+        "answers": ["Flor", "Bosque", "Folha", "Árvore"],
+        "correctAnswer": "Árvore"
+    },
+    {
+        "question": "O que significa 'book' em inglês?",
+        "answers": ["Revista", "Livro", "Papel", "Carta"],
+        "correctAnswer": "Livro"
+    },
+    {
+        "question": "O que significa 'car' em inglês?",
+        "answers": ["Caminhão", "Moto", "Carro", "Bicicleta"],
+        "correctAnswer": "Carro"
+    },
+    {
+        "question": "O que significa 'water' em inglês?",
+        "answers": ["Suco", "Leite", "Água", "Café"],
+        "correctAnswer": "Água"
+    },
+    {
+        "question": "O que significa 'school' em inglês?",
+        "answers": ["Mercado", "Hospital", "Casa", "Escola"],
+        "correctAnswer": "Escola"
+    },
+    {
+        "question": "O que significa 'chair' em inglês?",
+        "answers": ["Mesa", "Cadeira", "Cama", "Porta"],
+        "correctAnswer": "Cadeira"
+    },
+    {
+        "question": "O que significa 'shoe' em inglês?",
+        "answers": ["Meia", "Luva", "Sapato", "Camisa"],
+        "correctAnswer": "Sapato"
+    },
+    {
+        "question": "O que significa 'cat' em inglês?",
+        "answers": ["Rato", "Cachorro", "Gato", "Pássaro"],
+        "correctAnswer": "Gato"
+    },
+    {
+        "question": "O que significa 'yellow' em inglês?",
+        "answers": ["Vermelho", "Azul", "Amarelo", "Verde"],
+        "correctAnswer": "Amarelo"
+    },
+    {
+        "question": "O que significa 'fish' em inglês?",
+        "answers": ["Tubarão", "Golfinho", "Peixe", "Baleia"],
+        "correctAnswer": "Peixe"
+    },
+    {
+        "question": "O que significa 'milk' em inglês?",
+        "answers": ["Suco", "Água", "Café", "Leite"],
+        "correctAnswer": "Leite"
+    },
+    {
+        "question": "O que significa 'bird' em inglês?",
+        "answers": ["Gato", "Cão", "Pássaro", "Cavalo"],
+        "correctAnswer": "Pássaro"
+    },
+    {
+        "question": "O que significa 'sister' em inglês?",
+        "answers": ["Mãe", "Irmã", "Tia", "Avó"],
+        "correctAnswer": "Irmã"
+    },
+    {
+        "question": "O que significa 'brother' em inglês?",
+        "answers": ["Irmão", "Pai", "Tio", "Avô"],
+        "correctAnswer": "Irmão"
+    },
+    {
+        "question": "O que significa 'mother' em inglês?",
+        "answers": ["Avó", "Mãe", "Tia", "Irmã"],
+        "correctAnswer": "Mãe"
+    },
+    {
+        "question": "O que significa 'father' em inglês?",
+        "answers": ["Pai", "Avô", "Irmão", "Tio"],
+        "correctAnswer": "Pai"
+    },
+    {
+        "question": "O que significa 'pen' em inglês?",
+        "answers": ["Lápis", "Caneta", "Borracha", "Régua"],
+        "correctAnswer": "Caneta"
+    },
+    {
+        "question": "O que significa 'pencil' em inglês?",
+        "answers": ["Caneta", "Lápis", "Borracha", "Régua"],
+        "correctAnswer": "Lápis"
+    },
+    {
+        "question": "O que significa 'table' em inglês?",
+        "answers": ["Cadeira", "Mesa", "Porta", "Janela"],
+        "correctAnswer": "Mesa"
+    },
+    {
+        "question": "O que significa 'window' em inglês?",
+        "answers": ["Porta", "Parede", "Teto", "Janela"],
+        "correctAnswer": "Janela"
+    },
+    {
+        "question": "O que significa 'door' em inglês?",
+        "answers": ["Janela", "Mesa", "Porta", "Parede"],
+        "correctAnswer": "Porta"
+    },
+    {
+        "question": "O que significa 'ball' em inglês?",
+        "answers": ["Bola", "Bastão", "Luva", "Rede"],
+        "correctAnswer": "Bola"
+    },
+    {
+        "question": "O que significa 'bed' em inglês?",
+        "answers": ["Sofá", "Cadeira", "Cama", "Mesa"],
+        "correctAnswer": "Cama"
+    },
+    {
+        "question": "O que significa 'bicycle' em inglês?",
+        "answers": ["Carro", "Moto", "Bicicleta", "Caminhão"],
+        "correctAnswer": "Bicicleta"
+    },
+    {
+        "question": "O que significa 'flower' em inglês?",
+        "answers": ["Árvore", "Flor", "Grama", "Folha"],
+        "correctAnswer": "Flor"
+    },
+    {
+        "question": "O que significa 'star' em inglês?",
+        "answers": ["Lua", "Sol", "Estrela", "Planeta"],
+        "correctAnswer": "Estrela"
+    },
+    {
+        "question": "O que significa 'moon' em inglês?",
+        "answers": ["Estrela", "Sol", "Planeta", "Lua"],
+        "correctAnswer": "Lua"
+    },
+    {
+        "question": "O que significa 'bus' em inglês?",
+        "answers": ["Carro", "Trem", "Ônibus", "Avião"],
+        "correctAnswer": "Ônibus"
+    },
+    {
+        "question": "O que significa 'boat' em inglês?",
+        "answers": ["Navio", "Barco", "Submarino", "Jangada"],
+        "correctAnswer": "Barco"
+    },
+    {
+        "question": "O que significa 'rain' em inglês?",
+        "answers": ["Vento", "Neve", "Chuva", "Sol"],
+        "correctAnswer": "Chuva"
+    },
+    {
+        "question": "O que significa 'snow' em inglês?",
+        "answers": ["Chuva", "Neve", "Névoa", "Vento"],
+        "correctAnswer": "Neve"
+    },
+    {
+        "question": "O que significa 'cloud' em inglês?",
+        "answers": ["Estrela", "Sol", "Lua", "Nuvem"],
+        "correctAnswer": "Nuvem"
+    },
+    {
+        "question": "O que significa 'mountain' em inglês?",
+        "answers": ["Rio", "Montanha", "Vale", "Praia"],
+        "correctAnswer": "Montanha"
+    },
+    {
+        "question": "O que significa 'beach' em inglês?",
+        "answers": ["Montanha", "Praia", "Rio", "Lago"],
+        "correctAnswer": "Praia"
+    },
+    {
+        "question": "O que significa 'forest' em inglês?",
+        "answers": ["Deserto", "Floresta", "Campo", "Praia"],
+        "correctAnswer": "Floresta"
+    },
+    {
+        "question": "O que significa 'desert' em inglês?",
+        "answers": ["Floresta", "Deserto", "Praia", "Campo"],
+        "correctAnswer": "Deserto"
+    },
+    {
+        "question": "O que significa 'river' em inglês?",
+        "answers": ["Lago", "Mar", "Rio", "Oceano"],
+        "correctAnswer": "Rio"
+    },
+    {
+        "question": "O que significa 'ocean' em inglês?",
+        "answers": ["Rio", "Lago", "Oceano", "Pântano"],
+        "correctAnswer": "Oceano"
+    },
+    {
+        "question": "O que significa 'lake' em inglês?",
+        "answers": ["Rio", "Lago", "Pântano", "Oceano"],
+        "correctAnswer": "Lago"
+    },
+    {
+        "question": "O que significa 'island' em inglês?",
+        "answers": ["Península", "Continente", "Istmo", "Ilha"],
+        "correctAnswer": "Ilha"
+    },
+    {
+        "question": "O que significa 'cake' em inglês?",
+        "answers": ["Pão", "Bolo", "Biscoito", "Torta"],
+        "correctAnswer": "Bolo"
+    },
+    {
+        "question": "O que significa 'cookie' em inglês?",
+        "answers": ["Bolo", "Pão", "Biscoito", "Torta"],
+        "correctAnswer": "Biscoito"
+    },
+    {
+        "question": "O que significa 'bread' em inglês?",
+        "answers": ["Bolo", "Pão", "Torta", "Biscoito"],
+        "correctAnswer": "Pão"
+    },
+    {
+        "question": "O que significa 'butter' em inglês?",
+        "answers": ["Manteiga", "Geleia", "Queijo", "Creme"],
+        "correctAnswer": "Manteiga"
+    },
+    {
+        "question": "O que significa 'cheese' em inglês?",
+        "answers": ["Manteiga", "Queijo", "Geleia", "Creme"],
+        "correctAnswer": "Queijo"
+    },
+    {
+        "question": "O que significa 'jam' em inglês?",
+        "answers": ["Manteiga", "Geleia", "Queijo", "Creme"],
+        "correctAnswer": "Geleia"
+    },
+    {
+        "question": "O que significa 'egg' em inglês?",
+        "answers": ["Queijo", "Manteiga", "Ovo", "Leite"],
+        "correctAnswer": "Ovo"
+    },
+    {
+        "question": "O que significa 'chicken' em inglês?",
+        "answers": ["Galinha", "Vaca", "Porco", "Ovelha"],
+        "correctAnswer": "Galinha"
+    },
+    {
+        "question": "O que significa 'pig' em inglês?",
+        "answers": ["Galinha", "Vaca", "Porco", "Ovelha"],
+        "correctAnswer": "Porco"
+    },
+    {
+        "question": "O que significa 'cow' em inglês?",
+        "answers": ["Galinha", "Vaca", "Porco", "Ovelha"],
+        "correctAnswer": "Vaca"
+    },
+    {
+        "question": "O que significa 'sheep' em inglês?",
+        "answers": ["Galinha", "Vaca", "Porco", "Ovelha"],
+        "correctAnswer": "Ovelha"
+    }
+]
