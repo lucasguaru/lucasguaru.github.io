@@ -41,6 +41,6 @@ body {
 
   #answers li {
     font-size: 1.8em; /* Aumenta o tamanho da fonte dos itens de resposta para melhor interação */
-    margin: 30px;
+    margin: 30px 5px;
   }
 }
