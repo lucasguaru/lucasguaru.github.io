@@ -1,92 +1,46 @@
-div {
-    border: 1px solid red;
-}
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    padding: 10px; /* Adiciona um pouco de padding */
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 10px; /* Adiciona um pouco de padding */
 }
 
 #quiz-container {
-    width: 100%; /* Usa a largura total em telas pequenas */
-    max-width: 800px; /* Limita a largura máxima em telas maiores */
-    text-align: center;
-    box-sizing: border-box;
+  width: 100%; /* Usa a largura total em telas pequenas */
+  max-width: 800px; /* Limita a largura máxima em telas maiores */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+#answers {
+  margin: 0;
+  padding: 0;
 }
 
 #answers li {
-    list-style-type: none;
-    margin: 10px;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    font-size: 1em; /* Tamanho de fonte base */
+  list-style-type: none;
+  margin: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-size: 1em; /* Tamanho de fonte base */
 }
 
 #answers li:hover {
-    background-color: #e9e9e9;
+  background-color: #e9e9e9;
 }
 
-/* Media Queries */
-@media (max-width: 768px) {
-    body {
-        font-size: 16px; /* Aumenta o tamanho da fonte para legibilidade */
-        margin: 5px;
-    }
+@media (max-width: 767px) {
+  body {
+    font-size: 18px; /* Torna o texto maior */
+  }
 
-    #quiz-container {
-        max-width: none;
-    }
-
-    #answers li {
-        padding: 5px; /* Aumenta o padding para toques fáceis */
-        font-size: 1.2em; /* Aumenta o tamanho da fonte para melhor legibilidade */
-        color: blue;
-        background-color: blue;
-    }
-    
-    div {
-        border: 1px solid green;
-    }
-}
-
-@media (max-width: 580px) {
-    /*body {
-        /* flex-direction: column; /* Muda a disposição para coluna se necessário */
-        /* height: auto;
-        /* padding: 5px; /* Mais espaço em volta do conteúdo */
-        /* margin: 5px;
-    } */
-
-    #quiz-container {
-        max-width: none!important;
-    }
-
-    #answers li {
-        font-size: 1.5em; /* Aumenta ainda mais o tamanho da fonte para facilidade de leitura */
-        color: red;
-        background-color: red;
-    }
-    
-    div {
-        border: 1px solid blue;
-    }
-}
-
-@media (orientation: portrait) {
-    /* Aumenta o tamanho da fonte quando o dispositivo está em pé */
-    body {
-        font-size: 18px; /* Torna o texto maior em dispositivos em retrato */
-    }
-
-    #answers li {
-        font-size: 1.8em; /* Aumenta o tamanho da fonte dos itens de resposta para melhor interação */
-        /* color: red;
-        background-color: red; */
-    }
+  #answers li {
+    font-size: 1.8em; /* Aumenta o tamanho da fonte dos itens de resposta para melhor interação */
+    margin: 30px;
+  }
 }
