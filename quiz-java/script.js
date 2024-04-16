@@ -1,7 +1,5 @@
 let questionList = [
-    "questions-java.json",
-    "questions-digital-circus.json",
-    "questions-ingles.json"];
+    "questions-java.json"];
 let chosenQuestion = questionList[Math.floor(Math.random() * questionList.length)];
 
 document.addEventListener('DOMContentLoaded', function() {
