@@ -1,155 +1,152 @@
-{
-    "questions": [
-      {
-        "question": "O que significa 'head' em inglês?",
-        "answers": ["Braço", "Cabeça", "Pé", "Mão"],
-        "correctAnswer": "Cabeça"
-      },
-      {
-        "question": "O que significa 'arm' em inglês?",
-        "answers": ["Perna", "Braço", "Cabeça", "Orelha"],
-        "correctAnswer": "Braço"
-      },
-      {
-        "question": "O que significa 'leg' em inglês?",
-        "answers": ["Braço", "Perna", "Mão", "Pé"],
-        "correctAnswer": "Perna"
-      },
-      {
-        "question": "O que significa 'hand' em inglês?",
-        "answers": ["Pé", "Mão", "Cabeça", "Nariz"],
-        "correctAnswer": "Mão"
-      },
-      {
-        "question": "O que significa 'heart' em inglês?",
-        "answers": ["Fígado", "Coração", "Rim", "Pulmão"],
-        "correctAnswer": "Coração"
-      },
-      {
-        "question": "O que significa 'foot' em inglês?",
-        "answers": ["Mão", "Perna", "Pé", "Cabeça"],
-        "correctAnswer": "Pé"
-      },
-      {
-        "question": "O que significa 'eye' em inglês?",
-        "answers": ["Boca", "Nariz", "Olho", "Orelha"],
-        "correctAnswer": "Olho"
-      },
-      {
-        "question": "O que significa 'ear' em inglês?",
-        "answers": ["Olho", "Orelha", "Boca", "Nariz"],
-        "correctAnswer": "Orelha"
-      },
-      {
-        "question": "O que significa 'nose' em inglês?",
-        "answers": ["Boca", "Nariz", "Olho", "Orelha"],
-        "correctAnswer": "Nariz"
-      },
-      {
-        "question": "O que significa 'mouth' em inglês?",
-        "answers": ["Nariz", "Olho", "Boca", "Orelha"],
-        "correctAnswer": "Boca"
-      },
-      {
-        "question": "O que significa 'skin' em inglês?",
-        "answers": ["Osso", "Pele", "Cabelo", "Dente"],
-        "correctAnswer": "Pele"
-      },
-      {
-        "question": "O que significa 'bone' em inglês?",
-        "answers": ["Dente", "Cérebro", "Osso", "Olho"],
-        "correctAnswer": "Osso"
-      },
-      {
-        "question": "O que significa 'lung' em inglês?",
-        "answers": ["Coração", "Fígado", "Pulmão", "Rim"],
-        "correctAnswer": "Pulmão"
-      },
-      {
-        "question": "O que significa 'stomach' em inglês?",
-        "answers": ["Pulmão", "Cérebro", "Estômago", "Intestino"],
-        "correctAnswer": "Estômago"
-      },
-      {
-        "question": "O que significa 'liver' em inglês?",
-        "answers": ["Rim", "Fígado", "Coração", "Pulmão"],
-        "correctAnswer": "Fígado"
-      },
-      {
-        "question": "O que significa 'kidney' em inglês?",
-        "answers": ["Cérebro", "Coração", "Fígado", "Rim"],
-        "correctAnswer": "Rim"
-      },
-      {
-        "question": "O que significa 'brain' em inglês?",
-        "answers": ["Cérebro", "Coração", "Rim", "Fígado"],
-        "correctAnswer": "Cérebro"
-      },
-      {
-        "question": "O que significa 'tooth' em inglês?",
-        "answers": ["Língua", "Dente", "Garganta", "Nariz"],
-        "correctAnswer": "Dente"
-      },
-      {
-        "question": "O que significa 'tongue' em inglês?",
-        "answers": ["Dente", "Garganta", "Língua", "Nariz"],
-        "correctAnswer": "Língua"
-      },
-      {
-        "question": "O que significa 'throat' em inglês?",
-        "answers": ["Língua", "Garganta", "Dente", "Nariz"],
-        "correctAnswer": "Garganta"
-      },
-      {
-        "question": "O que significa 'cheek' em inglês?",
-        "answers": ["Queixo", "Bochecha", "Testa", "Sobrancelha"],
-        "correctAnswer": "Bochecha"
-      },
-      {
-        "question": "O que significa 'chin' em inglês?",
-        "answers": ["Testa", "Queixo", "Bochecha", "Sobrancelha"],
-        "correctAnswer": "Queixo"
-      },
-      {
-        "question": "O que significa 'forehead' em inglês?",
-        "answers": ["Testa", "Queixo", "Bochecha", "Sobrancelha"],
-        "correctAnswer": "Testa"
-      },
-      {
-        "question": "O que significa 'eyebrow' em inglês?",
-        "answers": ["Cílio", "Pálpebra", "Sobrancelha", "Iris"],
-        "correctAnswer": "Sobrancelha"
-      },
-      {
-        "question": "O que significa 'eyelash' em inglês?",
-        "answers": ["Cílio", "Pálpebra", "Sobrancelha", "Iris"],
-        "correctAnswer": "Cílio"
-      },
-      {
-        "question": "O que significa 'eyelid' em inglês?",
-        "answers": ["Cílio", "Pálpebra", "Sobrancelha", "Iris"],
-        "correctAnswer": "Pálpebra"
-      },
-      {
-        "question": "O que significa 'iris' em inglês?",
-        "answers": ["Cílio", "Pálpebra", "Sobrancelha", "Iris"],
-        "correctAnswer": "Iris"
-      },
-      {
-        "question": "O que significa 'muscle' em inglês?",
-        "answers": ["Osso", "Músculo", "Nervo", "Tendão"],
-        "correctAnswer": "Músculo"
-      },
-      {
-        "question": "O que significa 'nerve' em inglês?",
-        "answers": ["Osso", "Músculo", "Nervo", "Tendão"],
-        "correctAnswer": "Nervo"
-      },
-      {
-        "question": "O que significa 'tendon' em inglês?",
-        "answers": ["Osso", "Músculo", "Nervo", "Tendão"],
-        "correctAnswer": "Tendão"
-      }
-    ]
-  }
-  
+[
+    {
+      "question": "O que significa 'head' em inglês?",
+      "answers": ["Braço", "Cabeça", "Pé", "Mão"],
+      "correctAnswer": "Cabeça"
+    },
+    {
+      "question": "O que significa 'arm' em inglês?",
+      "answers": ["Perna", "Braço", "Cabeça", "Orelha"],
+      "correctAnswer": "Braço"
+    },
+    {
+      "question": "O que significa 'leg' em inglês?",
+      "answers": ["Braço", "Perna", "Mão", "Pé"],
+      "correctAnswer": "Perna"
+    },
+    {
+      "question": "O que significa 'hand' em inglês?",
+      "answers": ["Pé", "Mão", "Cabeça", "Nariz"],
+      "correctAnswer": "Mão"
+    },
+    {
+      "question": "O que significa 'heart' em inglês?",
+      "answers": ["Fígado", "Coração", "Rim", "Pulmão"],
+      "correctAnswer": "Coração"
+    },
+    {
+      "question": "O que significa 'foot' em inglês?",
+      "answers": ["Mão", "Perna", "Pé", "Cabeça"],
+      "correctAnswer": "Pé"
+    },
+    {
+      "question": "O que significa 'eye' em inglês?",
+      "answers": ["Boca", "Nariz", "Olho", "Orelha"],
+      "correctAnswer": "Olho"
+    },
+    {
+      "question": "O que significa 'ear' em inglês?",
+      "answers": ["Olho", "Orelha", "Boca", "Nariz"],
+      "correctAnswer": "Orelha"
+    },
+    {
+      "question": "O que significa 'nose' em inglês?",
+      "answers": ["Boca", "Nariz", "Olho", "Orelha"],
+      "correctAnswer": "Nariz"
+    },
+    {
+      "question": "O que significa 'mouth' em inglês?",
+      "answers": ["Nariz", "Olho", "Boca", "Orelha"],
+      "correctAnswer": "Boca"
+    },
+    {
+      "question": "O que significa 'skin' em inglês?",
+      "answers": ["Osso", "Pele", "Cabelo", "Dente"],
+      "correctAnswer": "Pele"
+    },
+    {
+      "question": "O que significa 'bone' em inglês?",
+      "answers": ["Dente", "Cérebro", "Osso", "Olho"],
+      "correctAnswer": "Osso"
+    },
+    {
+      "question": "O que significa 'lung' em inglês?",
+      "answers": ["Coração", "Fígado", "Pulmão", "Rim"],
+      "correctAnswer": "Pulmão"
+    },
+    {
+      "question": "O que significa 'stomach' em inglês?",
+      "answers": ["Pulmão", "Cérebro", "Estômago", "Intestino"],
+      "correctAnswer": "Estômago"
+    },
+    {
+      "question": "O que significa 'liver' em inglês?",
+      "answers": ["Rim", "Fígado", "Coração", "Pulmão"],
+      "correctAnswer": "Fígado"
+    },
+    {
+      "question": "O que significa 'kidney' em inglês?",
+      "answers": ["Cérebro", "Coração", "Fígado", "Rim"],
+      "correctAnswer": "Rim"
+    },
+    {
+      "question": "O que significa 'brain' em inglês?",
+      "answers": ["Cérebro", "Coração", "Rim", "Fígado"],
+      "correctAnswer": "Cérebro"
+    },
+    {
+      "question": "O que significa 'tooth' em inglês?",
+      "answers": ["Língua", "Dente", "Garganta", "Nariz"],
+      "correctAnswer": "Dente"
+    },
+    {
+      "question": "O que significa 'tongue' em inglês?",
+      "answers": ["Dente", "Garganta", "Língua", "Nariz"],
+      "correctAnswer": "Língua"
+    },
+    {
+      "question": "O que significa 'throat' em inglês?",
+      "answers": ["Língua", "Garganta", "Dente", "Nariz"],
+      "correctAnswer": "Garganta"
+    },
+    {
+      "question": "O que significa 'cheek' em inglês?",
+      "answers": ["Queixo", "Bochecha", "Testa", "Sobrancelha"],
+      "correctAnswer": "Bochecha"
+    },
+    {
+      "question": "O que significa 'chin' em inglês?",
+      "answers": ["Testa", "Queixo", "Bochecha", "Sobrancelha"],
+      "correctAnswer": "Queixo"
+    },
+    {
+      "question": "O que significa 'forehead' em inglês?",
+      "answers": ["Testa", "Queixo", "Bochecha", "Sobrancelha"],
+      "correctAnswer": "Testa"
+    },
+    {
+      "question": "O que significa 'eyebrow' em inglês?",
+      "answers": ["Cílio", "Pálpebra", "Sobrancelha", "Iris"],
+      "correctAnswer": "Sobrancelha"
+    },
+    {
+      "question": "O que significa 'eyelash' em inglês?",
+      "answers": ["Cílio", "Pálpebra", "Sobrancelha", "Iris"],
+      "correctAnswer": "Cílio"
+    },
+    {
+      "question": "O que significa 'eyelid' em inglês?",
+      "answers": ["Cílio", "Pálpebra", "Sobrancelha", "Iris"],
+      "correctAnswer": "Pálpebra"
+    },
+    {
+      "question": "O que significa 'iris' em inglês?",
+      "answers": ["Cílio", "Pálpebra", "Sobrancelha", "Iris"],
+      "correctAnswer": "Iris"
+    },
+    {
+      "question": "O que significa 'muscle' em inglês?",
+      "answers": ["Osso", "Músculo", "Nervo", "Tendão"],
+      "correctAnswer": "Músculo"
+    },
+    {
+      "question": "O que significa 'nerve' em inglês?",
+      "answers": ["Osso", "Músculo", "Nervo", "Tendão"],
+      "correctAnswer": "Nervo"
+    },
+    {
+      "question": "O que significa 'tendon' em inglês?",
+      "answers": ["Osso", "Músculo", "Nervo", "Tendão"],
+      "correctAnswer": "Tendão"
+    }
+  ]
