@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        Upload Data File:
+        <input type="file" id="datFileInput" accept=".csv">
+    </div>
+</body>
+<script>
+    document.getElementById('datFileInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const buffer = e.target.result;
+            const decoder = new TextDecoder('utf-8');
+            const text = decoder.decode(buffer);
+            readCSVValues(text)
+        }
+        reader.readAsArrayBuffer(file);
+    });
+
+    const csvString = `BOL,CARRIER_CARRIER_ADDR_1,CARRIER_CARRIER_CITY,CARRIER_CARRIER_NAME,MAPPING
+3818193,THOMASVILLE,"Old Dominion Freight Line, Inc.",NC,"Address
+City
+Country"
+3818193,"THOMASVILLE
+ASHEVILE","Old Dominion Freight Line, Inc.",NC,"Address
+City
+Country"`
+
+    function readCSVValues(allText) {
+        let pos = 0
+        let linePos = 0
+        let result = []
+        let currentLine = []
+        result[linePos] = currentLine
+        while (pos < allText.length) {
+            let subtext = allText.substringBefore(',', pos)
+            if (isAllValue(subtext)) {
+                currentLine.push(subtext)
+                pos += subtext.length + 1
+            } else {
+                if (subtext && subtext[0] == '"') {
+                    // check when it finishes the value
+                    // debugger
+                    let posComma = allText.indexOf(',', pos + 1)
+
+                    // reached end of file
+                    if (posComma == -1) {
+                        subtext = allText.substring(pos + 1, allText.length) // ,THOMASVILLE,"Old Dominion Freight Line, Inc.",NC,27360
+                        let posBreak = subtext.indexOf('\n')
+                        if (posBreak > -1) {
+                            subtext = subtext.substringBefore('"')
+                            if (subtext.endsWith('\r')) subtext = subtext.substring(0, subtext.length -1)
+                            currentLine.push(subtext)
+                            currentLine = []
+                            result[++linePos] = currentLine
+                            pos += subtext.length + 3 // + 3 bc ("",). The subtext will have the clean value 'Old Dominion Freight Line, Inc.'
+                        } else {
+                            currentLine.push(subtext)
+                            pos += subtext.length
+                        }
+                        continue
+                    } else {
+                        subtext = allText.substringBefore('",', pos + 1) // ,THOMASVILLE,"Old Dominion Freight Line, Inc.",NC,27360
+                        currentLine.push(subtext)
+                        pos += subtext.length + 3 // + 3 bc ("",). The subtext will have the clean value 'Old Dominion Freight Line, Inc.'
+                    }
+                    continue
+                }
+                // Checking if it is end of line
+                let posBreak = subtext.indexOf('\n')
+                if (posBreak > -1) {
+                    subtext = subtext.substringBefore('\n')
+                    if (subtext.endsWith('\r')) subtext = subtext.substring(0, subtext.length -1)
+                    currentLine.push(subtext)
+                    currentLine = []
+                    result[++linePos] = currentLine
+                    pos += posBreak + 1
+                    continue
+                }
+            }
+        }
+        return result
+    }
+    function isAllValue(subtext) {
+        if (subtext.includes(',')) return false
+        if (subtext.includes('"')) return false
+        if (subtext.includes('\n')) return false
+        return true
+    }
+
+    function assert(actual, expected, message) {
+        if (actual != expected) {
+            console.error('ERRO NA COMPARACAO', actual, expected)
+        } else {
+            log(`Sucesso - actual: ${actual}, expected: ${expected}`)
+        }
+    }
+
+    window.onload = function() {
+        // readCSVValues(csvString)
+        let result = readCSVValues(`NC,"Address
+City
+Country"
+3818193`)
+
+        assert(result.length, 2)
+        assert(result[0].length, 2)
+        assert(result[1].length, 1)
+        assert(result[0][0], 'NC')
+        assert(result[0][1], `Address
+City
+Country`)
+        assert(result[1][0], '3818193')
+
+//     result = readCSVValues(`NC,"Address
+// City
+// Country"
+// 3818193,"THOMASVILLE
+// ASHEVILE"`)
+    }
+    
+</script>
+</html>

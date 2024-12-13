@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawio generator</title>
+    <script>
+        function scapeValue(value) {
+            if (!value) return ""
+            return String(value).replaceAll('&', '&amp;amp;').replaceAll("\"", "'")
+            // return value.replaceAll('&', '&amp;amp;').replaceAll("\"", "&quot;")
+        }
+    </script>
+    <script src="js/file/commons.js"></script>
+    <script src="js/file/fileIsoCustomerScoreCardData.js"></script>
+    <script src="js/file/fileIsoOSSDataObj.js"></script>
+    <script src="js/connections/connections.js"></script>
+
+    <script src="js/api/allApis.js"></script>
+    <script src="js/api/excelApiFields.js"></script>
+    <script src="js/createFile.js"></script>
+    <script src="js/createApi.js"></script>
+    <script src="js/createConnections.js"></script>
+    <script src="js/mapping.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/file-helper.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .button {
+            padding: 15px 25px;
+            margin: 10px;
+            font-size: 16px;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button1 {
+            background-color: #008CBA;
+        }
+
+        .button1:hover {
+            background-color: #007bb5;
+        }
+
+        .button1:active {
+            background-color: #005f7a;
+        }
+
+        .button2 {
+            background-color: #4CAF50;
+        }
+
+        .button2:hover {
+            background-color: #45a049;
+        }
+        #gen-drawio {
+            margin-right: 100px;
+        }
+        #gen-table {
+            display: block;
+        }
+        .clickable {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="gen-drawio"><button class="button button2" onclick="copyEverything()">Copy Everything</button></div>
+    <div>
+        Upload Data File:
+        <input type="file" id="datFileInput" accept=".csv" multiple>
+    <p id="fileName"></p>
+    <button class="button button1" onclick="genDrawIO()" style="display: none;">Generate Table for DrawIeO</button>
+    </div>
+    <!-- <div>
+        Upload Mapping File:
+        <input type="file" id="mapFileInput" accept=".csv">
+    <p id="mappingFileName"></p> -->
+    <input type="checkbox" name="ignoreUnrelatedFields" id="ignoreUnrelatedFields"><label class="clickable" for="ignoreUnrelatedFields"> Hide Unmapped Fields </label>
+    <button id="genDrawIO" class="button button1" onclick="genDrawIO()">Generate Table for DrawIO</button>
+    </div>
+    <div id="gen-table" style="display: none;">
+        <input type="text" name="tableName" id="tableName" value="Purchase Order">
+        <textarea name="tableFields" id="tableFields" rows="20" cols="30">YEAR
+WEEK
+DOMAIN_NAME
+SHIPMENT_GID
+PO_NUMBER</textarea>
+<div>
+    <button class="button button1" onclick="genTableDrawIO()">Generate Table for DrawIO</button>
+</div>
+    </div>
+
+    <script>
+        function $(id) {
+            return document.getElementById(id)
+        }
+        window.addEventListener('load', () => {
+            $('ignoreUnrelatedFields').checked = localStorage.getItem('hideUnmappedFields') == "true"
+
+            $('ignoreUnrelatedFields').addEventListener('click', () => {
+                localStorage.setItem('hideUnmappedFields', $('ignoreUnrelatedFields').checked)
+            })
+                
+        })
+
+        // *** Start - Read CSV from input
+
+        const csvFiles = [];
+        let mapFile = null;
+
+        document.getElementById('datFileInput').addEventListener('change', addDataFilesListener);
+        // document.getElementById('mapFileInput').addEventListener('change', addMapFileListener);
+
+        // *** End - Read CSV from input
+
+        // const LINE_BREAK = '%26%2310%3B'
+        const LINE_BREAK = '&#10;'
+        // %26%2310%3B
+
+        function changeButtonColor() {
+            var button = document.getElementById("genDrawIO");
+            var originalText = button.innerHTML;
+
+            button.innerHTML = "Copied...";
+            button.style.backgroundColor = "#4CAF50";  // Destaque ao clicar
+
+            setTimeout(function() {
+                button.innerHTML = originalText;
+                button.style.backgroundColor = "";  // Remove o destaque
+            }, 1000);
+        }
+
+        function genDrawIO() {
+            if (csvFiles.length) { // && mapFile
+                let connectionMap = new Mapping(mapFile)
+                let filesResult = ''
+                restartFileVariables()
+                let ignoreUnrelatedFields = $('ignoreUnrelatedFields').checked
+                
+                csvFiles.forEach(csvFile => {
+                    let fields = {
+                        fieldNames: Object.keys(csvFile.fileContent[0]),
+                        examples: {}
+                    }
+                    fields.fieldNames.forEach(field => {
+                        let examples = 'Examples:' + LINE_BREAK
+                        examples += csvFile.fileContent.map(line => scapeValue(line[field])).join(LINE_BREAK)
+                        fields.examples[field] = examples
+                    })
+                    filesResult += createFile(csvFile.fileName, fields, connectionMap, ignoreUnrelatedFields)
+                })
+                let apiResult = createAllApis(allApis, connectionMap, ignoreUnrelatedFields)
+                let result = createAll(filesResult, apiResult)
+                copyToClipboard(result)
+                changeButtonColor()
+            } else {
+                alert('Select Data  Files')
+            }
+        }
+
+         function genTableDrawIO() {
+            let fields = $('tableFields').value.split("\n").map(item => item.trim()).filter(item => item)
+            let tableResult = createFile($('tableName').value, fields)
+            let result = createAll(tableResult)
+            copyToClipboard(result)
+        }
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function () {
+                // alert('Copied to clipboard: ' + text);
+            }, function (err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        function copyEverything() {
+            let fileResult = createFile('ISO - OSS Data', fileIsoOSSDataObj)
+            let apiResult = createAllApis(allApis)
+            // let result = createAll(apiResult)
+            let result = createAll(fileResult, apiResult)
+            copyToClipboard(result)
+        }
+
+        function createAll() {
+            let content = Array.from(arguments).join("\n\n\n")
+
+            let fullResult = `<mxGraphModel>
+    <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+${content}
+    </root>
+</mxGraphModel>`
+
+            // console.log('fullResult', fullResult)
+            return fullResult
+        }
+
+    </script>
+</body>
+
+</html>

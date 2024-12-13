@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-around;
+    margin: 50px;
+  }
+  
+  .column {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 200px;
+  }
+  
+  .header {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .field {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    position: relative;
+    cursor: grab;
+  }
+  
+  .field:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .line {
+    position: absolute;
+    background-color: blue;
+    height: 2px;
+    transform-origin: left;
+  }
+  
+  .highlight {
+    border: 2px dashed #007BFF;
+  }

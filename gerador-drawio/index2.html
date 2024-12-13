@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Files:</h1>
+        <div class="upload-section">
+            <label for="fileInput" class="choose-files-btn">Choose Files</label>
+            <input type="file" id="fileInput" multiple>
+            <div class="drag-area" id="dragArea">
+                <p>... or drag it here</p>
+            </div>
+        </div>
+        <div class="file-list">
+            <h2>Files:</h2>
+            <ul id="fileList"></ul>
+        </div>
+        <button class="generate-btn">Generate Drawio</button>
+    </div>
+    <script>
+        const dragArea = document.getElementById('dragArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+
+        dragArea.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dragArea.classList.add('dragging');
+        });
+
+        dragArea.addEventListener('dragleave', () => {
+            dragArea.classList.remove('dragging');
+        });
+
+        dragArea.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dragArea.classList.remove('dragging');
+            const files = event.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            handleFiles(files);
+        });
+
+        function handleFiles(files) {
+            for (const file of files) {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="remove-file">&times;</span>${file.name}`;
+                fileList.appendChild(li);
+            }
+            addRemoveFileEventListeners();
+        }
+
+        function addRemoveFileEventListeners() {
+            const removeButtons = document.querySelectorAll('.remove-file');
+            removeButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const li = event.target.parentElement;
+                    li.remove();
+                });
+            });
+        }
+    </script>
+</body>
+</html>

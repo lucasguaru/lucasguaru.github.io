@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload and Conversion</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .upload-area {
+      border: 2px dashed #ccc;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      cursor: pointer;
+      color: #666;
+    }
+    #fileInput {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Upload Excel or CSV file</h1>
+  
+  <div class="upload-area" id="uploadArea">
+    Drag & Drop or Click to Upload File
+  </div>
+  <input type="file" id="fileInput" accept=".xlsx, .csv">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  
+  <script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+
+    // Handle drag and drop or click to upload
+    uploadArea.addEventListener('click', () => fileInput.click());
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.style.borderColor = '#000';
+    });
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.style.borderColor = '#ccc';
+    });
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.style.borderColor = '#ccc';
+      handleFile(e.dataTransfer.files[0]);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      uploadArea.innerText = "Converting..."
+      handleFile(e.target.files[0], () => {
+        uploadArea.innerText = "Drag & Drop or Click to Upload File"
+      });
+    });
+
+    function handleFile(file, fnCallback) {
+      if (file) {
+        const fileName = file.name;
+        const extension = fileName.split('.').pop().toLowerCase();
+        const baseName = fileName.substring(0, fileName.lastIndexOf('.'));
+
+        if (extension === 'xlsx') {
+          processExcelFile(file, baseName, fnCallback);
+        } else if (extension === 'csv') {
+          processCSVFile(file, baseName, fnCallback);
+        } else {
+          alert('Please upload a .xlsx or .csv file.');
+        }
+      }
+    }
+
+    // Process Excel file and convert to CSV
+    function processExcelFile(file, baseName, fnCallback) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const csvData = XLSX.utils.sheet_to_csv(workbook.Sheets[workbook.SheetNames[0]], {
+          FS: ',',
+          dateNF: 'yyyy-mm-ddThh:mm:ss'
+        });
+        const convertedData = convertDatesToISO(csvData);
+        downloadCSV(convertedData, baseName + '.csv');
+        fnCallback()
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    // Process CSV file and convert dates
+    function processCSVFile(file, baseName, fnCallback) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const csvData = e.target.result;
+        const convertedData = convertDatesToISO(csvData);
+        downloadCSV(convertedData, baseName + '.csv');
+        fnCallback()
+      };
+      reader.readAsText(file);
+    }
+
+    // Convert dates in the CSV content to ISO 8601
+    function convertDatesToISO(csvData) {
+      const isoDateRegex = /\b(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})\b/g;
+      const isoDateTimeRegex = /\b(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})[\sT](\d{2}):(\d{2}):(\d{2})\b/g;
+
+      return csvData.replace(isoDateTimeRegex, (match, day, month, year, hour, minute, second) => {
+        year = year.length === 2 ? '20' + year : year; // Handle 2-digit year
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hour}:${minute}:${second}`;
+      }).replace(isoDateRegex, (match, day, month, year) => {
+        year = year.length === 2 ? '20' + year : year; // Handle 2-digit year
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      });
+    }
+
+    // Trigger download of the converted CSV file
+    function downloadCSV(data, fileName) {
+      const blob = new Blob([data], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1887 @@
+[
+    {
+        "fieldName": "external_id",
+        "id": 1001,
+        "description": "The unique identifier that the shipper uses to identify the consignee.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "business_name",
+        "id": 1002,
+        "description": "The name of the consignee company.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_address_1",
+        "id": 1003,
+        "description": "The first line of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_address_2",
+        "id": 1004,
+        "description": "The second line of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_city",
+        "id": 1005,
+        "description": "The city of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_principle_subdivision",
+        "id": 1006,
+        "description": "The state / province / region of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_country",
+        "id": 1007,
+        "description": "The country of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_postal_code",
+        "id": 1008,
+        "description": "The postal code of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "external_id",
+        "id": 2001,
+        "description": "The unique identifier that the shipper uses to identify the facility.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "name",
+        "id": 2002,
+        "description": "The name that the shipper uses to identify the facility.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "business_entity_id",
+        "id": 2003,
+        "description": "The ID of the business that operates out of the facility.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "business_entity_type",
+        "id": 2004,
+        "description": "The type of the business entity that operates out of the facility.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "raw_address",
+        "id": 2005,
+        "description": "The textual representation of the complete address for the facility.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "report_id",
+        "id": 2006,
+        "description": "The ID of the report that this facility is associated with.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "external_id",
+        "id": 3001,
+        "description": "The unique identifier that the shipper uses to identify the lane.",
+        "parent": "Lane"
+    },
+    {
+        "fieldName": "external_id",
+        "id": 4001,
+        "description": "The external identifier (PO number) that the shipper and consignee uses to identify the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "consignee_id",
+        "id": 4002,
+        "description": "The ID of the consignee this purchase order is associated with.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "week_id",
+        "id": 4003,
+        "description": "The ID of the week that this purchase order pertains to.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "placed_at",
+        "id": 4004,
+        "description": "The date and time that the consignee created (issued) the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "original_requested_arrival_at",
+        "id": 4005,
+        "description": "The date and time that the consignee requests to receive the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "unit_type",
+        "id": 4006,
+        "description": "The type of packaging units comprised by the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "unit_quantity",
+        "id": 4007,
+        "description": "The amount packaging units comprised by the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "shipped_quantity",
+        "id": 4008,
+        "description": "The amount packaging units that were actually shipped.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "value",
+        "id": 4009,
+        "description": "The monetary value of the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "value_currency_code",
+        "id": 4010,
+        "description": "The currency code of monetary value of the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "linehaul_spend",
+        "id": 4011,
+        "description": "Payable base rate sliced by this order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "linehaul_spend_currency_code",
+        "id": 4012,
+        "description": "Currency code for linehaul_spend.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "accessorial_value",
+        "id": 4013,
+        "description": "Total payable value of all accessorials sliced by this order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "accessorial_currency_code",
+        "id": 4014,
+        "description": "Currency code for accessorial_value.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "fuel_surcharge",
+        "id": 4015,
+        "description": "Total payable fuel surcharge sliced by this order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "fuel_surcharge_currency_code",
+        "id": 4016,
+        "description": "Currency code for fuel_surcharge.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "total_spend",
+        "id": 4017,
+        "description": "Total payable rate sliced by this order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "total_spend_currency_code",
+        "id": 4018,
+        "description": "Currency code for total_spend.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "confirmed_delivery_date",
+        "id": 4019,
+        "description": "The confirmed delivery date (CDD) for a purchase order. This is generally set by the shipper, based on what they can commit to.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "report_id",
+        "id": 4020,
+        "description": "The ID of the report that this purchase order is associated with.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "external_id",
+        "id": 5001,
+        "description": "The external identifier that the shipper uses to identify the shipment.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "week_id",
+        "id": 5002,
+        "description": "The ID of the week that this shipment pertains to.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "tracking_status",
+        "id": 5003,
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "rush",
+        "id": 5004,
+        "description": "Indicates whether the shipment is expedited.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "fulfillment_type",
+        "id": 5005,
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "mode",
+        "id": 5006,
+        "description": "The mode of transportation utilized to transport the goods.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "equipment_type",
+        "id": 5007,
+        "description": "Type of equipment required to carry the shipment.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "carrier_id",
+        "id": 5009,
+        "description": "The ID of the carrier this leg is associated with.",
+        "parent": "Shipment.legs"
+    },
+    {
+        "fieldName": "carrier_external_id",
+        "id": 5010,
+        "description": "The unique identifier that the shipper uses to identify the carrier.",
+        "parent": "Shipment.legs"
+    },
+    {
+        "fieldName": "facility_id",
+        "id": 5012,
+        "description": "The ID of the facility where this stop occurs.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "facility_external_id",
+        "id": 5013,
+        "description": "The external ID of the facility where this stop occurs.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "business_entity_id",
+        "id": 5015,
+        "description": "The ID of the business that the task is being performed for.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "business_entity_type",
+        "id": 5016,
+        "description": "The type of business that the task is being performed for.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "confirmed_date",
+        "id": 5017,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the confirmed delivery date (CDD) for a shipment. This is generally set by the shipper, based on what they can commit to.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "fulfillment_type",
+        "id": 5018,
+        "description": "The fulfillment strategy of the shipment.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "task_type",
+        "id": 5019,
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "purchase_order_id",
+        "id": 5020,
+        "description": "The ID of the purchase order associated to the task.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "purchase_order_number",
+        "id": 5021,
+        "description": "The external ID of the purchase order associated to the task.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "requested_date",
+        "id": 5022,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the requested delivery date (RDD) for a shipment. This is generally the earliest ORAD of the purchase orders that the shipment fulfills.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_at",
+        "id": 5023,
+        "description": "The initial appointment scheduled for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "scheduled_appointment_at",
+        "id": 5024,
+        "description": "The final appointment scheduled for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "scheduled_appointment_started_at",
+        "id": 5025,
+        "description": "The start of the final appointment window for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "scheduled_appointment_ended_at",
+        "id": 5026,
+        "description": "The end of the final appointment window for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_started_at",
+        "id": 5027,
+        "description": "The originally planned start of the appointment window for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_ended_at",
+        "id": 5028,
+        "description": "The originally planned end of the appointment window for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "arrived_at",
+        "id": 5029,
+        "description": "The date and time that the carrier arrived at the stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "departed_at",
+        "id": 5030,
+        "description": "The date and time that the carrier departed the stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "departure_time_entered_at",
+        "id": 5031,
+        "description": "The date and time that the shipper received the carrier departure date and time.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "buffered_appointment_at",
+        "id": 5032,
+        "description": "The date and time of the buffer-adjusted appointment time for \"allowed lateness\".",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "estimated_date",
+        "id": 5033,
+        "description": "The estimated date of the of the pickup or delivery.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "exception_type",
+        "id": 5035,
+        "description": "The exception type the reason code should be applied to, if it occurred.\\\n            Example: 'late_delivery'.",
+        "parent": "Shipment.legs.start.reason_codes"
+    },
+    {
+        "fieldName": "code",
+        "id": 5036,
+        "description": "The reason code to be applied if the exception type specified occurs.",
+        "parent": "Shipment.legs.start.reason_codes"
+    },
+    {
+        "fieldName": "sequence_number",
+        "id": 5037,
+        "description": "The ordinal number of the stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "trailer_operation",
+        "id": 5038,
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "trailer_operation_delay",
+        "id": 5039,
+        "description": "The number of seconds the carrier was delayed at a stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "appointment_created_at",
+        "id": 5040,
+        "description": "The date & time when the appointment was scheduled.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "facility_id",
+        "id": 5042,
+        "description": "The ID of the facility where this stop occurs.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "facility_external_id",
+        "id": 5043,
+        "description": "The external ID of the facility where this stop occurs.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "business_entity_id",
+        "id": 5045,
+        "description": "The ID of the business that the task is being performed for.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "business_entity_type",
+        "id": 5046,
+        "description": "The type of business that the task is being performed for.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "confirmed_date",
+        "id": 5047,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the confirmed delivery date (CDD) for a shipment. This is generally set by the shipper, based on what they can commit to.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "fulfillment_type",
+        "id": 5048,
+        "description": "The fulfillment strategy of the shipment.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "task_type",
+        "id": 5049,
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "purchase_order_id",
+        "id": 5050,
+        "description": "The ID of the purchase order associated to the task.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "purchase_order_number",
+        "id": 5051,
+        "description": "The external ID of the purchase order associated to the task.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "requested_date",
+        "id": 5052,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the requested delivery date (RDD) for a shipment. This is generally the earliest ORAD of the purchase orders that the shipment fulfills.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_at",
+        "id": 5053,
+        "description": "The initial appointment scheduled for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "scheduled_appointment_at",
+        "id": 5054,
+        "description": "The final appointment scheduled for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "scheduled_appointment_started_at",
+        "id": 5055,
+        "description": "The start of the final appointment window for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "scheduled_appointment_ended_at",
+        "id": 5056,
+        "description": "The end of the final appointment window for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_started_at",
+        "id": 5057,
+        "description": "The originally planned start of the appointment window for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_ended_at",
+        "id": 5058,
+        "description": "The originally planned end of the appointment window for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "arrived_at",
+        "id": 5059,
+        "description": "The date and time that the carrier arrived at the stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "departed_at",
+        "id": 5060,
+        "description": "The date and time that the carrier departed the stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "departure_time_entered_at",
+        "id": 5061,
+        "description": "The date and time that the shipper received the carrier departure date and time.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "buffered_appointment_at",
+        "id": 5062,
+        "description": "The date and time of the buffer-adjusted appointment time for \"allowed lateness\".",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "estimated_date",
+        "id": 5063,
+        "description": "The estimated date of the of the pickup or delivery.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "exception_type",
+        "id": 5065,
+        "description": "The exception type the reason code should be applied to, if it occurred.\\\n            Example: 'late_delivery'.",
+        "parent": "Shipment.legs.end.reason_codes"
+    },
+    {
+        "fieldName": "code",
+        "id": 5066,
+        "description": "The reason code to be applied if the exception type specified occurs.",
+        "parent": "Shipment.legs.end.reason_codes"
+    },
+    {
+        "fieldName": "sequence_number",
+        "id": 5067,
+        "description": "The ordinal number of the stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "trailer_operation",
+        "id": 5068,
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "trailer_operation_delay",
+        "id": 5069,
+        "description": "The number of seconds the carrier was delayed at a stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "appointment_created_at",
+        "id": 5070,
+        "description": "The date & time when the appointment was scheduled.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "distance",
+        "id": 5071,
+        "description": "The distance amount between the start and end stops.",
+        "parent": "Shipment.legs"
+    },
+    {
+        "fieldName": "distance_unit",
+        "id": 5072,
+        "parent": "Shipment.legs"
+    },
+    {
+        "fieldName": "consignee_pickup",
+        "id": 5073,
+        "description": "Indicates if the leg was executed by a consignee's carrier.",
+        "parent": "Shipment.legs"
+    },
+    {
+        "fieldName": "external_id",
+        "id": 1001,
+        "description": "The unique identifier that the shipper uses to identify the consignee.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "business_name",
+        "id": 1002,
+        "description": "The name of the consignee company.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_address_1",
+        "id": 1003,
+        "description": "The first line of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_address_2",
+        "id": 1004,
+        "description": "The second line of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_city",
+        "id": 1005,
+        "description": "The city of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_principle_subdivision",
+        "id": 1006,
+        "description": "The state / province / region of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_country",
+        "id": 1007,
+        "description": "The country of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "domicile_postal_code",
+        "id": 1008,
+        "description": "The postal code of the consignee company headquarters address.",
+        "parent": "Consignee"
+    },
+    {
+        "fieldName": "external_id",
+        "id": 2001,
+        "description": "The unique identifier that the shipper uses to identify the facility.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "name",
+        "id": 2002,
+        "description": "The name that the shipper uses to identify the facility.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "business_entity_id",
+        "id": 2003,
+        "description": "The ID of the business that operates out of the facility.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "business_entity_type",
+        "id": 2004,
+        "description": "The type of the business entity that operates out of the facility.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "raw_address",
+        "id": 2005,
+        "description": "The textual representation of the complete address for the facility.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "report_id",
+        "id": 2006,
+        "description": "The ID of the report that this facility is associated with.",
+        "parent": "Facility"
+    },
+    {
+        "fieldName": "external_id",
+        "id": 3001,
+        "description": "The unique identifier that the shipper uses to identify the lane.",
+        "parent": "Lane"
+    },
+    {
+        "fieldName": "external_id",
+        "id": 4001,
+        "description": "The external identifier (PO number) that the shipper and consignee uses to identify the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "consignee_id",
+        "id": 4002,
+        "description": "The ID of the consignee this purchase order is associated with.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "week_id",
+        "id": 4003,
+        "description": "The ID of the week that this purchase order pertains to.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "placed_at",
+        "id": 4004,
+        "description": "The date and time that the consignee created (issued) the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "original_requested_arrival_at",
+        "id": 4005,
+        "description": "The date and time that the consignee requests to receive the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "unit_type",
+        "id": 4006,
+        "description": "The type of packaging units comprised by the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "unit_quantity",
+        "id": 4007,
+        "description": "The amount packaging units comprised by the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "shipped_quantity",
+        "id": 4008,
+        "description": "The amount packaging units that were actually shipped.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "value",
+        "id": 4009,
+        "description": "The monetary value of the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "value_currency_code",
+        "id": 4010,
+        "description": "The currency code of monetary value of the purchase order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "linehaul_spend",
+        "id": 4011,
+        "description": "Payable base rate sliced by this order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "linehaul_spend_currency_code",
+        "id": 4012,
+        "description": "Currency code for linehaul_spend.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "accessorial_value",
+        "id": 4013,
+        "description": "Total payable value of all accessorials sliced by this order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "accessorial_currency_code",
+        "id": 4014,
+        "description": "Currency code for accessorial_value.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "fuel_surcharge",
+        "id": 4015,
+        "description": "Total payable fuel surcharge sliced by this order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "fuel_surcharge_currency_code",
+        "id": 4016,
+        "description": "Currency code for fuel_surcharge.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "total_spend",
+        "id": 4017,
+        "description": "Total payable rate sliced by this order.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "total_spend_currency_code",
+        "id": 4018,
+        "description": "Currency code for total_spend.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "confirmed_delivery_date",
+        "id": 4019,
+        "description": "The confirmed delivery date (CDD) for a purchase order. This is generally set by the shipper, based on what they can commit to.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "report_id",
+        "id": 4020,
+        "description": "The ID of the report that this purchase order is associated with.",
+        "parent": "PurchaseOrder"
+    },
+    {
+        "fieldName": "external_id",
+        "id": 5001,
+        "description": "The external identifier that the shipper uses to identify the shipment.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "week_id",
+        "id": 5002,
+        "description": "The ID of the week that this shipment pertains to.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "tracking_status",
+        "id": 5003,
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "rush",
+        "id": 5004,
+        "description": "Indicates whether the shipment is expedited.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "fulfillment_type",
+        "id": 5005,
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "mode",
+        "id": 5006,
+        "description": "The mode of transportation utilized to transport the goods.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "equipment_type",
+        "id": 5007,
+        "description": "Type of equipment required to carry the shipment.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "carrier_id",
+        "id": 5009,
+        "description": "The ID of the carrier this leg is associated with.",
+        "parent": "Shipment.legs"
+    },
+    {
+        "fieldName": "carrier_external_id",
+        "id": 5010,
+        "description": "The unique identifier that the shipper uses to identify the carrier.",
+        "parent": "Shipment.legs"
+    },
+    {
+        "fieldName": "facility_id",
+        "id": 5012,
+        "description": "The ID of the facility where this stop occurs.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "facility_external_id",
+        "id": 5013,
+        "description": "The external ID of the facility where this stop occurs.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "business_entity_id",
+        "id": 5015,
+        "description": "The ID of the business that the task is being performed for.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "business_entity_type",
+        "id": 5016,
+        "description": "The type of business that the task is being performed for.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "confirmed_date",
+        "id": 5017,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the confirmed delivery date (CDD) for a shipment. This is generally set by the shipper, based on what they can commit to.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "fulfillment_type",
+        "id": 5018,
+        "description": "The fulfillment strategy of the shipment.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "task_type",
+        "id": 5019,
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "purchase_order_id",
+        "id": 5020,
+        "description": "The ID of the purchase order associated to the task.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "purchase_order_number",
+        "id": 5021,
+        "description": "The external ID of the purchase order associated to the task.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "requested_date",
+        "id": 5022,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the requested delivery date (RDD) for a shipment. This is generally the earliest ORAD of the purchase orders that the shipment fulfills.",
+        "parent": "Shipment.legs.start.tasks"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_at",
+        "id": 5023,
+        "description": "The initial appointment scheduled for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "scheduled_appointment_at",
+        "id": 5024,
+        "description": "The final appointment scheduled for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "scheduled_appointment_started_at",
+        "id": 5025,
+        "description": "The start of the final appointment window for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "scheduled_appointment_ended_at",
+        "id": 5026,
+        "description": "The end of the final appointment window for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_started_at",
+        "id": 5027,
+        "description": "The originally planned start of the appointment window for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_ended_at",
+        "id": 5028,
+        "description": "The originally planned end of the appointment window for this stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "arrived_at",
+        "id": 5029,
+        "description": "The date and time that the carrier arrived at the stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "departed_at",
+        "id": 5030,
+        "description": "The date and time that the carrier departed the stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "departure_time_entered_at",
+        "id": 5031,
+        "description": "The date and time that the shipper received the carrier departure date and time.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "buffered_appointment_at",
+        "id": 5032,
+        "description": "The date and time of the buffer-adjusted appointment time for \"allowed lateness\".",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "estimated_date",
+        "id": 5033,
+        "description": "The estimated date of the of the pickup or delivery.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "exception_type",
+        "id": 5035,
+        "description": "The exception type the reason code should be applied to, if it occurred.\\\n            Example: 'late_delivery'.",
+        "parent": "Shipment.legs.start.reason_codes"
+    },
+    {
+        "fieldName": "code",
+        "id": 5036,
+        "description": "The reason code to be applied if the exception type specified occurs.",
+        "parent": "Shipment.legs.start.reason_codes"
+    },
+    {
+        "fieldName": "sequence_number",
+        "id": 5037,
+        "description": "The ordinal number of the stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "trailer_operation",
+        "id": 5038,
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "trailer_operation_delay",
+        "id": 5039,
+        "description": "The number of seconds the carrier was delayed at a stop.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "appointment_created_at",
+        "id": 5040,
+        "description": "The date & time when the appointment was scheduled.",
+        "parent": "Shipment.legs.start"
+    },
+    {
+        "fieldName": "facility_id",
+        "id": 5042,
+        "description": "The ID of the facility where this stop occurs.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "facility_external_id",
+        "id": 5043,
+        "description": "The external ID of the facility where this stop occurs.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "business_entity_id",
+        "id": 5045,
+        "description": "The ID of the business that the task is being performed for.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "business_entity_type",
+        "id": 5046,
+        "description": "The type of business that the task is being performed for.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "confirmed_date",
+        "id": 5047,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the confirmed delivery date (CDD) for a shipment. This is generally set by the shipper, based on what they can commit to.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "fulfillment_type",
+        "id": 5048,
+        "description": "The fulfillment strategy of the shipment.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "task_type",
+        "id": 5049,
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "purchase_order_id",
+        "id": 5050,
+        "description": "The ID of the purchase order associated to the task.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "purchase_order_number",
+        "id": 5051,
+        "description": "The external ID of the purchase order associated to the task.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "requested_date",
+        "id": 5052,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the requested delivery date (RDD) for a shipment. This is generally the earliest ORAD of the purchase orders that the shipment fulfills.",
+        "parent": "Shipment.legs.end.tasks"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_at",
+        "id": 5053,
+        "description": "The initial appointment scheduled for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "scheduled_appointment_at",
+        "id": 5054,
+        "description": "The final appointment scheduled for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "scheduled_appointment_started_at",
+        "id": 5055,
+        "description": "The start of the final appointment window for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "scheduled_appointment_ended_at",
+        "id": 5056,
+        "description": "The end of the final appointment window for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_started_at",
+        "id": 5057,
+        "description": "The originally planned start of the appointment window for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_ended_at",
+        "id": 5058,
+        "description": "The originally planned end of the appointment window for this stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "arrived_at",
+        "id": 5059,
+        "description": "The date and time that the carrier arrived at the stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "departed_at",
+        "id": 5060,
+        "description": "The date and time that the carrier departed the stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "departure_time_entered_at",
+        "id": 5061,
+        "description": "The date and time that the shipper received the carrier departure date and time.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "buffered_appointment_at",
+        "id": 5062,
+        "description": "The date and time of the buffer-adjusted appointment time for \"allowed lateness\".",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "estimated_date",
+        "id": 5063,
+        "description": "The estimated date of the of the pickup or delivery.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "exception_type",
+        "id": 5065,
+        "description": "The exception type the reason code should be applied to, if it occurred.\\\n            Example: 'late_delivery'.",
+        "parent": "Shipment.legs.end.reason_codes"
+    },
+    {
+        "fieldName": "code",
+        "id": 5066,
+        "description": "The reason code to be applied if the exception type specified occurs.",
+        "parent": "Shipment.legs.end.reason_codes"
+    },
+    {
+        "fieldName": "sequence_number",
+        "id": 5067,
+        "description": "The ordinal number of the stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "trailer_operation",
+        "id": 5068,
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "trailer_operation_delay",
+        "id": 5069,
+        "description": "The number of seconds the carrier was delayed at a stop.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "appointment_created_at",
+        "id": 5070,
+        "description": "The date & time when the appointment was scheduled.",
+        "parent": "Shipment.legs.end"
+    },
+    {
+        "fieldName": "distance",
+        "id": 5071,
+        "description": "The distance amount between the start and end stops.",
+        "parent": "Shipment.legs"
+    },
+    {
+        "fieldName": "distance_unit",
+        "id": 5072,
+        "parent": "Shipment.legs"
+    },
+    {
+        "fieldName": "consignee_pickup",
+        "id": 5073,
+        "description": "Indicates if the leg was executed by a consignee's carrier.",
+        "parent": "Shipment.legs"
+    },
+    {
+        "fieldName": "tenders",
+        "id": 5074,
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "report_id",
+        "id": 5075,
+        "description": "The ID of the report that this shipment is associated with.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "multiple_stops",
+        "id": 5076,
+        "description": "Indicates whether the shipment is a multi-stop shipment (greater than two stops).",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "region",
+        "id": 5077,
+        "description": "The region that this shipment is associated with.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "delivery_numbers",
+        "id": 5078,
+        "description": "The delivery numbers associated with this shipment.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "planner_user_name",
+        "id": 5079,
+        "description": "The full name of the user that planned the shipment (eg. \"John Smith\").",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "linehaul_spend",
+        "id": 5080,
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "linehaul_spend_currency_code",
+        "id": 5081,
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "planned_total_spend",
+        "id": 5082,
+        "description": "The contracted rate negotiated to deliver the shipment.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "planned_total_spend_currency_code",
+        "id": 5083,
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "total_spend_value",
+        "id": 5084,
+        "description": "The final rate paid to deliver the shipment.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "total_spend_currency_code",
+        "id": 5085,
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "total_accessorial_value",
+        "id": 5086,
+        "description": "Total value of all accessorials for this shipment.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "total_accessorial_currency_code",
+        "id": 5087,
+        "description": "Currency code for total_accessorial_value.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "requested_delivery_date",
+        "id": 5088,
+        "description": "The date that the consignee requests to receive the shipment. This is often the earliest ORAD of the purchase orders that the shipment fulfills.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "confirmed_delivery_date",
+        "id": 5089,
+        "description": "The confirmed delivery date (CDD) for a shipment. This is generally set by the shipper, based on what they can commit to.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "custom_data",
+        "id": 5090,
+        "description": "Arbitrary custom data to attach to the shipment for analytical purposes.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "reporting_date",
+        "id": 5091,
+        "description": "The date that the shipment should be anchored to in the context of date-based searches.",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "fuel_surcharge_value",
+        "id": 5092,
+        "description": "Fuel surcharge accessorial cost",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "fuel_surcharge_currency_code",
+        "id": 5093,
+        "description": "Fuel surcharge accessorial cost currency code",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "detention_value",
+        "id": 5094,
+        "description": "Detention cost (accessorial charge when driver is delayed)",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "detention_currency_code",
+        "id": 5095,
+        "description": "Currency code for detention value",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "other_accessorial_value",
+        "id": 5096,
+        "description": "Other accessorial cost value",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "other_accessorial_currency_code",
+        "id": 5097,
+        "description": "Other accessorial value currency code",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "customs_tax_value",
+        "id": 5098,
+        "description": "All tax amounts (e.g. customs taxes) associated with movement of a shipment",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "customs_tax_currency_code",
+        "id": 5099,
+        "description": "Currency for customs tax value",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "external_created_at",
+        "id": 5100,
+        "description": "When was the shipment created in the partner system",
+        "parent": "Shipment"
+    },
+    {
+        "fieldName": "external_id",
+        "id": 6001,
+        "description": "The external identifier that the shipper uses to identify the tender.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "carrier_id",
+        "id": 6002,
+        "description": "The ID of the carrier this tender was issued to.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "week_id",
+        "id": 6003,
+        "description": "The ID of the week that this tender pertains to.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "lane_id",
+        "id": 6004,
+        "description": "The ID of the lane that this tender is associated to.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "sent_at",
+        "id": 6005,
+        "description": "The date and time that the tender was sent to the carrier.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "responded_at",
+        "id": 6006,
+        "description": "The date and time that the carrier responded to the tender.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "shipment_external_id",
+        "id": 6007,
+        "description": "The external identifier that the shipper uses to identify the shipment.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "status",
+        "id": 6008,
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "tender_type",
+        "id": 6009,
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "sequence_number",
+        "id": 6010,
+        "description": "The ordinal number of the tender.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "rush",
+        "id": 6011,
+        "description": "Indicates whether the shipment is expedited.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "bid_status",
+        "id": 6012,
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "award_status",
+        "id": 6013,
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "award_id",
+        "id": 6014,
+        "description": "The ID of the award that this tender is associated to.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "fulfillment_type",
+        "id": 6015,
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "method",
+        "id": 6016,
+        "description": "Indicates the decision process or circumstances behind how the carrier was selected for the tender.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "carrier_id",
+        "id": 6018,
+        "description": "The ID of the carrier this leg is associated with.",
+        "parent": "Tender.legs"
+    },
+    {
+        "fieldName": "carrier_external_id",
+        "id": 6019,
+        "description": "The unique identifier that the shipper uses to identify the carrier.",
+        "parent": "Tender.legs"
+    },
+    {
+        "fieldName": "facility_id",
+        "id": 6021,
+        "description": "The ID of the facility where this stop occurs.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "facility_external_id",
+        "id": 6022,
+        "description": "The external ID of the facility where this stop occurs.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "business_entity_id",
+        "id": 6024,
+        "description": "The ID of the business that the task is being performed for.",
+        "parent": "Tender.legs.start.tasks"
+    },
+    {
+        "fieldName": "business_entity_type",
+        "id": 6025,
+        "description": "The type of business that the task is being performed for.",
+        "parent": "Tender.legs.start.tasks"
+    },
+    {
+        "fieldName": "confirmed_date",
+        "id": 6026,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the confirmed delivery date (CDD) for a shipment. This is generally set by the shipper, based on what they can commit to.",
+        "parent": "Tender.legs.start.tasks"
+    },
+    {
+        "fieldName": "fulfillment_type",
+        "id": 6027,
+        "description": "The fulfillment strategy of the shipment.",
+        "parent": "Tender.legs.start.tasks"
+    },
+    {
+        "fieldName": "task_type",
+        "id": 6028,
+        "parent": "Tender.legs.start.tasks"
+    },
+    {
+        "fieldName": "purchase_order_id",
+        "id": 6029,
+        "description": "The ID of the purchase order associated to the task.",
+        "parent": "Tender.legs.start.tasks"
+    },
+    {
+        "fieldName": "purchase_order_number",
+        "id": 6030,
+        "description": "The external ID of the purchase order associated to the task.",
+        "parent": "Tender.legs.start.tasks"
+    },
+    {
+        "fieldName": "requested_date",
+        "id": 6031,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the requested delivery date (RDD) for a shipment. This is generally the earliest ORAD of the purchase orders that the shipment fulfills.",
+        "parent": "Tender.legs.start.tasks"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_at",
+        "id": 6032,
+        "description": "The initial appointment scheduled for this stop.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "scheduled_appointment_at",
+        "id": 6033,
+        "description": "The final appointment scheduled for this stop.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "scheduled_appointment_started_at",
+        "id": 6034,
+        "description": "The start of the final appointment window for this stop.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "scheduled_appointment_ended_at",
+        "id": 6035,
+        "description": "The end of the final appointment window for this stop.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_started_at",
+        "id": 6036,
+        "description": "The originally planned start of the appointment window for this stop.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_ended_at",
+        "id": 6037,
+        "description": "The originally planned end of the appointment window for this stop.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "arrived_at",
+        "id": 6038,
+        "description": "The date and time that the carrier arrived at the stop.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "departed_at",
+        "id": 6039,
+        "description": "The date and time that the carrier departed the stop.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "departure_time_entered_at",
+        "id": 6040,
+        "description": "The date and time that the shipper received the carrier departure date and time.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "buffered_appointment_at",
+        "id": 6041,
+        "description": "The date and time of the buffer-adjusted appointment time for \"allowed lateness\".",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "estimated_date",
+        "id": 6042,
+        "description": "The estimated date of the of the pickup or delivery.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "exception_type",
+        "id": 6044,
+        "description": "The exception type the reason code should be applied to, if it occurred.\\\n            Example: 'late_delivery'.",
+        "parent": "Tender.legs.start.reason_codes"
+    },
+    {
+        "fieldName": "code",
+        "id": 6045,
+        "description": "The reason code to be applied if the exception type specified occurs.",
+        "parent": "Tender.legs.start.reason_codes"
+    },
+    {
+        "fieldName": "sequence_number",
+        "id": 6046,
+        "description": "The ordinal number of the stop.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "trailer_operation",
+        "id": 6047,
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "trailer_operation_delay",
+        "id": 6048,
+        "description": "The number of seconds the carrier was delayed at a stop.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "appointment_created_at",
+        "id": 6049,
+        "description": "The date & time when the appointment was scheduled.",
+        "parent": "Tender.legs.start"
+    },
+    {
+        "fieldName": "facility_id",
+        "id": 6051,
+        "description": "The ID of the facility where this stop occurs.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "facility_external_id",
+        "id": 6052,
+        "description": "The external ID of the facility where this stop occurs.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "business_entity_id",
+        "id": 6054,
+        "description": "The ID of the business that the task is being performed for.",
+        "parent": "Tender.legs.end.tasks"
+    },
+    {
+        "fieldName": "business_entity_type",
+        "id": 6055,
+        "description": "The type of business that the task is being performed for.",
+        "parent": "Tender.legs.end.tasks"
+    },
+    {
+        "fieldName": "confirmed_date",
+        "id": 6056,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the confirmed delivery date (CDD) for a shipment. This is generally set by the shipper, based on what they can commit to.",
+        "parent": "Tender.legs.end.tasks"
+    },
+    {
+        "fieldName": "fulfillment_type",
+        "id": 6057,
+        "description": "The fulfillment strategy of the shipment.",
+        "parent": "Tender.legs.end.tasks"
+    },
+    {
+        "fieldName": "task_type",
+        "id": 6058,
+        "parent": "Tender.legs.end.tasks"
+    },
+    {
+        "fieldName": "purchase_order_id",
+        "id": 6059,
+        "description": "The ID of the purchase order associated to the task.",
+        "parent": "Tender.legs.end.tasks"
+    },
+    {
+        "fieldName": "purchase_order_number",
+        "id": 6060,
+        "description": "The external ID of the purchase order associated to the task.",
+        "parent": "Tender.legs.end.tasks"
+    },
+    {
+        "fieldName": "requested_date",
+        "id": 6061,
+        "description": "This is based on the context of the task. For example, for a dropoff task, this is the requested delivery date (RDD) for a shipment. This is generally the earliest ORAD of the purchase orders that the shipment fulfills.",
+        "parent": "Tender.legs.end.tasks"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_at",
+        "id": 6062,
+        "description": "The initial appointment scheduled for this stop.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "scheduled_appointment_at",
+        "id": 6063,
+        "description": "The final appointment scheduled for this stop.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "scheduled_appointment_started_at",
+        "id": 6064,
+        "description": "The start of the final appointment window for this stop.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "scheduled_appointment_ended_at",
+        "id": 6065,
+        "description": "The end of the final appointment window for this stop.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_started_at",
+        "id": 6066,
+        "description": "The originally planned start of the appointment window for this stop.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "original_scheduled_appointment_ended_at",
+        "id": 6067,
+        "description": "The originally planned end of the appointment window for this stop.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "arrived_at",
+        "id": 6068,
+        "description": "The date and time that the carrier arrived at the stop.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "departed_at",
+        "id": 6069,
+        "description": "The date and time that the carrier departed the stop.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "departure_time_entered_at",
+        "id": 6070,
+        "description": "The date and time that the shipper received the carrier departure date and time.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "buffered_appointment_at",
+        "id": 6071,
+        "description": "The date and time of the buffer-adjusted appointment time for \"allowed lateness\".",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "estimated_date",
+        "id": 6072,
+        "description": "The estimated date of the of the pickup or delivery.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "exception_type",
+        "id": 6074,
+        "description": "The exception type the reason code should be applied to, if it occurred.\\\n            Example: 'late_delivery'.",
+        "parent": "Tender.legs.end.reason_codes"
+    },
+    {
+        "fieldName": "code",
+        "id": 6075,
+        "description": "The reason code to be applied if the exception type specified occurs.",
+        "parent": "Tender.legs.end.reason_codes"
+    },
+    {
+        "fieldName": "sequence_number",
+        "id": 6076,
+        "description": "The ordinal number of the stop.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "trailer_operation",
+        "id": 6077,
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "trailer_operation_delay",
+        "id": 6078,
+        "description": "The number of seconds the carrier was delayed at a stop.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "appointment_created_at",
+        "id": 6079,
+        "description": "The date & time when the appointment was scheduled.",
+        "parent": "Tender.legs.end"
+    },
+    {
+        "fieldName": "distance",
+        "id": 6080,
+        "description": "The distance amount between the start and end stops.",
+        "parent": "Tender.legs"
+    },
+    {
+        "fieldName": "distance_unit",
+        "id": 6081,
+        "parent": "Tender.legs"
+    },
+    {
+        "fieldName": "consignee_pickup",
+        "id": 6082,
+        "description": "Indicates if the leg was executed by a consignee's carrier.",
+        "parent": "Tender.legs"
+    },
+    {
+        "fieldName": "report_id",
+        "id": 6083,
+        "description": "The ID of the report that this shipment is associated with.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "multiple_stops",
+        "id": 6084,
+        "description": "Indicates whether the shipment is a multi-stop shipment (greater than two stops).",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "region",
+        "id": 6085,
+        "description": "The region that this shipment is associated with.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "delivery_numbers",
+        "id": 6086,
+        "description": "The delivery numbers associated with this shipment.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "custom_data",
+        "id": 6087,
+        "description": "Arbitrary custom data to attach to the tender for analytical purposes.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "reporting_date",
+        "id": 6088,
+        "description": "The date that the tender should be anchored to in the context of date-based searches.",
+        "parent": "Tender"
+    },
+    {
+        "fieldName": "week",
+        "id": 7001,
+        "description": "The ordinal number of week according to the shipper.",
+        "parent": "Week"
+    },
+    {
+        "fieldName": "year",
+        "id": 7002,
+        "description": "The calendar year of week.",
+        "parent": "Week"
+    },
+    {
+        "fieldName": "started_at",
+        "id": 7003,
+        "description": "The date and time that the week begins.",
+        "parent": "Week"
+    },
+    {
+        "fieldName": "ended_at",
+        "id": 7004,
+        "description": "The date and time that the week ends.",
+        "parent": "Week"
+    },
+    {
+        "fieldName": "purchase_order_id",
+        "id": 8001,
+        "description": "The ID of the purchase order associated to the shipper order.",
+        "parent": "PurchaseOrderShipperOrder"
+    },
+    {
+        "fieldName": "shipment_external_id",
+        "id": 8002,
+        "description": "The external identifier the shipper uses to identify the shipment.",
+        "parent": "PurchaseOrderShipperOrder"
+    },
+    {
+        "fieldName": "shipper_order_number",
+        "id": 8003,
+        "description": "Identifier for the segment of a purchase order associated with a shipment\"",
+        "parent": "PurchaseOrderShipperOrder"
+    },
+    {
+        "fieldName": "value",
+        "id": 8004,
+        "description": "Value of items in shipment as part of the purchase order whole.",
+        "parent": "PurchaseOrderShipperOrder"
+    },
+    {
+        "fieldName": "value_currency_code",
+        "id": 8005,
+        "description": "Currency code for value field.",
+        "parent": "PurchaseOrderShipperOrder"
+    }
+]

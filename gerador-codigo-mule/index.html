@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mulesoft Workflow Code Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Mulesoft Workflow Code Generator</h1>
+        <div class="form-group">
+            <label for="appName">Application name:</label>
+            <input type="text" id="appName" placeholder="Enter application name" value="customer-name">
+        </div>
+        <div class="form-group">
+            <label for="flowName">New flow name:</label>
+            <input type="text" id="flowName" placeholder="Enter new flow name" value="Purchase Order">
+        </div>
+        <button id="generateBtn" class="generate-btn">Generate Code</button>
+        
+        <div class="code-section" id="codeSection" style="display: none;">
+            <div class="code-box">
+                <h2>Instructions</span></h2>
+                <img class="" src="img/generate_doc_id_no.png"></div>
+                <p class="instructions">
+                    When you past the code on Anypoint studio, it will ask if you wish to generate new doc:id's.<br>
+                    Click on No, so it will not generate new id's.<br>
+                    The code generated below always generates new id's and the id's are used when mocking Munit.<br><br>
+                    If you click on Yes, remember to update Munit tests with the new id's.<br><br>
+                </p>
+            </div>
+            <div class="code-box">
+                <h2>Add the code below on <span id="file1Name"></span>.xml <span id="copied1" class="copied"></span></h2>
+                <textarea id="code1" class="code-textarea">source code...</textarea>
+                <button class="copy-btn" onclick="copyToClipboardGen('code1', 'copied1')">Copy</button>
+            </div>
+            <div class="code-box">
+                <h2>Create a new file named <span id="file2Name"></span>.xml <span id="copied2" class="copied"></span></h2>
+                <textarea id="code2" class="code-textarea">source code...</textarea>
+                <button class="copy-btn" onclick="copyToClipboardGen('code2', 'copied2')">Copy</button>
+            </div>
+            <div class="code-box">
+                <h2>Create a new Dataweave (DWL) file named <span id="file2DWLFileContentName"></span> on flow <span id="copied2DWLFileContent" class="copied"></span></h2>
+                <img class="flow-image" src="img/dw_file_content.png">
+                <textarea id="code2DWLFileContent" class="code-textarea">source code...</textarea>
+                <button class="copy-btn" onclick="copyToClipboardGen('code2DWLFileContent', 'copied2DWLFileContent')">Copy</button>
+            </div>
+            <div class="code-box">
+                <h2>Create a new Dataweave (DWL) file named <span id="file2DWLFilterName"></span> on flow <span id="copied2DWLFilter" class="copied"></span></h2>
+                <img class="flow-image" src="img/dw_filter_payload.png">
+                <textarea id="code2DWLFilter" class="code-textarea">source code...</textarea>
+                <button class="copy-btn" onclick="copyToClipboardGen('code2DWLFilter', 'copied2DWLFilter')">Copy</button>
+            </div>
+            <div class="code-box">
+                <h2>Add on Test File named <span id="file3Name"></span>-test-suite.xml <span id="copied3" class="copied"></span></h2>
+                <textarea id="code3" class="code-textarea">source code...</textarea>
+                <button class="copy-btn" onclick="copyToClipboardGen('code3', 'copied3')">Copy</button>
+            </div>
+            <div class="code-box">
+                <h2>Add on <span id="file4Name"></span>.yaml file the content below <span id="copied4" class="copied"></span></h2>
+                <textarea id="code4" class="code-textarea">source code...</textarea>
+                <button class="copy-btn" onclick="copyToClipboardGen('code4', 'copied4')">Copy</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="code-main-prc-api.js"></script>
+    <script src="code-flow-new-file.js"></script>
+    <script src="code-munit.js"></script>
+    <script src="code-yaml.js"></script>
+    <script src="code-dwl.js"></script>
+</body>
+</html>
