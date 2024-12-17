@@ -83,7 +83,7 @@
         const workbook = XLSX.read(data, { type: 'array' });
         const csvData = XLSX.utils.sheet_to_csv(workbook.Sheets[workbook.SheetNames[0]], {
           FS: ',',
-          dateNF: 'yyyy-mm-ddThh:mm:ss'
+          dateNF: 'yyyy-mm-ddTHH:mm:ss'
         });
         const convertedData = convertDatesToISO(csvData);
         downloadCSV(convertedData, baseName + '.csv');
@@ -107,9 +107,15 @@
     // Convert dates in the CSV content to ISO 8601
     function convertDatesToISO(csvData) {
       const isoDateRegex = /\b(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})\b/g;
+      // 12/05/2023 14:30:45 - 1-1-99T00:00:00 - 31/12/2000 23:59:59
       const isoDateTimeRegex = /\b(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})[\sT](\d{2}):(\d{2}):(\d{2})\b/g;
+      // 12/06/2024 07:00:00 AM
+      const dateTimeRegex = /\b(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2}) (AM|PM)\b/g;
 
-      return csvData.replace(isoDateTimeRegex, (match, day, month, year, hour, minute, second) => {
+      return csvData.replace(dateTimeRegex, (match, day, month, year, hour, minute, second) => {
+        year = year.length === 2 ? '20' + year : year; // Handle 2-digit year
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hour}:${minute}:${second}`;
+      }).replace(isoDateTimeRegex, (match, day, month, year, hour, minute, second) => {
         year = year.length === 2 ? '20' + year : year; // Handle 2-digit year
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hour}:${minute}:${second}`;
       }).replace(isoDateRegex, (match, day, month, year) => {
