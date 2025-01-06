@@ -122,8 +122,11 @@ function getLineBreaker(allText) {
 
 function getFirstFieldSeparator(allText, separator, startPos) {
     // Get first field separator
-    let commaSeparator = '"' + separator
-    let lineSeparator =  '"' + getLineBreaker(allText)
+    
+    // let commaSeparator = '"' + separator
+    // let lineSeparator =  '"' + getLineBreaker(allText)
+    let commaSeparator = separator
+    let lineSeparator =  getLineBreaker(allText)
     let posSeparatorComma = allText.indexOf(commaSeparator, startPos)
     let posSeparatorLineBreak = allText.indexOf(lineSeparator, startPos)
     if (posSeparatorComma > -1 && posSeparatorLineBreak > -1) {
@@ -143,7 +146,13 @@ function readCSVValues(allText, separator, linesToRead) {
     let currentLine = []
     result[linePos] = currentLine
     while (pos < allText.length) {
-        let subtext = allText.substringBefore(separator, pos)
+        let subtext = ""
+        // if the text is surrounded by quotes, the separator will be quotes
+        if (allText.substring(pos, pos + 1) == '"') {
+            subtext = '"' + allText.substringBefore('"', pos + 1) + '"'
+        } else {
+            subtext = allText.substringBefore(separator, pos)
+        }
         if (isAllValue(subtext)) {
             let additionalSize = 0
             if (subtext.startsWith('"') && subtext.endsWith('"')) {
@@ -209,6 +218,7 @@ function readCSVValues(allText, separator, linesToRead) {
 }
 
 function isAllValue(subtext) {
+    if (subtext.startsWith('"') && subtext.startsWith('"') && (!subtext.includes('\n'))) return true
     if (subtext.includes(',')) return false
     if (subtext.includes('"') && subtext.includes('\n')) return false
     if (subtext.includes('\n')) return false

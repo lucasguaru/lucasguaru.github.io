@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISO 8601 Weeks CSV Generator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f4f4f4;
+    }
+    .container {
+      background-color: #ffffff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ISO 8601 Weeks CSV Generator</h1>
+    <form id="weekForm">
+      <label for="startYear">Start Year:</label>
+      <input type="number" id="startYear" required>
+      <label for="endYear">End Year:</label>
+      <input type="number" id="endYear" required>
+      <button type="button" onclick="generateCSV()">Generate CSV</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("startYear").value = new Date().getFullYear();
+    document.getElementById("endYear").value = new Date().getFullYear() + 10;
+
+    function generateCSV() {
+      const startYear = parseInt(document.getElementById("startYear").value);
+      const endYear = parseInt(document.getElementById("endYear").value);
+
+      if (isNaN(startYear) || isNaN(endYear) || startYear > endYear) {
+        alert("Please enter valid years.");
+        return;
+      }
+
+      const csvRows = [["Shipper Week #", "Fiscal Year", "Week Start Date", "Week End Date"]];
+      for (let year = startYear; year <= endYear; year++) {
+        let currentDate = new Date(year, 0, 1);
+        while (currentDate.getDay() !== 0) {
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        let weekNumber = 1;
+        while (currentDate.getFullYear() === year) {
+          const startOfWeek = new Date(currentDate);
+          const endOfWeek = new Date(currentDate);
+          endOfWeek.setDate(endOfWeek.getDate() + 6);
+
+          const formattedStart = `${startOfWeek.getFullYear()}-${String(startOfWeek.getMonth() + 1).padStart(2, '0')}-${String(startOfWeek.getDate()).padStart(2, '0')} 00:00:00`;
+          const formattedEnd = `${endOfWeek.getFullYear()}-${String(endOfWeek.getMonth() + 1).padStart(2, '0')}-${String(endOfWeek.getDate()).padStart(2, '0')} 00:00:00`;
+
+          csvRows.push([weekNumber, year, formattedStart, formattedEnd]);
+
+          weekNumber++;
+          currentDate.setDate(currentDate.getDate() + 7);
+        }
+      }
+
+      let csvContent = csvRows.map(row => row.join(",")).join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "iso_weeks.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>

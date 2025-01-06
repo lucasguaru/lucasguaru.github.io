@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weeks CSV Generator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f4f4f4;
+    }
+    .container {
+      background-color: #ffffff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+      color: #555;
+      cursor: pointer;
+    }
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Weeks CSV Generator</h1>
+    <form id="weekForm">
+      <label for="default">
+        <input type="radio" id="default" name="weekStandard" value="default">
+        Default
+      </label>
+      <label for="iso">
+        <input type="radio" id="iso" name="weekStandard" value="iso">
+        ISO
+      </label>
+      <label for="startYear">Start Year:</label>
+      <input type="number" id="startYear" required>
+      <label for="endYear">End Year:</label>
+      <input type="number" id="endYear" required>
+      <button type="button" onclick="generateCSV()">Generate CSV</button>
+    </form>
+  </div>
+
+  <script>
+    // Initialize with default or saved value
+    const savedStandard = localStorage.getItem('weekStandard') || 'default';
+    document.getElementById(savedStandard).checked = true;
+
+    document.getElementById("startYear").value = new Date().getFullYear();
+    document.getElementById("endYear").value = new Date().getFullYear() + 10;
+
+    document.querySelectorAll('input[name="weekStandard"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        localStorage.setItem('weekStandard', radio.value);
+      });
+    });
+
+    function generateCSV() {
+      const startYear = parseInt(document.getElementById("startYear").value);
+      const endYear = parseInt(document.getElementById("endYear").value);
+      const weekStandard = document.querySelector('input[name="weekStandard"]:checked').value;
+
+      if (isNaN(startYear) || isNaN(endYear) || startYear > endYear) {
+        alert("Please enter valid years.");
+        return;
+      }
+
+      const csvRows = [["Shipper Week #", "Fiscal Year", "Week Start Date", "Week End Date"]];
+
+      for (let year = startYear; year <= endYear; year++) {
+        let currentDate = new Date(year, 0, 1);
+        let weekNumber = 1;
+
+        if (weekStandard === "default") {
+          // Default: First week starts on January 1st and ends on the first Saturday.
+          let startOfWeek = new Date(currentDate);
+          let endOfWeek = new Date(currentDate);
+          endOfWeek.setDate(endOfWeek.getDate() + (6 - currentDate.getDay()));
+
+          csvRows.push([
+            weekNumber,
+            year,
+            formatDate(startOfWeek),
+            formatDate(endOfWeek),
+          ]);
+
+          weekNumber++;
+          currentDate = new Date(endOfWeek);
+          currentDate.setDate(currentDate.getDate() + 1);
+
+          while (currentDate.getFullYear() === year) {
+            startOfWeek = new Date(currentDate);
+            endOfWeek = new Date(currentDate);
+            endOfWeek.setDate(endOfWeek.getDate() + 6);
+
+            csvRows.push([
+              weekNumber,
+              year,
+              formatDate(startOfWeek),
+              formatDate(endOfWeek),
+            ]);
+
+            weekNumber++;
+            currentDate.setDate(currentDate.getDate() + 7);
+          }
+        } else if (weekStandard === "iso") {
+          // ISO: First week starts on the first Monday of the year.
+          while (currentDate.getDay() !== 1) {
+            currentDate.setDate(currentDate.getDate() - 1);
+          }
+
+          while (currentDate.getFullYear() <= year) {
+            const startOfWeek = new Date(currentDate);
+            const endOfWeek = new Date(currentDate);
+            endOfWeek.setDate(endOfWeek.getDate() + 6);
+
+            if (startOfWeek.getFullYear() > year) break;
+
+            csvRows.push([
+              weekNumber,
+              year,
+              formatDate(startOfWeek),
+              formatDate(endOfWeek),
+            ]);
+
+            weekNumber++;
+            currentDate.setDate(currentDate.getDate() + 7);
+          }
+        }
+      }
+
+      let csvContent = csvRows.map(row => row.join(",")).join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "weeks.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function formatDate(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} 00:00:00`;
+    }
+  </script>
+</body>
+</html>
