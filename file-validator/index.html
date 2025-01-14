@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Mapping and Data Validation</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Isometrics - File Mapping and Data Validation</h1>
+
+    <div id="file-upload-container">
+      <div class="file-upload" id="mapping-file">
+        <label for="mapping-input">Mapping File - Drag & drop or click to upload</label>
+        <input type="file" id="mapping-input" accept=".xlsx, .csv">
+      </div>
+    </div>
+
+    <div id="dynamic-uploads"></div>
+
+    <button id="add-upload-btn">Add File Upload</button>
+
+    <div id="error-list" class="hidden">
+      <h2>Error List</h2>
+      <ul id="errors"></ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
