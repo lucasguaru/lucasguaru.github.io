@@ -37,6 +37,7 @@
             background-color: #ffcccc !important;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="editor-container">
@@ -54,20 +55,29 @@
                 value: '',
                 language: 'json',
                 theme: 'vs-dark',
-                automaticLayout: true
+                automaticLayout: true,
+                minimap: {
+                    enabled: false
+                }
             });
             var editor2 = monaco.editor.create(document.getElementById('editor2'), {
                 value: '',
                 language: 'javascript',
                 theme: 'vs-dark',
-                automaticLayout: true
+                automaticLayout: true,
+                minimap: {
+                    enabled: false
+                }
             });
             var editor3 = monaco.editor.create(document.getElementById('editor3'), {
                 value: '',
                 language: 'json',
                 theme: 'vs-dark',
                 automaticLayout: true,
-                readOnly: true
+                readOnly: true,
+                minimap: {
+                    enabled: false
+                }
             });
 
             editor1.setValue('{\n\t"message": "Hello World!"\n}');
@@ -84,6 +94,42 @@
                 if (!file || !(file.name.endsWith('.xlsx') || file.name.endsWith('.csv'))) {
                     alert('Only Excel (.xlsx) or CSV files are allowed.');
                     return;
+                }
+
+                const handleXLSX = async (file) => {
+                    const data = await file.arrayBuffer();
+                    const workbook = XLSX.read(data, { type: "array" });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                    displayJSON(jsonData);
+                };
+
+                const handleCSV = async (file) => {
+                    const text = await file.text();
+                    const rows = text.split("\n").map((row) => row.split(","));
+                    const headers = rows.shift();
+                    const jsonData = rows.map((row) =>
+                        row.reduce((acc, value, index) => {
+                            acc[headers[index].trim()] = value.trim();
+                            return acc;
+                        }, {})
+                    );
+                    displayJSON(jsonData);
+                };
+
+                const displayJSON = (data) => {
+                    const formattedJSON = JSON.stringify(data, null, 4);
+                    editor1.setValue(formattedJSON);
+                };
+
+                const fileName = file.name.toLowerCase();
+                if (fileName.endsWith(".xlsx")) {
+                    handleXLSX(file);
+                } else if (fileName.endsWith(".csv")) {
+                    handleCSV(file);
+                } else {
+                    alert("Unsupported file format. Please upload an XLSX or CSV file.");
                 }
 
                 // Placeholder for your file reading logic
