@@ -147,8 +147,8 @@
             currentDate.setDate(currentDate.getDate() + 7);
           }
         } else if (weekStandard === "iso") {
-          // ISO: First week starts on the first Monday of the year.
-          while (currentDate.getDay() !== 1) {
+          // ISO: First week starts on the first Sunday of the year
+          while (currentDate.getDay() !== 0) {
             currentDate.setDate(currentDate.getDate() - 1);
           }
 
