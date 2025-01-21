@@ -29,7 +29,7 @@ require(['vs/editor/editor.main'], function () {
         readOnly: true
     });
 
-    editor1.setValue('{\n\t"message": "Hello World!"\n}');
+    editor1.setValue('{\n\t"message": "Hello World! 2024-01-20"\n}');
     editor2.setValue('payload');
 
     editor1Element.addEventListener('dragover', (event) => {
