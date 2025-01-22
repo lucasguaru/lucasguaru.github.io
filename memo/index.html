@@ -20,6 +20,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
+            margin-bottom: 20px;
         }
         input[type="number"] {
             padding: 10px;
@@ -33,13 +34,28 @@
             font-weight: bold;
             color: #333;
         }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            width: 300px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Type a Number</h1>
-        <input type="number" id="numberInput" placeholder="Enter a number" oninput="processNumber()">
-        <div class="output" id="output"></div>
+    <div>
+        <div class="container">
+            <h1>Type a Number</h1>
+            <input type="number" id="numberInput" placeholder="Enter a number" oninput="processNumber()">
+            <div class="output" id="output"></div>
+        </div>
+        <div class="container">
+            <h1>Type Text</h1>
+            <input type="text" id="textInput" placeholder="Enter text" oninput="processText()">
+            <div class="output" id="textOutput"></div>
+        </div>
     </div>
 
     <script>
@@ -52,7 +68,7 @@
             "51": "Lata", "52": "Lenha", "53": "Limão", "54": "Leque", "55": "Lula", "56": "Laço", "57": "Lixo", "58": "Lago", "59": "Lupa", "60": "Sereia",
             "61": "Seta", "62": "Sino", "63": "Sumo", "64": "Saco", "65": "Sol", "66": "Saci", "67": "Sofá", "68": "Cego", "69": "Sapo", "70": "Ferro",
             "71": "Fada", "72": "Fone", "73": "Fumo", "74": "Foca", "75": "Folha", "76": "Foice", "77": "Fax", "78": "Fogo", "79": "Chave", "80": "Jarro",
-            "81": "Gato", "82": "Gênio", "83": "Gema", "84": "Java", "85": "Galo", "86": "Giz", "87": "Guache", "88": "Jegue", "89": "Jipe", "90": "Pera",
+            "81": "Gato", "82": "Gênio", "83": "Gema", "84": "Jaca", "85": "Galo", "86": "Giz", "87": "Guache", "88": "Jegue", "89": "Jipe", "90": "Pera",
             "91": "Pato", "92": "Pneu", "93": "Puma", "94": "Paca", "95": "Bola", "96": "Pizza", "97": "Peixe", "98": "Pajé", "99": "Pipa", "00": "Arara",
             "01": "Rato", "02": "Aranha", "03": "Remo", "04": "Arco", "05": "Rolha", "06": "Rosa", "07": "Rocha", "08": "Régua", "09": "Rubi", "0": "Rei",
         };
@@ -68,6 +84,57 @@
                 result.push(words[chunk] || "?");
             }
 
+            output.textContent = result.join(' - ');
+        }
+
+        const consonantWords = {
+            "t": "1",
+            "d": "1",
+            "n": "2",
+            "nh": "2",
+            "m": "3",
+            "c": "5",
+            "l": "4",
+            "s": "6",
+            "ch": "7",
+            "x": "7",
+            "j": "8",
+            "g": "8",
+            "p": "9",
+            "v": "9",
+        };
+
+        function processText() {
+            const input = document.getElementById('textInput').value;
+            const output = document.getElementById('textOutput');
+            
+            // Remove vowels and spaces
+            const consonantsOnly = input.toLowerCase().replace(/[aeiouáéíóúâêîôûãõ\s]/gi, '');
+            
+            let result = [];
+            let currentPos = 0;
+            
+            while (currentPos < consonantsOnly.length) {
+                let found = false;
+                let testString = '';
+                
+                // Try combinations of up to 3 consonants
+                for (let i = 1; i <= 3 && (currentPos + i) <= consonantsOnly.length; i++) {
+                    testString = consonantsOnly.substr(currentPos, i);
+                    if (consonantWords[testString]) {
+                        result.push(consonantWords[testString]);
+                        currentPos += i;
+                        found = true;
+                        break;
+                    }
+                }
+                
+                // If no match found, skip this consonant
+                if (!found) {
+                    currentPos++;
+                }
+            }
+            
             output.textContent = result.join(' - ');
         }
     </script>
