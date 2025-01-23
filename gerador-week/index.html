@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ISO 8601 Weeks CSV Generator</title>
+  <title>Weeks CSV Generator</title>
   <style>
     * {
       box-sizing: border-box;
@@ -37,8 +37,12 @@
       margin: 15px 0 5px;
       font-weight: bold;
       color: #555;
+      cursor: pointer;
     }
-    input {
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+    input[type="number"] {
       width: 100%;
       padding: 10px;
       margin-bottom: 10px;
@@ -62,60 +66,122 @@
 </head>
 <body>
   <div class="container">
-    <h1>ISO 8601 Weeks CSV Generator</h1>
+    <h1>Weeks CSV Generator</h1>
     <form id="weekForm">
       <label for="startYear">Start Year:</label>
       <input type="number" id="startYear" required>
       <label for="endYear">End Year:</label>
       <input type="number" id="endYear" required>
-      <button type="button" onclick="generateCSV()">Generate CSV</button>
+      
+      <label>File Format:</label>
+      <div style="margin: 10px 0;">
+        <input type="radio" id="csvFormat" name="fileFormat" value="csv" checked>
+        <label for="csvFormat" style="display: inline;">CSV</label>
+        <input type="radio" id="xlsxFormat" name="fileFormat" value="xlsx" style="margin-left: 20px;">
+        <label for="xlsxFormat" style="display: inline;">XLSX</label>
+      </div>
+      
+      <button type="button" onclick="generateFile()">Generate File</button>
     </form>
   </div>
 
+  <!-- Add SheetJS library -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+
   <script>
+
     document.getElementById("startYear").value = new Date().getFullYear();
     document.getElementById("endYear").value = new Date().getFullYear() + 10;
 
-    function generateCSV() {
+    // Load saved file format preference from localStorage
+    const savedFormat = localStorage.getItem('fileFormat') || 'csv';
+    document.querySelector(`input[value="${savedFormat}"]`).checked = true;
+
+    // Add event listener to save format selection
+    document.querySelectorAll('input[name="fileFormat"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        localStorage.setItem('fileFormat', e.target.value);
+      });
+    });
+
+    function generateFile() {
       const startYear = parseInt(document.getElementById("startYear").value);
       const endYear = parseInt(document.getElementById("endYear").value);
+      const fileFormat = document.querySelector('input[name="fileFormat"]:checked').value;
 
       if (isNaN(startYear) || isNaN(endYear) || startYear > endYear) {
         alert("Please enter valid years.");
         return;
       }
 
-      const csvRows = [["Shipper Week #", "Fiscal Year", "Week Start Date", "Week End Date"]];
+      const rows = [["Shipper Week #", "Fiscal Year", "Week Start Date", "Week End Date"]];
+
       for (let year = startYear; year <= endYear; year++) {
         let currentDate = new Date(year, 0, 1);
-        while (currentDate.getDay() !== 0) {
-          currentDate.setDate(currentDate.getDate() + 1);
-        }
-
         let weekNumber = 1;
+
+        // Default: First week starts on January 1st and ends on the first Saturday.
+        let startOfWeek = new Date(currentDate);
+        let endOfWeek = new Date(currentDate);
+        endOfWeek.setDate(endOfWeek.getDate() + (6 - currentDate.getDay()));
+
+        rows.push([
+          weekNumber,
+          year,
+          formatDate(startOfWeek),
+          formatDate(endOfWeek),
+        ]);
+
+        weekNumber++;
+        currentDate = new Date(endOfWeek);
+        currentDate.setDate(currentDate.getDate() + 1);
+
         while (currentDate.getFullYear() === year) {
-          const startOfWeek = new Date(currentDate);
-          const endOfWeek = new Date(currentDate);
+          startOfWeek = new Date(currentDate);
+          endOfWeek = new Date(currentDate);
           endOfWeek.setDate(endOfWeek.getDate() + 6);
+          if (endOfWeek.getFullYear() > year) {
+            endOfWeek = new Date(year, 11, 31); // December 31st of current year
+          }
 
-          const formattedStart = `${startOfWeek.getFullYear()}-${String(startOfWeek.getMonth() + 1).padStart(2, '0')}-${String(startOfWeek.getDate()).padStart(2, '0')} 00:00:00`;
-          const formattedEnd = `${endOfWeek.getFullYear()}-${String(endOfWeek.getMonth() + 1).padStart(2, '0')}-${String(endOfWeek.getDate()).padStart(2, '0')} 00:00:00`;
-
-          csvRows.push([weekNumber, year, formattedStart, formattedEnd]);
+          rows.push([
+            weekNumber,
+            year,
+            formatDate(startOfWeek),
+            formatDate(endOfWeek),
+          ]);
 
           weekNumber++;
           currentDate.setDate(currentDate.getDate() + 7);
         }
       }
 
-      let csvContent = csvRows.map(row => row.join(",")).join("\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      if (fileFormat === 'csv') {
+        let csvContent = rows.map(row => row.join(",")).join("\n");
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        downloadFile(blob, "weeks.csv");
+      } else {
+        // Convert to XLSX
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        XLSX.utils.book_append_sheet(wb, ws, "Weeks");
+        const xlsxBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([xlsxBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        downloadFile(blob, "weeks.xlsx");
+      }
+    }
+
+    function downloadFile(blob, filename) {
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "iso_weeks.csv";
+      link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    }
+
+    function formatDate(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} 00:00:00`;
     }
   </script>
 </body>
