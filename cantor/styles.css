@@ -1,0 +1,208 @@
+/* styles.css - Letras de Músicas */
+:root {
+  --bg: #181a20;
+  --fg: #f3f3f7;
+  --accent: #4fd1c5;
+  --accent2: #fbbf24;
+  --panel: #23262f;
+  --lyrics-font: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+html, body {
+  height: 100%;
+}
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--lyrics-font);
+  margin: 0;
+  min-height: 100vh;
+  transition: font-size 0.2s;
+  overflow-x: hidden;
+}
+header {
+  padding: 2rem 1rem 1rem 1rem;
+  text-align: center;
+}
+h1 {
+  font-weight: 700;
+  font-size: 2.2rem;
+  margin: 0.5rem 0 0 0;
+  letter-spacing: 0.01em;
+}
+.font-size-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.song-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0 1rem 0;
+  flex-wrap: wrap;
+}
+.song-nav button {
+  background: var(--panel);
+  color: var(--accent);
+  border: none;
+  border-radius: 50%;
+  width: 2.3rem;
+  height: 2.3rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #0002;
+}
+.song-nav button.active {
+  background: var(--accent);
+  color: var(--bg);
+}
+#songs-container {
+  width: 100vw;
+  max-width: 700px;
+  box-sizing: border-box;
+  margin: 0 auto 2rem auto;
+  padding: 0 1rem;
+  overflow-x: hidden;
+}
+.song-section {
+  margin-bottom: 3.5rem;
+}
+.song-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+}
+.song-artist {
+  font-size: 1.1rem;
+  color: var(--accent2);
+  margin-bottom: 1.1rem;
+  font-weight: 500;
+}
+pre.lyrics {
+  font-family: var(--lyrics-font);
+  font-size: 1.1em;
+  background: none;
+  color: var(--fg);
+  white-space: pre-wrap;
+  margin: 0;
+  padding: 0;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  border: none;
+  box-shadow: none;
+}
+.fab {
+  position: fixed;
+  z-index: 100;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  box-shadow: 0 4px 16px #0005;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.fab-bottom-right {
+  right: 2.2rem;
+  bottom: 2.2rem;
+}
+.fab-bottom-left {
+  left: 2.2rem;
+  bottom: 2.2rem;
+}
+.fab-panel {
+  position: fixed;
+  z-index: 101;
+  min-width: 220px;
+  background: var(--panel);
+  color: var(--fg);
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px #0007;
+  padding: 1.2rem 1.2rem 1rem 1.2rem;
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 1rem;
+}
+.fab-panel-right {
+  right: 2.2rem;
+  bottom: 7.5rem;
+}
+.fab-panel-left {
+  left: 2.2rem;
+  bottom: 7.5rem;
+}
+.fab-panel label {
+  font-size: 1rem;
+  color: var(--accent2);
+  margin-bottom: 0.2rem;
+}
+.fab-panel input[type="range"] {
+  width: 100%;
+}
+.fab-panel-btns {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 0.5rem;
+}
+.fab-panel-btns button {
+  flex: 1;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 0.7rem;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.fab-panel-btns button:hover {
+  background: var(--accent2);
+  color: var(--bg);
+}
+.metronome-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent2);
+  margin: 0 auto 0.7rem auto;
+  opacity: 0.3;
+  transition: opacity 0.1s, box-shadow 0.1s;
+  box-shadow: 0 0 0 0 var(--accent2);
+}
+.metronome-dot.active {
+  opacity: 1;
+  box-shadow: 0 0 16px 4px var(--accent2);
+}
+@media (max-width: 600px) {
+  header {
+    padding: 1.2rem 0.5rem 0.7rem 0.5rem;
+  }
+  #songs-container {
+    padding: 0 0.3rem;
+  }
+  .fab-panel {
+    min-width: 170px;
+    padding: 0.8rem 0.7rem 0.7rem 0.7rem;
+    font-size: 0.97rem;
+  }
+  .fab {
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+  }
+}

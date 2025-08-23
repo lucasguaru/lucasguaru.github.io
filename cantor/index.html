@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Letras de Músicas</title>
+	<link rel="stylesheet" href="styles.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<header>
+		<div class="font-size-control">
+			<label for="fontSizeRange">Tamanho da fonte:</label>
+			<input type="range" id="fontSizeRange" min="14" max="28" value="18">
+			<span id="fontSizeValue">18px</span>
+		</div>
+		<h1>Letras de Músicas</h1>
+	</header>
+	<nav id="top-nav" class="song-nav"></nav>
+	<main id="songs-container"></main>
+	<nav id="bottom-nav" class="song-nav"></nav>
+	<!-- FABs -->
+	<button id="scroll-fab" class="fab fab-bottom-right" title="Scroll Automático">
+		<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m0 0l-6-6m6 6l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+	</button>
+	<div id="scroll-panel" class="fab-panel fab-panel-right">
+		<label for="scrollSpeed">Velocidade: <span id="scrollSpeedValue">200</span> px/s</label>
+		<input type="range" id="scrollSpeed" min="10" max="80" value="30">
+		<div class="fab-panel-btns">
+			<button id="scrollStart">Iniciar</button>
+			<button id="scrollStop">Parar</button>
+		</div>
+	</div>
+	<button id="metronome-fab" class="fab fab-bottom-left" title="Metrônomo Visual">
+		<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+	</button>
+	<div id="metronome-panel" class="fab-panel fab-panel-left">
+		<div class="metronome-dot" id="metronomeDot"></div>
+		<label for="bpmRange">BPM: <span id="bpmValue">100</span></label>
+		<input type="range" id="bpmRange" min="40" max="220" value="100">
+		<div class="fab-panel-btns">
+			<button id="metronomeStart">Iniciar</button>
+			<button id="metronomeStop">Parar</button>
+		</div>
+	</div>
+		<script type="module" src="app.js"></script>
+</body>
+</html>
