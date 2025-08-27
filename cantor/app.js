@@ -30,15 +30,19 @@ fontSizeRange.value = prefs.fontSize || 18;
 
 // --- Song Navigation ---
 function renderSongNav(navId, currentIdx) {
-	const nav = document.getElementById(navId);
-	nav.innerHTML = '';
-	songs.forEach((_, i) => {
-		const btn = document.createElement('button');
-		btn.textContent = i + 1;
-		btn.className = (i === currentIdx) ? 'active' : '';
-		btn.onclick = () => scrollToSong(i);
-		nav.appendChild(btn);
-	});
+	const navList = [...document.getElementsByClassName("top-nav")]
+	// const nav = document.getElementById(navId);
+	// debugger
+	navList.forEach(nav => {
+		nav.innerHTML = '';
+		songs.forEach((_, i) => {
+			const btn = document.createElement('button');
+			btn.textContent = i + 1;
+			btn.className = (i === currentIdx) ? 'active' : '';
+			btn.onclick = () => scrollToSong(i);
+			nav.appendChild(btn);
+		});
+	})
 }
 
 // --- Songs Render ---
@@ -49,8 +53,15 @@ function renderSongs() {
 		const section = document.createElement('section');
 		section.className = 'song-section';
 		section.id = 'song-' + i;
-		// Top nav
-		if (i === 0) renderSongNav('top-nav', 0);
+		
+		// <nav id="top-nav" class="song-nav"></nav>
+		const nav = document.createElement('nav');
+		// nav.id = 'top-nav';
+		nav.className = 'song-nav top-nav';
+		section.appendChild(nav);
+		// renderSongNav('top-nav', 0);
+
+		// if (i === 0) renderSongNav('top-nav', 0);
 		// Title
 		const title = document.createElement('div');
 		title.className = 'song-title';
@@ -99,8 +110,14 @@ if (prefs.fontSize) setFontSize(prefs.fontSize);
 if (prefs.scrollSpeed) scrollSpeed.value = prefs.scrollSpeed;
 if (prefs.bpm) bpmRange.value = prefs.bpm;
 
+// Selecionar elementos dos painéis e botões flutuantes
+const scrollPanel = document.getElementById('scrollPanel');
+const scrollFab = document.getElementById('scrollFab');
+const metronomePanel = document.getElementById('metronomePanel');
+const metronomeFab = document.getElementById('metronomeFab');
+
 // Fechar painéis ao clicar fora
 window.addEventListener('mousedown', e => {
-	if (!scrollPanel.contains(e.target) && e.target !== scrollFab) showPanel(scrollPanel, false);
-	if (!metronomePanel.contains(e.target) && e.target !== metronomeFab) showPanel(metronomePanel, false);
+	if (scrollPanel && scrollFab && !scrollPanel.contains(e.target) && e.target !== scrollFab) showPanel(scrollPanel, false);
+	if (metronomePanel && metronomeFab && !metronomePanel.contains(e.target) && e.target !== metronomeFab) showPanel(metronomePanel, false);
 });
