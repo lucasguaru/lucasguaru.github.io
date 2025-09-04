@@ -2,21 +2,31 @@ export const songs = [
   {
     title: 'Island in the Sun',
     artist: 'Weezer',
-    lyrics: `When you're on a holiday
+    lyrics: `Hip-hip
+Hip-hip
+Hip-hip
+Hip-hip
+
+When you're on a holiday
 You can't find the words to say
 All the things that come to you
 And I wanna feel it too
+
 On an island in the sun
-We'll be playin' and havin' fun
+We'll be playing and having fun
 And it makes me feel so fine
 I can't control my brain
+
+Hip-hip
+Hip-hip
 
 When you're on a golden sea
 You don't need no memory
 Just a place to call your own
 As we drift into the zone
+
 On an island in the sun
-We'll be playin' and havin' fun
+We'll be playing and having fun
 And it makes me feel so fine
 I can't control my brain
 
@@ -24,26 +34,27 @@ We'll run away together
 We'll spend some time forever
 We'll never feel bad anymore
 
+Hip-hip
+Hip-hip
+Hip-hip
+
 On an island in the sun
-We'll be playin' and havin' fun
+We'll be playing and having fun
 And it makes me feel so fine
 I can't control my brain
 
 We'll run away together
 We'll spend some time forever
 We'll never feel bad anymore
-No, no
-No, no
-No, no
-No, no
-No, no
-We'll never feel bad anymore
-No, no
-No, no
-No, no
-No, no
-No, no
-We'll never feel bad anymore`
+
+Hip-hip
+(Hip-hip) we'll never feel bad anymore
+Hip-hip
+No, no (hip-hip)
+(Hip-hip) we'll never feel bad anymore
+(Hip-hip)
+No, no (hip-hip)
+No, no (hip-hip)`
   },
   {
     title: `I Love Rock 'N Roll`,
@@ -160,19 +171,24 @@ So I can see my baby when I leave this world
 
 When I woke up, the rain was pourin' down
 There were people standing all around
-Something warm running in my eyes
-But I found my baby somehow that night
-I raised her head, and when she smiled and said
-"Hold me, darling, for a little while"
-I held her close, I kissed her our last kiss
-I found the love that I knew I had missed
-Well now she's gone, even though I hold her tight
-I lost my love, my life that night
+Something warm running through my eyes
+But somehow I found my baby that night
+I lifted her head, she looked at me and said
+Hold me, darling, just a little while
+I held her close, I kissed her, our last kiss
+I found the love that I knew I would miss
+But now she's gone, even though I hold her tight
+I lost my love, my life, that night
 
 Oh where, oh where, can my baby be?
 The Lord took her away from me
 She's gone to heaven, so I got to be good
-So I can see my baby when I leave this world`
+So I can see my baby when I leave this world
+
+Ooh, ooh-ooh-ooh-ooh-ooh
+Ooh, ooh, ooh-ooh-ooh-ooh-ooh
+Oh, oh, oh-oh-oh-oh-oh
+Oh, oh, hey, oh`
   },
   {
     title: 'Take Me Out',
