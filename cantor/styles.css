@@ -68,6 +68,7 @@ h1 {
   margin: 0 auto 2rem auto;
   padding: 0 1rem;
   overflow-x: hidden;
+  padding-bottom: 60px;
 }
 .song-section {
   margin-bottom: 3.5rem;
