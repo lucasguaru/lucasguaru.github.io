@@ -189,5 +189,98 @@ Keep on rockin' in the free world
 Keep on rockin' in the free world
 Keep on rockin' in the free world
 Keep on rockin' in the free world`
+  }, {
+    title: `Creep`,
+    artist: 'Radiohead',
+    lyrics: `When you were here before
+Couldn't look you in the eye
+You're just like an angel
+Your skin makes me cry
+
+You float like a feather
+In a beautiful world
+I wish I was special
+You're so fucking special
+
+But I'm a creep
+I'm a weirdo
+What the hell am I doing here?
+I don't belong here
+
+I don't care if it hurts
+I wanna have control
+I want a perfect body
+I want a perfect soul
+
+I want you to notice
+When I'm not around
+You're so fucking special
+I wish I was special
+
+But I'm a creep
+I'm a weirdo
+What the hell am I doing here?
+I don't belong here
+Oh, oh
+
+She's running out the door
+She's running out
+She run, run, run, run
+Run
+
+Whatever makes you happy
+Whatever you want
+You're so fucking special
+I wish I was special
+
+But I'm a creep
+I'm a weirdo
+What the hell am I doing here?
+I don't belong here
+I don't belong here`
+  }, {
+    title: `Big Me`,
+    artist: 'Foo Fighters',
+    lyrics: `When I talk about it
+It carries on
+Reasons only knew
+When I talk about it
+Aries or treasons
+All renew
+
+Big me to talk about it
+I could stand to prove
+If we can get around it
+I know that it's true
+
+When I talked about it
+Carried on
+Reasons only knew
+But it's you I fell into
+
+When I talk about it
+It carries on
+Reasons only knew
+When I talk about it
+Aries or treasons
+All renew
+
+Big me to talk about it
+I could stand to prove
+If we can get around it
+I know that it's true
+
+Well, I talked about it
+Put it on
+Never was it true
+But it's you I fell into
+
+Well, I talked about it
+Put it on
+Never was it true
+But it's you I fell into
+
+I fell into
+I fell into`
   }
 ];
