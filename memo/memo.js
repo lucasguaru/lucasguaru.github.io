@@ -41,6 +41,7 @@ const consonantWords = {
     "j": "8",
     "g": "8",
     "p": "9",
+    "b": "9",
     "v": "9",
     "r": "0",
     "rr": "0",
@@ -59,18 +60,24 @@ function processText() {
     let result = [];
     let currentPos = 0;
 
+    if (consonantsOnly.length > 10) debugger
+
     while (currentPos < consonantsOnly.length) {
         let currLetter = consonantsOnly[currentPos];
         let nextLetter = consonantsOnly[currentPos + 1] || '';
-        if (consonantWords.hasOwnProperty(currLetter + nextLetter)) {
+        let consonantCompoundFound = consonantWords[currLetter + nextLetter];
+        if (consonantCompoundFound) {
             if (!!nextLetter) {
                 currentPos += 2;
             } else {
                 currentPos++;
             }
-            result.push(consonantWords[currLetter + nextLetter]);
+            result.push(consonantCompoundFound);
             continue;
-        } else if (consonantWords.hasOwnProperty(currLetter)) {
+        } else {
+            if (consonantWords[currLetter] === undefined) {
+                alert("Not Found: " + currLetter);
+            }
             currentPos++;
             result.push(consonantWords[currLetter]);
             // result.push(consonantWords[currLetter + nextLetter]);
