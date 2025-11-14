@@ -1,7 +1,9 @@
-export const songs = [
+const songList = [
   {
     title: 'Yellow',
-    artist: 'Coldplay',
+    active: true,
+    order: 2,
+    artist: 'Coldplay - Lucas',
     lyrics: `Look at the stars
 Look how they shine for you
 And everything you do
@@ -48,7 +50,9 @@ And all the things that you do`
   }, 
   {
     title: 'Last Kiss',
-    artist: 'Pearl Jam',
+    artist: 'Pearl Jam - Reis',
+    active: true,
+    order: 4,
     lyrics: `Oh where, oh where, can my baby be?
 The Lord took her away from me
 She's gone to heaven, so I got to be good
@@ -91,7 +95,9 @@ Oh, oh, hey, oh`
   },
   {
     title: 'Island in the Sun',
-    artist: 'Weezer',
+    artist: 'Weezer - Lucas',
+    active: true,
+    order: 1,
     lyrics: `Hip-hip
 Hip-hip
 Hip-hip
@@ -148,7 +154,9 @@ No, no (hip-hip)`
   },
   {
     title: `Rockin' in the Free World`,
-    artist: 'Neil Young',
+    artist: 'Neil Young - Lucas',
+    active: true,
+    order: 3,
     lyrics: `There's colors on the street
 Red, white and blue
 People shufflin' their feet
@@ -191,7 +199,9 @@ Keep on rockin' in the free world
 Keep on rockin' in the free world`
   }, {
     title: `Creep`,
-    artist: 'Radiohead',
+    artist: 'Radiohead - Reis',
+    active: true,
+    order: 5,
     lyrics: `When you were here before
 Couldn't look you in the eye
 You're just like an angel
@@ -391,6 +401,112 @@ In your head, in your head
 Zombie, zombie, zombie-ie-ie
 What's in your head, in your head
 Zombie, zombie, zombie-ie-ie-ie`
+  },
+  {
+    title: 'Blitzkrieg Bop',
+    artist: 'Ramones - Reis',
+    active: true,
+    order: 6,
+    lyrics: `Hey ho, let's go!
+Hey ho, let's go!
+Hey ho, let's go!
+Hey ho, let's go!
+
+They're forming in straight line
+They're going through a tight wind
+The kids are losing their minds
+The blitzkrieg bop
+
+They're piling in the back seat
+They're generating steam heat
+Pulsating to the back beat
+The blitzkrieg bop
+
+Hey, ho, let's go!
+
+Shoot'em in the back now
+What they want, I don't know
+They're all revved up and ready to go
+
+They're forming in straight line
+They're going through a tight wind
+The kids are losing their minds
+The blitzkrieg bop
+
+They're piling in the back seat
+They're generating steam heat
+Pulsating to the back beat
+The blitzkrieg bop
+
+Hey, ho, let's go!
+
+Shoot'em in the back now
+What they want, I don't know
+They're all raved up and ready to go
+
+They're forming in straight line
+They're going through a tight wind
+The kids are losing their minds
+The blitzkrieg bop
+
+They're piling in the back seat
+They're generating steam heat
+Pulsating to the back beat
+The blitzkrieg bop
+
+Hey ho, let's go!
+Hey ho, let's go!
+Hey ho, let's go!
+Hey ho, let's go!`
+  },
+  {
+    title: 'Pet Sematary',
+    artist: 'Ramones',
+    active: true,
+    order: 7,
+    lyrics: `Under the arc of a weather stain boards
+Ancient goblins and warlords
+Come out the ground, not making a sound
+The smell of death is all around
+And at night, when the cold wind blows
+No one cares, nobody knows
+
+I don't wanna be buried in a pet cemetery
+I don't want to live my life again
+I don't wanna be buried in a pet cemetery
+I don't want to live my life again
+
+Follow Victor to the sacred place
+This ain't a dream, I can't escape
+Molars and fangs, the clicking of bones
+Spirits moaning among the tombstones
+And at night, when the Moon is bright
+Someone cries, something ain't right
+
+I don't wanna be buried in a pet cemetery
+I don't want to live my life again
+I don't wanna be buried in a pet cemetery
+I don't want to live my life again
+
+The Moon is full, the air is still
+All of a sudden, I feel a chill
+Victor is grinning, flesh is rotting away
+Skeletons dance, I curse this day
+And at night, when the wolves cry out
+Listen close and you can hear me shout
+
+I don't wanna be buried in a pet cemetery
+I don't want to live my life again
+I don't wanna be buried in a pet cemetery
+I don't want to live my life again
+
+Oh, no, oh, no
+I don't want to live my life, not again, oh, no, oh, oh
+I don't want to live my life, not again, oh, no, no, no
+Don't want to live my life`
   }
+  
 
 ];
+
+export const songs = songList.filter(song => song.active).sort((a, b) => (a.order || 0) - (b.order || 0));
