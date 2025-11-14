@@ -31,12 +31,16 @@ const consonantWords = {
     "nh": "2",
     "m": "3",
     "c": "4",
+    "q": "4",
     "l": "5",
     "lh": "5",
     "s": "6",
+    "ç": "6",
+    "z": "6",
     "ss": "6",
     "zz": "6",
     "x": "7",
+    "f": "7",
     "ch": "7",
     "j": "8",
     "g": "8",
@@ -49,12 +53,19 @@ const consonantWords = {
 
 let latestConsonantString = ''
 
+
 function processText() {
     const input = document.getElementById('textInput').value.trim();
     if (!input) return;
     const output = document.getElementById('textOutput');
+
+    let result = processTextRaw(input);
+    output.textContent = result;
+}
+
+function processTextRaw(input) {
     // Remove vowels and spaces
-    const consonantsOnly = input.toLowerCase().replace(/[^bcdfghjklmnpqrstvxz]/gi, '');
+    const consonantsOnly = input.toLowerCase().replace(/[^bcçdfghjklmnpqrstvxz]/gi, '');
     if (consonantsOnly == latestConsonantString) return;
     latestConsonantString = consonantsOnly
     let result = [];
@@ -63,25 +74,80 @@ function processText() {
     if (consonantsOnly.length > 10) debugger
 
     while (currentPos < consonantsOnly.length) {
+        let priorLetter = consonantsOnly[currentPos - 1] || '';
         let currLetter = consonantsOnly[currentPos];
         let nextLetter = consonantsOnly[currentPos + 1] || '';
-        let consonantCompoundFound = consonantWords[currLetter + nextLetter];
-        if (consonantCompoundFound) {
-            if (!!nextLetter) {
-                currentPos += 2;
+        if (nextLetter) {
+            let consonantCompoundFound = consonantWords[currLetter + nextLetter];
+            if (consonantCompoundFound) {
+                if (!!nextLetter) {
+                    currentPos += 2;
+                } else {
+                    currentPos++;
+                }
+                result.push(consonantCompoundFound);
+                continue;
             } else {
+                if (consonantWords[currLetter] === undefined) {
+                    alert("Not Found: " + currLetter);
+                }
+                if (priorLetter == 'f' && currLetter == 'c') currLetter = 'ss'
                 currentPos++;
+                result.push(consonantWords[currLetter]);
+                // result.push(consonantWords[currLetter + nextLetter]);
             }
-            result.push(consonantCompoundFound);
-            continue;
         } else {
             if (consonantWords[currLetter] === undefined) {
                 alert("Not Found: " + currLetter);
             }
+            if (priorLetter == 'f' && currLetter == 'c') currLetter = 'ss'
+            // if (priorLetter == 's' && currLetter == 'c') currLetter = 'ss'
             currentPos++;
             result.push(consonantWords[currLetter]);
-            // result.push(consonantWords[currLetter + nextLetter]);
         }
     }
-    output.textContent = result.join('');
+    // output.textContent = result.join('');
+
+    return  result.join('');
+}
+
+function runTests(filterWord) {
+  console.clear();
+  console.log("=== Testando palavras do dicionário ===");
+
+  let passed = 0;
+  let failed = 0;
+  const errors = [];
+
+  const entries = Object.entries(words).filter(([num, word]) =>
+    !filterWord ? true : word.toLowerCase() === String(filterWord).toLowerCase()
+  );
+
+  for (const [num, word] of entries) {
+    // Garante que o cache não atrapalhe os testes
+    latestConsonantString = '';
+
+    const result = processTextRaw(word);
+    const expected = num; // usa exatamente a chave do dicionário (pode ser "0", "00", "01", etc.)
+    const ok = result === expected;
+
+    if (ok) {
+      console.log(`✅ ${word.padEnd(12)} => ${result}`);
+      passed++;
+    } else {
+      console.warn(`❌ ${word.padEnd(12)} => ${result} (esperado ${expected})`);
+      errors.push({ word, result, expected });
+      failed++;
+    }
+  }
+
+  console.log("\n=== Resultado Final ===");
+  console.log(`✅ Sucesso: ${passed}`);
+  console.log(`❌ Falhas: ${failed}`);
+
+  if (errors.length) {
+    console.table(errors);
+  }
+
+  return errors;
 }
