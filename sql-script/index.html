@@ -507,7 +507,7 @@ VALUES
       }
 
       if (valid.length === 0) {
-        setWarning(`<strong>Nenhum usuário válido encontrado.</strong><br/>Use apenas letras minúsculas, números e underscore. Ex: <code>alberto_junior</code>`);
+        setWarning(`<strong>Nenhum usuário válido encontrado.</strong><br/>Use apenas letras minúsculas, números e underscore. Ex: <code>joao_silva</code>`);
         if (editor) editor.setValue("-- Nenhum usuário válido. Corrija a lista e gere novamente.\n");
         return;
       }
@@ -559,7 +559,7 @@ VALUES
     });
 
     btnLoadExample.addEventListener("click", () => {
-      inputEl.value = "alberto_junior\nalexandre_leao\n";
+      inputEl.value = "joao_silva\nmarcio_santos\n";
       setWarning("");
       inputEl.focus();
     });
