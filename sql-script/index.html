@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gerador de Script MySQL (Treinamento)</title>
+
+  <!-- Monaco Editor (VS Code editor) via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+
+  <style>
+    :root{
+      --bg: #0b1220;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 24px 80px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 14px;
+      --accent: #7c3aed;
+      --accent2: #22c55e;
+      --danger: #ef4444;
+      --warn: #f59e0b;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(124,58,237,.45), transparent 60%),
+        radial-gradient(1000px 700px at 110% 10%, rgba(34,197,94,.22), transparent 60%),
+        radial-gradient(900px 600px at 30% 120%, rgba(59,130,246,.18), transparent 65%),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    .wrap{
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 36px 18px 64px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+    }
+
+    .title{
+      font-size: 22px;
+      font-weight: 750;
+      letter-spacing: .2px;
+      margin: 0;
+      line-height: 1.15;
+    }
+
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      max-width: 780px;
+    }
+
+    .pillrow{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+      align-items:center;
+      padding-top: 3px;
+    }
+
+    .pill{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: rgba(255,255,255,.82);
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      user-select:none;
+      backdrop-filter: blur(10px);
+    }
+
+    .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(34,197,94,.10);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 420px 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .cardHeader{
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    .cardHeader h2{
+      margin: 0;
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.80);
+    }
+
+    .cardBody{
+      padding: 14px 16px 16px;
+    }
+
+    textarea{
+      width:100%;
+      min-height: 260px;
+      resize: vertical;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.45;
+      color: rgba(255,255,255,.92);
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius2);
+      padding: 12px;
+      outline: none;
+    }
+
+    textarea:focus{
+      border-color: rgba(124,58,237,.55);
+      box-shadow: 0 0 0 4px rgba(124,58,237,.18);
+    }
+
+    .controls{
+      display:flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .leftControls{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+
+    .rightControls{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.07);
+      color: rgba(255,255,255,.92);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 650;
+      font-size: 13px;
+      cursor: pointer;
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      user-select:none;
+      transition: transform .05s ease, background .15s ease, border-color .15s ease;
+    }
+
+    .btn:hover{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .btn:active{
+      transform: translateY(1px);
+    }
+
+    .btnPrimary{
+      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(99,102,241,.82));
+      border-color: rgba(124,58,237,.60);
+      box-shadow: 0 10px 24px rgba(124,58,237,.18);
+    }
+    .btnPrimary:hover{ background: linear-gradient(135deg, rgba(124,58,237,1), rgba(99,102,241,.9)); }
+
+    .btnGood{
+      background: linear-gradient(135deg, rgba(34,197,94,.95), rgba(16,185,129,.82));
+      border-color: rgba(34,197,94,.55);
+      box-shadow: 0 10px 24px rgba(34,197,94,.14);
+    }
+
+    .help{
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
+
+    .help code{
+      font-family: var(--mono);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: rgba(255,255,255,.88);
+    }
+
+    .warnbox{
+      margin-top: 10px;
+      background: rgba(245,158,11,.12);
+      border: 1px solid rgba(245,158,11,.25);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: rgba(255,255,255,.86);
+      font-size: 12px;
+      line-height: 1.45;
+      display:none;
+    }
+
+    .warnbox strong{ color: rgba(255,255,255,.92); }
+
+    .editorWrap{
+      height: 520px;
+      border-radius: var(--radius);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .footerNote{
+      margin-top: 14px;
+      color: rgba(255,255,255,.60);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .kbd{
+      font-family: var(--mono);
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.18);
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: rgba(255,255,255,.78);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <h1 class="title">Gerador de Script MySQL — Treinamento (DB + Usuário + Schema)</h1>
+        <p class="subtitle">
+          Cole uma lista de usuários (um por linha) e gere o script completo. O resultado aparece no editor da Microsoft (Monaco),
+          com blocos prontos por participante.
+        </p>
+      </div>
+
+      <div class="pillrow">
+        <div class="pill"><span class="dot"></span>MySQL 8+</div>
+        <div class="pill">Formato: <span class="kbd">um usuário por linha</span></div>
+        <div class="pill">Padrão senha: <span class="kbd">usuario@123!</span></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Left: input -->
+      <div class="card">
+        <div class="cardHeader">
+          <h2>Entrada</h2>
+          <button class="btn" id="btnLoadExample" type="button">Carregar exemplo</button>
+        </div>
+        <div class="cardBody">
+          <textarea id="usersInput" spellcheck="false" placeholder="Ex:
+joao_silva
+marcio_santos"></textarea>
+
+          <div class="controls">
+            <div class="leftControls">
+              <button class="btn btnPrimary" id="btnGenerate" type="button">Gerar script</button>
+              <button class="btn" id="btnClear" type="button">Limpar</button>
+            </div>
+            <div class="rightControls">
+              <button class="btn btnGood" id="btnCopy" type="button">Copiar script</button>
+            </div>
+          </div>
+
+          <div class="help">
+            Regras de validação: apenas <code>a-z</code>, <code>0-9</code> e <code>_</code>.
+            Linhas inválidas serão ignoradas e listadas no aviso.
+          </div>
+
+          <div class="warnbox" id="warnBox"></div>
+
+          <div class="footerNote">
+            Dica: você pode rodar o script como usuário com permissões administrativas (CREATE DATABASE / CREATE USER / GRANT).
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Monaco editor output -->
+      <div class="card">
+        <div class="cardHeader">
+          <h2>Script gerado (Monaco / VS Code)</h2>
+          <div class="pill" title="O editor é o mesmo engine do VS Code (Monaco).">Monaco Editor</div>
+        </div>
+        <div class="cardBody">
+          <div class="editorWrap" id="editor"></div>
+          <div class="footerNote">
+            Atalhos: <span class="kbd">Ctrl/Cmd + F</span> para buscar, <span class="kbd">Alt + Shift + F</span> para formatar.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Utilities ----------
+    function normalizeLines(text) {
+      return text
+        .split(/\r?\n/)
+        .map(s => s.trim())
+        .filter(Boolean);
+    }
+
+    function isValidMysqlIdentifier(name) {
+      // Strict for training: only lower-case, numbers and underscore.
+      // (If you want to accept uppercase, adjust regex and normalization.)
+      return /^[a-z0-9_]{1,50}$/.test(name);
+    }
+
+    function escapeSqlString(value) {
+      // Basic SQL string escaping for passwords; prevents breaking quotes.
+      // (Still: for real security, do not generate predictable passwords.)
+      return value.replace(/\\/g, "\\\\").replace(/'/g, "''");
+    }
+
+    function buildPerUserBlock(u) {
+      const db = `sinistros_${u}`;
+      const user = u;
+      const pass = `${u}@123!`;
+
+      return `-- ============================================================
+-- USER: ${user}
+-- DB:   ${db}
+-- ============================================================
+
+CREATE DATABASE IF NOT EXISTS ${db}
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_0900_ai_ci;
+
+CREATE USER IF NOT EXISTS '${user}'@'%' IDENTIFIED BY '${escapeSqlString(pass)}';
+
+GRANT ALL PRIVILEGES ON ${db}.* TO '${user}'@'%';
+GRANT ALL PRIVILEGES ON ${db}.* TO 'pfmorangedoor'@'%';
+
+FLUSH PRIVILEGES;
+
+USE ${db};
+
+CREATE TABLE IF NOT EXISTS sinistros (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  cpf VARCHAR(11) NOT NULL,
+  tipo_sinistro VARCHAR(30) NOT NULL,
+  descricao VARCHAR(500) NULL,
+  data_ocorrencia DATE NOT NULL,
+  status VARCHAR(30) NOT NULL DEFAULT 'ABERTO',
+  cep VARCHAR(8) NULL,
+
+  -- Persistir endereco como JSON é simples para demo
+  endereco_json JSON NULL,
+
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (id),
+  INDEX idx_sinistros_cpf (cpf),
+  INDEX idx_sinistros_status (status),
+  INDEX idx_sinistros_data (data_ocorrencia)
+);
+
+-- Dados iniciais (opcional)
+INSERT INTO sinistros (cpf, tipo_sinistro, descricao, data_ocorrencia, status, cep, endereco_json)
+VALUES
+('12345678901', 'COLISAO', 'Colisão traseira em baixa velocidade.', '2026-02-18', 'ABERTO', '01001000',
+ JSON_OBJECT('cep','01001000','logradouro','Praça da Sé','bairro','Sé','cidade','São Paulo','uf','SP'));
+
+`;
+    }
+
+    function buildFullScript(users) {
+      const header = `-- ============================================================
+-- MySQL Training Script Generator
+-- Generates: database + user + grants + schema + seed data
+-- ============================================================
+
+-- Observações:
+-- 1) Execute como um usuário com permissões para CREATE DATABASE / CREATE USER / GRANT.
+-- 2) Senha padrão gerada: <usuario>@123!  (troque se necessário)
+-- 3) Este script cria a tabela "sinistros" dentro de cada database "sinistros_<usuario>".
+
+`;
+      const blocks = users.map(buildPerUserBlock).join("");
+      return header + blocks + "-- Fim do script\n";
+    }
+
+    // ---------- Monaco Editor Setup ----------
+    let editor;
+
+    function initMonaco() {
+      // Configure loader
+      require.config({
+        paths: {
+          vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs"
+        }
+      });
+
+      require(["vs/editor/editor.main"], function() {
+        editor = monaco.editor.create(document.getElementById("editor"), {
+          value: "-- Gere o script para ver o resultado aqui.\n",
+          language: "sql",
+          theme: "vs-dark",
+          automaticLayout: true,
+          minimap: { enabled: false },
+          fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+          fontSize: 13,
+          lineHeight: 18,
+          scrollBeyondLastLine: false,
+          smoothScrolling: true,
+          cursorSmoothCaretAnimation: "on",
+          renderLineHighlight: "all",
+          wordWrap: "on"
+        });
+      });
+    }
+
+    // ---------- UI actions ----------
+    const inputEl = document.getElementById("usersInput");
+    const warnBox = document.getElementById("warnBox");
+    const btnGenerate = document.getElementById("btnGenerate");
+    const btnCopy = document.getElementById("btnCopy");
+    const btnClear = document.getElementById("btnClear");
+    const btnLoadExample = document.getElementById("btnLoadExample");
+
+    function setWarning(html) {
+      if (!html) {
+        warnBox.style.display = "none";
+        warnBox.innerHTML = "";
+        return;
+      }
+      warnBox.style.display = "block";
+      warnBox.innerHTML = html;
+    }
+
+    function generate() {
+      const lines = normalizeLines(inputEl.value);
+      const valid = [];
+      const invalid = [];
+
+      // normalize to lower-case for consistency (optional)
+      for (const raw of lines) {
+        const u = raw.toLowerCase();
+        if (isValidMysqlIdentifier(u)) valid.push(u);
+        else invalid.push(raw);
+      }
+
+      if (valid.length === 0) {
+        setWarning(`<strong>Nenhum usuário válido encontrado.</strong><br/>Use apenas letras minúsculas, números e underscore. Ex: <code>joao_silva</code>`);
+        if (editor) editor.setValue("-- Nenhum usuário válido. Corrija a lista e gere novamente.\n");
+        return;
+      }
+
+      // de-duplicate
+      const unique = Array.from(new Set(valid));
+      const script = buildFullScript(unique);
+
+      if (editor) editor.setValue(script);
+
+      if (invalid.length > 0) {
+        const list = invalid.map(x => `<code>${x.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</code>`).join(", ");
+        setWarning(`<strong>Linhas inválidas ignoradas:</strong> ${list}`);
+      } else {
+        setWarning("");
+      }
+    }
+
+    async function copyScript() {
+      const value = editor ? editor.getValue() : "";
+      if (!value || value.trim().length === 0) return;
+
+      try {
+        await navigator.clipboard.writeText(value);
+        const original = btnCopy.textContent;
+        btnCopy.textContent = "Copiado!";
+        setTimeout(() => (btnCopy.textContent = original), 1100);
+      } catch (e) {
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = value;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        const original = btnCopy.textContent;
+        btnCopy.textContent = "Copiado!";
+        setTimeout(() => (btnCopy.textContent = original), 1100);
+      }
+    }
+
+    btnGenerate.addEventListener("click", generate);
+    btnCopy.addEventListener("click", copyScript);
+    btnClear.addEventListener("click", () => {
+      inputEl.value = "";
+      setWarning("");
+      if (editor) editor.setValue("-- Gere o script para ver o resultado aqui.\n");
+      inputEl.focus();
+    });
+
+    btnLoadExample.addEventListener("click", () => {
+      inputEl.value = "joao_silva\nmarcio_santos\n";
+      setWarning("");
+      inputEl.focus();
+    });
+
+    // Generate on Ctrl/Cmd+Enter
+    document.addEventListener("keydown", (e) => {
+      const isMac = navigator.platform.toUpperCase().includes("MAC");
+      const mod = isMac ? e.metaKey : e.ctrlKey;
+      if (mod && e.key === "Enter") {
+        e.preventDefault();
+        generate();
+      }
+    });
+
+    // Init
+    initMonaco();
+  </script>
+</body>
+</html>
