@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Gerador de XML Draw.io (mxGraphModel)</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="app">
+        <header class="topbar">
+            <div class="title">
+                <h1>Excel → XML (Draw.io)</h1>
+                <p>Cole a planilha (TSV) e gere o XML por linha.</p>
+            </div>
+
+            <div class="controls">
+                <div class="field">
+                    <label for="search">Pesquisar</label>
+                    <input id="search" type="text" placeholder="Digite para filtrar..." autocomplete="off" />
+                </div>
+
+                <div class="field">
+                    <label>Colar Excel (substitui e salva)</label>
+                    <div id="pasteBox" class="paste-box" tabindex="0" role="textbox"
+                        aria-label="Área para colar conteúdo do Excel">
+                        <div class="paste-box__hint">
+                            Clique aqui e cole (Ctrl+V) o conteúdo copiado do Excel.<br />
+                            (Primeira linha deve ser o cabeçalho.)
+                        </div>
+                        <div class="paste-box__meta" id="pasteMeta"></div>
+                    </div>
+                    <div class="paste-actions">
+                        <button id="clearBtn" class="btn btn-ghost" type="button">Limpar</button>
+                        <button id="loadSampleBtn" class="btn btn-ghost" type="button">Carregar exemplo</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="content">
+            <div class="statusbar">
+                <div id="rowsInfo">0 linhas</div>
+                <div id="toast" class="toast" aria-live="polite"></div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="grid" id="grid">
+                    <thead id="gridHead"></thead>
+                    <tbody id="gridBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+:root{
+  --bg: #0b0f19;
+  --panel: #111827;
+  --panel2: #0f172a;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: rgba(255,255,255,.10);
+  --accent: #a78bfa;
+  --accent2: #60a5fa;
+  --danger: #ef4444;
+}
+
+*{ box-sizing: border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  background: radial-gradient(1200px 600px at 15% 0%, rgba(167,139,250,.20), transparent 60%),
+              radial-gradient(900px 500px at 85% 0%, rgba(96,165,250,.15), transparent 55%),
+              var(--bg);
+  color: var(--text);
+}
+
+.app{ max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+.topbar{
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  display:flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.title h1{ margin:0; font-size: 18px; letter-spacing: .2px; }
+.title p{ margin:6px 0 0; color: var(--muted); font-size: 13px; }
+
+.controls{
+  display:flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.field{ display:flex; flex-direction: column; gap: 6px; min-width: 280px; }
+.field label{ font-size: 12px; color: var(--muted); }
+
+input[type="text"]{
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: var(--text);
+  outline: none;
+}
+input[type="text"]:focus{
+  border-color: rgba(167,139,250,.6);
+  box-shadow: 0 0 0 3px rgba(167,139,250,.18);
+}
+
+.paste-box{
+  background: rgba(255,255,255,.03);
+  border: 1px dashed rgba(255,255,255,.25);
+  border-radius: 12px;
+  padding: 12px;
+  min-height: 72px;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+}
+.paste-box:focus{
+  border-color: rgba(96,165,250,.75);
+  box-shadow: 0 0 0 3px rgba(96,165,250,.16);
+}
+.paste-box__hint{
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+.paste-box__meta{
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(229,231,235,.9);
+}
+
+.paste-actions{
+  margin-top: 8px;
+  display:flex;
+  gap: 8px;
+}
+
+.btn{
+  background: rgba(167,139,250,.18);
+  border: 1px solid rgba(167,139,250,.35);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 9px 11px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.btn:hover{ border-color: rgba(167,139,250,.55); }
+.btn:active{ transform: translateY(1px); }
+
+.btn-ghost{
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover{ border-color: rgba(255,255,255,.18); }
+
+.content{
+  margin-top: 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.statusbar{
+  padding: 10px 12px;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.toast{ color: rgba(229,231,235,.95); }
+
+.table-wrap{
+  width: 100%;
+  overflow: auto;
+}
+
+.grid{
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.grid thead th{
+  position: sticky;
+  top: 0;
+  background: rgba(15,23,42,.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 10px;
+  text-align: left;
+  font-size: 12px;
+  color: rgba(229,231,235,.9);
+  white-space: nowrap;
+}
+
+.grid tbody td{
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 9px 10px;
+  font-size: 13px;
+  color: rgba(229,231,235,.95);
+  vertical-align: top;
+}
+
+.grid tbody tr:hover td{
+  background: rgba(255,255,255,.03);
+}
+
+.badge{
+  display:inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  color: rgba(229,231,235,.9);
+}
+
+.actions{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+}
+
+.small{
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.code{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  color: rgba(229,231,235,.92);
+}

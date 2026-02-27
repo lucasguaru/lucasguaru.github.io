@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Redis List Animation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+            text-align: center;
+        }
+
+        #list {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .item {
+            padding: 12px 20px;
+            background: #3498db;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 18px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 280px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Redis List Animation (LPUSH / RPUSH / LPOP / RPOP)</h1>
+
+    <div>
+        <input id="value" placeholder="Digite valores separados por vírgula (ex: 1,2,3)">
+    </div>
+
+    <div>
+        <button onclick="lpush()">LPUSH</button>
+        <button onclick="rpush()">RPUSH</button>
+        <button onclick="lpop()">LPOP</button>
+        <button onclick="rpop()">RPOP</button>
+    </div>
+
+    <div id="list"></div>
+
+    <script>
+        function parseValues() {
+            const raw = document.getElementById("value").value;
+            if (!raw.trim()) return [];
+
+            return raw.split(",").map(v => v.trim()).filter(v => v !== "");
+        }
+
+        function createItem(value) {
+            const div = document.createElement("div");
+            div.className = "item";
+            div.textContent = value;
+            return div;
+        }
+
+        function animateInsert(item, direction) {
+            anime({
+                targets: item,
+                translateX: direction === "left" ? [-50, 0] : [50, 0],
+                opacity: [0, 1],
+                duration: 500,
+                easing: "easeOutExpo"
+            });
+        }
+
+        function lpush() {
+            const values = parseValues();
+            const list = document.getElementById("list");
+            values.forEach(value => {
+                const item = createItem(value);
+                list.prepend(item);
+                animateInsert(item, "left");
+            });
+        }
+
+        function rpush() {
+            const values = parseValues();
+            const list = document.getElementById("list");
+            values.forEach(value => {
+                const item = createItem(value);
+                list.append(item);
+                animateInsert(item, "right");
+            });
+        }
+
+        function lpop() {
+            const list = document.getElementById("list");
+            if (list.firstChild) {
+                const item = list.firstChild;
+                anime({
+                    targets: item,
+                    translateX: [-50],
+                    opacity: 0,
+                    duration: 500,
+                    easing: "easeInExpo",
+                    complete: () => item.remove()
+                });
+            }
+        }
+
+        function rpop() {
+            const list = document.getElementById("list");
+            if (list.lastChild) {
+                const item = list.lastChild;
+                anime({
+                    targets: item,
+                    translateX: [50],
+                    opacity: 0,
+                    duration: 500,
+                    easing: "easeInExpo",
+                    complete: () => item.remove()
+                });
+            }
+        }
+    </script>
+
+</body>
+
+</html>

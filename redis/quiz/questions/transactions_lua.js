@@ -1,0 +1,1 @@
+export const TRANSACTION_LUA_QUESTIONS = [];
