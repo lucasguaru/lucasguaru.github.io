@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Gabarito — Ciências</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="print.css" />
+</head>
+
+<body class="print-page">
+  <div class="print-shell">
+    <div class="print-controls no-print">
+      <h1>Gabarito</h1>
+      <p id="gabarito-hint">Carregando gabarito…</p>
+
+      <div class="control-buttons">
+        <button type="button" id="print-gabarito-btn" class="btn btn-primary">
+          Imprimir gabarito
+        </button>
+        <a class="btn btn-secondary" href="prova-imprimir.html">Gerar nova prova</a>
+        <a class="btn btn-outline" href="index.html">Quiz online</a>
+      </div>
+
+      <p class="hint">
+        Gabaritos fixos:
+        <a href="?model=1">Modelo 1</a> ·
+        <a href="?model=2">Modelo 2</a> ·
+        <a href="?full=1">Completo (16)</a>
+      </p>
+    </div>
+
+    <div id="gabarito-container"></div>
+  </div>
+
+  <script type="module">
+    import {
+      getQuestionsByModel,
+      getAllQuestions,
+      loadExamSession,
+      resolveQuestionsFromSession,
+      renderGabaritoDocument,
+    } from "./print.js";
+
+    const container = document.getElementById("gabarito-container");
+    const hint = document.getElementById("gabarito-hint");
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    const model = params.get("model");
+    const full = params.get("full");
+
+    let title = "Ciências 4º Ano";
+    let questions = [];
+    let examCode = null;
+
+    if (code) {
+      const session = loadExamSession(code);
+      if (session) {
+        questions = resolveQuestionsFromSession(session);
+        title = session.title || title;
+        examCode = code;
+        hint.textContent = `Gabarito da prova com código ${code}.`;
+      } else {
+        hint.textContent = `Código "${code}" não encontrado. Gere a prova novamente em "Prova para Imprimir" (mesma aba do navegador).`;
+      }
+    } else if (model === "1" || model === "2") {
+      questions = getQuestionsByModel(Number(model));
+      title = `Modelo ${model}`;
+      hint.textContent = `Gabarito fixo do Modelo ${model}.`;
+    } else if (full === "1") {
+      questions = getAllQuestions();
+      title = "Simulado Completo (16 questões)";
+      hint.textContent = "Gabarito de todas as 16 questões.";
+    } else {
+      hint.textContent = "Escolha um gabarito fixo abaixo ou abra pelo código da prova aleatória.";
+    }
+
+    if (questions.length) {
+      renderGabaritoDocument(container, { title, questions, examCode });
+    } else if (!code) {
+      container.innerHTML = `
+        <div class="gabarito-document">
+          <p style="text-align:center;color:#666;">
+            Nenhum gabarito selecionado. Use os links acima ou gere uma prova aleatória em
+            <a href="prova-imprimir.html">Prova para Imprimir</a>.
+          </p>
+        </div>
+      `;
+    }
+
+    document.getElementById("print-gabarito-btn").addEventListener("click", () => window.print());
+  </script>
+</body>
+
+</html>
