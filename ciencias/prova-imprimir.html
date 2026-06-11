@@ -17,6 +17,8 @@
         Imprima a prova primeiro; o gabarito fica em página separada.
       </p>
 
+      <div id="font-picker-container"></div>
+
       <div class="control-buttons">
         <button type="button" class="btn btn-primary" data-mode="model" data-model="1">
           Modelo 1
@@ -50,6 +52,7 @@
 
   <script type="module">
     import { buildAndShowExam } from "./print.js";
+    import { appendFontToUrl, initPrintFontPicker } from "./print-fonts.js";
 
     const container = document.getElementById("exam-container");
     const printBtn = document.getElementById("print-exam-btn");
@@ -57,6 +60,16 @@
     const examStatus = document.getElementById("exam-status");
 
     let currentExam = null;
+    let gabaritoBaseUrl = "gabarito.html";
+
+    function updateGabaritoLink() {
+      if (gabaritoLink.style.pointerEvents === "none") return;
+      gabaritoLink.href = appendFontToUrl(gabaritoBaseUrl);
+    }
+
+    initPrintFontPicker(document.getElementById("font-picker-container"), {
+      onChange: updateGabaritoLink,
+    });
 
     document.querySelectorAll("[data-mode]").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -72,16 +85,16 @@
         printBtn.disabled = false;
 
         if (currentExam.examCode) {
-          gabaritoLink.href = `gabarito.html?code=${currentExam.examCode}`;
-          gabaritoLink.style.pointerEvents = "";
-          gabaritoLink.style.opacity = "";
+          gabaritoBaseUrl = `gabarito.html?code=${currentExam.examCode}`;
           examStatus.textContent = `Prova gerada! Código: ${currentExam.examCode} — imprima a prova e abra o gabarito pelo código.`;
         } else {
-          gabaritoLink.href = `gabarito.html?model=${modelNumber}`;
-          gabaritoLink.style.pointerEvents = "";
-          gabaritoLink.style.opacity = "";
+          gabaritoBaseUrl = `gabarito.html?model=${modelNumber}`;
           examStatus.textContent = `Modelo ${modelNumber} pronto. Imprima a prova e abra o gabarito do modelo ${modelNumber}.`;
         }
+
+        gabaritoLink.href = appendFontToUrl(gabaritoBaseUrl);
+        gabaritoLink.style.pointerEvents = "";
+        gabaritoLink.style.opacity = "";
       });
     });
 
