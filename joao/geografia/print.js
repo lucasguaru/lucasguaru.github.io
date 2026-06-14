@@ -1,4 +1,4 @@
-import { BASE_QUESTIONS, STUDENT_NAME } from "./questions.js";
+import { BASE_QUESTIONS, DISSERTATIVE_QUESTIONS, STUDENT_NAME } from "./questions.js";
 
 const SESSION_PREFIX = "geografiaPrintExam_";
 
@@ -26,6 +26,10 @@ export function getRandomQuestions(count) {
 
 export function getAllQuestions() {
   return BASE_QUESTIONS.filter((q) => q.id.startsWith("m1-") || q.id.startsWith("m2-"));
+}
+
+export function getDissertativeQuestions() {
+  return DISSERTATIVE_QUESTIONS.slice();
 }
 
 export function generateExamCode() {
@@ -58,6 +62,13 @@ export function resolveQuestionsFromSession(session) {
   if (!session?.questionIds?.length) return [];
   const map = new Map(BASE_QUESTIONS.map((q) => [q.id, q]));
   return session.questionIds.map((id) => map.get(id)).filter(Boolean);
+}
+
+export function resolveDissertativesFromSession(session) {
+  if (session?.includeDissertative === false) return [];
+  if (!session?.dissertativeIds?.length) return getDissertativeQuestions();
+  const map = new Map(DISSERTATIVE_QUESTIONS.map((q) => [q.id, q]));
+  return session.dissertativeIds.map((id) => map.get(id)).filter(Boolean);
 }
 
 function escapeHtml(text) {
@@ -97,9 +108,44 @@ function renderQuestionHtml(question, index) {
   `;
 }
 
-export function renderExamDocument(container, { title, subtitle, questions, examCode }) {
-  const totalPoints = questions.length;
+function renderDissertativeHtml(question, index) {
+  const answerLines = Array.from({ length: 5 }, () => '<div class="answer-line"></div>').join("");
+
+  return `
+    <article class="exam-question exam-question-dissertative">
+      <div class="exam-question-number">${index})</div>
+      <p class="exam-question-text">${escapeHtml(question.questionText)}</p>
+      <div class="answer-lines">${answerLines}</div>
+    </article>
+  `;
+}
+
+function buildValueLine(questions, dissertatives) {
+  const objectivePoints = questions.length;
+  const dissertativePoints = dissertatives.reduce((sum, q) => sum + (q.points || 1), 0);
+  const total = objectivePoints + dissertativePoints;
+
+  if (!dissertatives.length) {
+    return `Valor: ${objectivePoints} pontos (1 ponto cada questão)`;
+  }
+
+  return `Valor: ${total} pontos (${objectivePoints} objetivas + ${dissertativePoints} dissertativas)`;
+}
+
+export function renderExamDocument(
+  container,
+  { title, subtitle, questions, dissertatives = [], examCode }
+) {
   const questionsHtml = questions.map((q, i) => renderQuestionHtml(q, i)).join("");
+  const dissertativeStart = questions.length + 1;
+  const dissertativesHtml = dissertatives.length
+    ? `
+      <h3 class="exam-section-title">Questões Dissertativas</h3>
+      ${dissertatives
+        .map((q, i) => renderDissertativeHtml(q, dissertativeStart + i))
+        .join("")}
+    `
+    : "";
 
   container.innerHTML = `
     <div class="exam-document">
@@ -111,10 +157,12 @@ export function renderExamDocument(container, { title, subtitle, questions, exam
           <span>Data: ____ / ____ / ______</span>
         </div>
       </header>
-      <p class="exam-value">Valor: ${totalPoints} pontos (1 ponto cada questão)</p>
+      <p class="exam-value">${buildValueLine(questions, dissertatives)}</p>
       ${subtitle ? `<p class="exam-value exam-subtitle">${escapeHtml(subtitle)}</p>` : ""}
       <section class="exam-body">
+        ${questions.length ? '<h3 class="exam-section-title">Questões Objetivas</h3>' : ""}
         ${questionsHtml}
+        ${dissertativesHtml}
       </section>
       <footer class="exam-footer">
         ${examCode ? `Código da prova: <strong>${examCode}</strong> — use este código para abrir o gabarito correspondente.` : ""}
@@ -123,7 +171,10 @@ export function renderExamDocument(container, { title, subtitle, questions, exam
   `;
 }
 
-export function renderGabaritoDocument(container, { title, questions, examCode }) {
+export function renderGabaritoDocument(
+  container,
+  { title, questions, dissertatives = [], examCode }
+) {
   const itemsHtml = questions
     .map((question, index) => {
       const letter = optionLetter(question.correctOptionIndex);
@@ -139,6 +190,23 @@ export function renderGabaritoDocument(container, { title, questions, examCode }
     })
     .join("");
 
+  const dissertativeStart = questions.length + 1;
+  const dissertativesHtml = dissertatives.length
+    ? `
+      <h2 class="gabarito-section-title">Sugestão de Resposta — Dissertativas</h2>
+      ${dissertatives
+        .map(
+          (question, index) => `
+        <article class="gabarito-item gabarito-item-dissertative">
+          <h3>${dissertativeStart + index}) ${escapeHtml(question.tema)}</h3>
+          <p class="gabarito-explanation">${escapeHtml(question.explicacao)}</p>
+        </article>
+      `
+        )
+        .join("")}
+    `
+    : "";
+
   container.innerHTML = `
     <div class="gabarito-document">
       <header class="gabarito-title">
@@ -146,7 +214,11 @@ export function renderGabaritoDocument(container, { title, questions, examCode }
         ${examCode ? `<div class="gabarito-code-banner">Código da prova: <strong>${examCode}</strong></div>` : ""}
         <p><em>Somente para correção (papai/mamãe)</em></p>
       </header>
-      <section>${itemsHtml}</section>
+      <section>
+        ${questions.length ? '<h2 class="gabarito-section-title">Questões Objetivas</h2>' : ""}
+        ${itemsHtml}
+        ${dissertativesHtml}
+      </section>
     </div>
   `;
 }
@@ -155,19 +227,22 @@ export function buildAndShowExam(container, { mode, modelNumber, count, title, s
   let questions;
   let examTitle = title;
   let examSubtitle = subtitle || "";
+  const dissertatives = getDissertativeQuestions();
 
   if (mode === "model") {
     questions = getQuestionsByModel(modelNumber);
     examTitle = examTitle || `Prova – Modelo ${modelNumber}`;
+    examSubtitle = examSubtitle || "8 questões objetivas + 2 dissertativas";
   } else if (mode === "random") {
     questions = getRandomQuestions(count || 8);
     examTitle = examTitle || "Prova – Simulado Aleatório";
     examSubtitle =
-      examSubtitle || `${questions.length} questões sorteadas do banco completo`;
+      examSubtitle ||
+      `${questions.length} questões objetivas sorteadas + 2 dissertativas`;
   } else if (mode === "full") {
     questions = getAllQuestions();
     examTitle = examTitle || "Prova – Simulado Completo";
-    examSubtitle = examSubtitle || "16 questões — Modelos 1 e 2";
+    examSubtitle = examSubtitle || "16 questões objetivas + 2 dissertativas";
   } else {
     questions = [];
   }
@@ -178,6 +253,8 @@ export function buildAndShowExam(container, { mode, modelNumber, count, title, s
     saveExamSession(examCode, {
       title: examTitle,
       questionIds: questions.map((q) => q.id),
+      dissertativeIds: dissertatives.map((q) => q.id),
+      includeDissertative: true,
     });
   }
 
@@ -185,8 +262,9 @@ export function buildAndShowExam(container, { mode, modelNumber, count, title, s
     title: examTitle,
     subtitle: examSubtitle,
     questions,
+    dissertatives,
     examCode,
   });
 
-  return { questions, examCode, title: examTitle };
+  return { questions, dissertatives, examCode, title: examTitle };
 }

@@ -10,6 +10,7 @@ import { BASE_QUESTIONS, CONFIG, STUDENT_NAME } from "./questions.js";
   const resultScreen = document.getElementById("result-screen");
 
   const studentNameLabel = document.getElementById("student-name-label");
+  const examDeadlineLabel = document.getElementById("exam-deadline-label");
   const streakRequiredLabel = document.getElementById("streak-required-label");
   const passScoreLabel = document.getElementById("pass-score-label");
   const streakCountEl = document.getElementById("streak-count");
@@ -63,6 +64,36 @@ import { BASE_QUESTIONS, CONFIG, STUDENT_NAME } from "./questions.js";
 
   function todayKey() {
     return new Date().toISOString().slice(0, 10);
+  }
+
+  function renderExamDeadline() {
+    if (!CONFIG.examDate) {
+      examDeadlineLabel.textContent = "";
+      examDeadlineLabel.classList.add("hidden");
+      return;
+    }
+
+    const today = new Date(todayKey() + "T12:00:00");
+    const examDay = new Date(CONFIG.examDate + "T12:00:00");
+    const diffMs = examDay.getTime() - today.getTime();
+    const daysLeft = Math.round(diffMs / (1000 * 60 * 60 * 24));
+    const formattedDate = examDay.toLocaleDateString("pt-BR", {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+    });
+
+    let urgency = "";
+    if (daysLeft <= 0) {
+      urgency = "Prova hoje — último treino!";
+    } else if (daysLeft === 1) {
+      urgency = "Prova amanhã — foco total!";
+    } else {
+      urgency = `Faltam ${daysLeft} dias para a prova`;
+    }
+
+    examDeadlineLabel.textContent = `${urgency} · ${formattedDate}`;
+    examDeadlineLabel.classList.remove("hidden");
   }
 
   function loadPersistState() {
@@ -413,6 +444,7 @@ import { BASE_QUESTIONS, CONFIG, STUDENT_NAME } from "./questions.js";
 
   finishBtn.addEventListener("click", finishRound);
 
+  renderExamDeadline();
   renderGamificationPanel();
   renderHistory();
   showView(homeScreen);

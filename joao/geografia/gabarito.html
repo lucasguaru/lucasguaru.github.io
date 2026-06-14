@@ -39,8 +39,10 @@
     import {
       getQuestionsByModel,
       getAllQuestions,
+      getDissertativeQuestions,
       loadExamSession,
       resolveQuestionsFromSession,
+      resolveDissertativesFromSession,
       renderGabaritoDocument,
     } from "./print.js";
     import { initPrintFontPicker, PRINT_FONTS } from "./print-fonts.js";
@@ -61,32 +63,35 @@
 
     let title = "Geografia 4º Ano";
     let questions = [];
+    let dissertatives = getDissertativeQuestions();
     let examCode = null;
 
     if (code) {
       const session = loadExamSession(code);
       if (session) {
         questions = resolveQuestionsFromSession(session);
+        dissertatives = resolveDissertativesFromSession(session);
         title = session.title || title;
         examCode = code;
-        hint.textContent = `Gabarito da prova com código ${code}.`;
+        hint.textContent = `Gabarito da prova com código ${code} (objetivas + dissertativas).`;
       } else {
         hint.textContent = `Código "${code}" não encontrado. Gere a prova novamente em "Prova para Imprimir" (mesma aba do navegador).`;
       }
     } else if (model === "1" || model === "2") {
       questions = getQuestionsByModel(Number(model));
       title = `Modelo ${model}`;
-      hint.textContent = `Gabarito fixo do Modelo ${model}.`;
+      hint.textContent = `Gabarito fixo do Modelo ${model} (8 objetivas + 2 dissertativas).`;
     } else if (full === "1") {
       questions = getAllQuestions();
       title = "Simulado Completo (16 questões)";
-      hint.textContent = "Gabarito de todas as 16 questões (Modelos 1 e 2).";
+      hint.textContent = "Gabarito de 16 questões objetivas + 2 dissertativas.";
     } else {
       hint.textContent = "Escolha um gabarito fixo abaixo ou abra pelo código da prova aleatória.";
+      dissertatives = [];
     }
 
     if (questions.length) {
-      renderGabaritoDocument(container, { title, questions, examCode });
+      renderGabaritoDocument(container, { title, questions, dissertatives, examCode });
     } else if (!code) {
       container.innerHTML = `
         <div class="gabarito-document">

@@ -1,11 +1,36 @@
 export const STUDENT_NAME = "João Lucas Fabiano";
 
 export const CONFIG = {
+  studentAge: 9,
+  grade: "4º ano EF",
+  subject: "Geografia",
+  examDate: "2026-06-17",
   questionsPerRound: 8,
   passScore: 7,
   streakRequired: 3,
   maxHearts: 3,
 };
+
+export const DISSERTATIVE_QUESTIONS = [
+  {
+    id: "diss-q1",
+    tema: "Participação cidadã",
+    questionText:
+      "Explique com suas palavras por que é importante que os cidadãos participem da vida do município e acompanhem as ações do governo.",
+    explicacao:
+      "Espera-se que o aluno explique que a participação dos cidadãos ajuda a melhorar o município, fiscalizar os governantes, apresentar sugestões, acompanhar os gastos públicos e garantir que os direitos da população sejam respeitados.",
+    points: 1,
+  },
+  {
+    id: "diss-q2",
+    tema: "Cidadania no dia a dia",
+    questionText:
+      "Cite duas atitudes que demonstram cidadania e explique por que elas são importantes para a convivência em comunidade.",
+    explicacao:
+      "Exemplos: respeitar espaços públicos, separar lixo para reciclagem, cuidar dos animais, participar do grêmio estudantil, respeitar regras da escola ou acompanhar ações do governo. O aluno deve explicar que essas atitudes ajudam na convivência, no respeito ao próximo e na construção de uma sociedade melhor.",
+    points: 1,
+  },
+];
 
 export const BASE_QUESTIONS = [
   // —— Modelo 1 (questões 1–8) ——

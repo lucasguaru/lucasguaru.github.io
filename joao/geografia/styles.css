@@ -73,6 +73,17 @@ body {
   font-size: 1rem;
 }
 
+.exam-deadline {
+  margin: 10px 0 0;
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(217, 119, 6, 0.14);
+  color: #92400e;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
 .layout {
   display: grid;
   grid-template-columns: 1fr;

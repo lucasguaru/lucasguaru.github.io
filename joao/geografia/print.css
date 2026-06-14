@@ -183,6 +183,24 @@ body.print-page {
   font-style: italic;
 }
 
+.exam-section-title {
+  margin: 28px 0 16px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid #000;
+  padding-bottom: 6px;
+}
+
+.gabarito-section-title {
+  margin: 24px 0 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
 .exam-question {
   margin-bottom: 22px;
   break-inside: avoid;
@@ -228,6 +246,16 @@ body.print-page {
   margin: 6px 0 0 8px;
   font-size: 0.9rem;
   color: #444;
+}
+
+.exam-question-dissertative .answer-lines {
+  margin-top: 12px;
+}
+
+.answer-line {
+  border-bottom: 1px solid #000;
+  height: 28px;
+  margin-bottom: 6px;
 }
 
 .exam-footer {
