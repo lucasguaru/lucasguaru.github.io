@@ -11,8 +11,8 @@
 <body class="print-page">
   <div class="print-shell">
     <div class="print-controls no-print">
-      <h1>Gabarito</h1>
-      <p id="gabarito-hint">Carregando gabarito…</p>
+      <h1>Gabarito — Geografia</h1>
+      <p id="gabarito-hint">Carregando gabarito de Geografia…</p>
 
       <div id="font-picker-container"></div>
 
@@ -28,82 +28,124 @@
         Gabaritos fixos:
         <a href="?model=1">Modelo 1</a> ·
         <a href="?model=2">Modelo 2</a> ·
-        <a href="?full=1">Completo (16)</a>
+        <a href="?model=3">Modelo 3 (V/F + Dissertativas)</a> ·
+        <a href="?complete=1">Gabarito completo (todos os modelos)</a>
       </p>
+      <p id="gabarito-error" class="exam-error no-print hidden"></p>
     </div>
 
     <div id="gabarito-container"></div>
   </div>
 
   <script type="module">
-    import {
-      getQuestionsByModel,
-      getAllQuestions,
-      getDissertativeQuestions,
-      loadExamSession,
-      resolveQuestionsFromSession,
-      resolveDissertativesFromSession,
-      renderGabaritoDocument,
-    } from "./print.js";
-    import { initPrintFontPicker, PRINT_FONTS } from "./print-fonts.js";
+    const APP_VERSION = "5";
 
-    const container = document.getElementById("gabarito-container");
-    const hint = document.getElementById("gabarito-hint");
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-    const model = params.get("model");
-    const full = params.get("full");
-    const fontParam = params.get("font");
-    const initialFontId =
-      fontParam && PRINT_FONTS.some((font) => font.id === fontParam) ? fontParam : undefined;
+    function showError(message) {
+      const errorEl = document.getElementById("gabarito-error");
+      errorEl.textContent = message;
+      errorEl.classList.remove("hidden");
+      document.getElementById("gabarito-hint").textContent = "Não foi possível carregar o gabarito.";
+    }
 
-    initPrintFontPicker(document.getElementById("font-picker-container"), {
-      initialFontId,
-    });
-
-    let title = "Geografia 4º Ano";
-    let questions = [];
-    let dissertatives = getDissertativeQuestions();
-    let examCode = null;
-
-    if (code) {
-      const session = loadExamSession(code);
-      if (session) {
-        questions = resolveQuestionsFromSession(session);
-        dissertatives = resolveDissertativesFromSession(session);
-        title = session.title || title;
-        examCode = code;
-        hint.textContent = `Gabarito da prova com código ${code} (objetivas + dissertativas).`;
-      } else {
-        hint.textContent = `Código "${code}" não encontrado. Gere a prova novamente em "Prova para Imprimir" (mesma aba do navegador).`;
-      }
-    } else if (model === "1" || model === "2") {
-      questions = getQuestionsByModel(Number(model));
-      title = `Modelo ${model}`;
-      hint.textContent = `Gabarito fixo do Modelo ${model} (8 objetivas + 2 dissertativas).`;
-    } else if (full === "1") {
-      questions = getAllQuestions();
-      title = "Simulado Completo (16 questões)";
-      hint.textContent = "Gabarito de 16 questões objetivas + 2 dissertativas.";
+    if (location.protocol === "file:") {
+      showError(
+        "Abra com servidor local: python -m http.server 8080 na pasta geografia, depois http://localhost:8080/gabarito.html"
+      );
     } else {
-      hint.textContent = "Escolha um gabarito fixo abaixo ou abra pelo código da prova aleatória.";
-      dissertatives = [];
-    }
+      try {
+        const [
+          {
+            getQuestionsByModel,
+            getAllQuestions,
+            getDissertativeQuestions,
+            loadExamSession,
+            resolveQuestionsFromSession,
+            resolveDissertativesFromSession,
+            renderGabaritoDocument,
+            renderCompleteGabaritoDocument,
+          },
+          { initPrintFontPicker, PRINT_FONTS },
+        ] = await Promise.all([
+          import(`./print.js?v=${APP_VERSION}`),
+          import(`./print-fonts.js?v=${APP_VERSION}`),
+        ]);
 
-    if (questions.length) {
-      renderGabaritoDocument(container, { title, questions, dissertatives, examCode });
-    } else if (!code) {
-      container.innerHTML = `
-        <div class="gabarito-document">
-          <p style="text-align:center;color:#666;">
-            Nenhum gabarito selecionado. Use os links acima ou gere uma prova aleatória em
-            <a href="prova-imprimir.html">Prova para Imprimir</a>.
-          </p>
-        </div>
-      `;
-    }
+        const container = document.getElementById("gabarito-container");
+        const hint = document.getElementById("gabarito-hint");
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get("code");
+        const model = params.get("model");
+        const complete = params.get("complete");
+        const full = params.get("full");
+        const fontParam = params.get("font");
+        const initialFontId =
+          fontParam && PRINT_FONTS.some((font) => font.id === fontParam) ? fontParam : undefined;
 
-    document.getElementById("print-gabarito-btn").addEventListener("click", () => window.print());
+        initPrintFontPicker(document.getElementById("font-picker-container"), {
+          initialFontId,
+        });
+
+        let title = "Modelo";
+        let questions = [];
+        let dissertatives = getDissertativeQuestions();
+        let examCode = null;
+        let layout = "default";
+
+        if (code) {
+          const session = loadExamSession(code);
+          if (session) {
+            questions = resolveQuestionsFromSession(session);
+            dissertatives = resolveDissertativesFromSession(session);
+            title = session.title?.replace(/^Prova – /, "") || "Simulado Aleatório";
+            layout = session.layout || "default";
+            examCode = code;
+            hint.textContent = `Gabarito de Geografia — prova ${code} (objetivas + dissertativas).`;
+          } else {
+            hint.textContent = `Código "${code}" não encontrado. Gere a prova novamente em "Prova para Imprimir" (mesma aba do navegador).`;
+          }
+        } else if (model === "1" || model === "2") {
+          questions = getQuestionsByModel(Number(model));
+          title = `Modelo ${model}`;
+          hint.textContent = `Gabarito de Geografia — Modelo ${model} (8 objetivas + 2 dissertativas).`;
+        } else if (model === "3") {
+          questions = getQuestionsByModel(3);
+          layout = "model3";
+          title = "Modelo 3 — Parte 2 e 3";
+          hint.textContent = "Gabarito de Geografia — Parte 2 (8 V/F) + Parte 3 (2 dissertativas).";
+        } else if (complete === "1") {
+          renderCompleteGabaritoDocument(container);
+          hint.textContent =
+            "Gabarito completo de Geografia — Modelo 1, Modelo 2 e Modelo 3 em uma única impressão.";
+        } else if (full === "1") {
+          questions = getAllQuestions();
+          title = "Simulado Completo (16 questões)";
+          dissertatives = getDissertativeQuestions();
+          hint.textContent = "Gabarito de Geografia — 16 objetivas (Modelos 1 e 2 juntos) + 2 dissertativas.";
+        } else {
+          hint.textContent = "Escolha um gabarito de Geografia abaixo ou abra pelo código da prova aleatória.";
+          dissertatives = [];
+        }
+
+        if (complete === "1") {
+          // já renderizado acima
+        } else if (questions.length) {
+          renderGabaritoDocument(container, { title, questions, dissertatives, examCode, layout });
+        } else if (!code) {
+          container.innerHTML = `
+            <div class="gabarito-document">
+              <p style="text-align:center;color:#666;">
+                Nenhum gabarito selecionado. Use os links acima ou gere uma prova aleatória em
+                <a href="prova-imprimir.html">Prova para Imprimir</a>.
+              </p>
+            </div>
+          `;
+        }
+
+        document.getElementById("print-gabarito-btn").addEventListener("click", () => window.print());
+      } catch (error) {
+        showError(`Erro ao carregar scripts: ${error.message}. Tente Ctrl+F5.`);
+      }
+    }
   </script>
 </body>
 

@@ -141,7 +141,18 @@ import { BASE_QUESTIONS, CONFIG, STUDENT_NAME } from "./questions.js";
     return String.fromCharCode(97 + index);
   }
 
+  function optionLabel(question, index) {
+    if (question.tipo === "vf") {
+      return index === 0 ? "V" : "F";
+    }
+    return `${optionLetter(index)})`;
+  }
+
   function prepareQuestion(question) {
+    if (question.tipo === "vf") {
+      return { ...question };
+    }
+
     const indexed = question.options.map((text, index) => ({ text, index }));
     const shuffled = shuffleArray(indexed);
     const correctOptionIndex = shuffled.findIndex(
@@ -155,7 +166,15 @@ import { BASE_QUESTIONS, CONFIG, STUDENT_NAME } from "./questions.js";
   }
 
   function buildRoundQuestions() {
-    const picked = shuffleArray(BASE_QUESTIONS).slice(0, CONFIG.questionsPerRound);
+    const multipleChoice = BASE_QUESTIONS.filter((q) => q.tipo !== "vf");
+    const trueFalse = BASE_QUESTIONS.filter((q) => q.tipo === "vf");
+    const vfCount = Math.min(CONFIG.vfPerRound ?? 2, trueFalse.length);
+    const mcCount = CONFIG.questionsPerRound - vfCount;
+
+    const pickedVf = shuffleArray(trueFalse).slice(0, vfCount);
+    const pickedMc = shuffleArray(multipleChoice).slice(0, mcCount);
+    const picked = shuffleArray([...pickedMc, ...pickedVf]);
+
     return picked.map(prepareQuestion);
   }
 
@@ -250,7 +269,7 @@ import { BASE_QUESTIONS, CONFIG, STUDENT_NAME } from "./questions.js";
       if (selectedAnswers[currentIndex] === index) {
         btn.classList.add("selected");
       }
-      btn.innerHTML = `<span class="option-label">${optionLetter(index)})</span> ${optionText}`;
+      btn.innerHTML = `<span class="option-label">${optionLabel(question, index)}</span> ${optionText}`;
       btn.addEventListener("click", () => selectOption(index));
       optionsContainerEl.appendChild(btn);
     });

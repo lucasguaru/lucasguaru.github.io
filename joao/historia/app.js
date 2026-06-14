@@ -1,4 +1,4 @@
-import { BASE_QUESTIONS, CONFIG, STUDENT_NAME } from "./questions.js";
+import { QUIZ_QUESTIONS, CONFIG, STUDENT_NAME } from "./questions.js";
 
 (function () {
   "use strict";
@@ -123,7 +123,7 @@ import { BASE_QUESTIONS, CONFIG, STUDENT_NAME } from "./questions.js";
   }
 
   function buildRoundQuestions() {
-    const picked = shuffleArray(BASE_QUESTIONS).slice(0, CONFIG.questionsPerRound);
+    const picked = shuffleArray(QUIZ_QUESTIONS).slice(0, CONFIG.questionsPerRound);
     return picked.map(prepareQuestion);
   }
 

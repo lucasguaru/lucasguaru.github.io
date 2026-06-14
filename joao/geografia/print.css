@@ -65,6 +65,21 @@
   margin: 0;
 }
 
+.exam-error {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.exam-error.hidden {
+  display: none;
+}
+
 .nav-link {
   display: inline-block;
   margin-top: 12px;
@@ -201,6 +216,31 @@ body.print-page {
   letter-spacing: 0.03em;
 }
 
+.gabarito-model-block {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #000;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+.gabarito-model-block:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.gabarito-model-title {
+  margin: 0 0 18px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #666;
+}
+
 .exam-question {
   margin-bottom: 22px;
   break-inside: avoid;
@@ -272,6 +312,36 @@ body.print-page {
   margin-bottom: 24px;
 }
 
+.gabarito-title.exam-header {
+  border-bottom: 2px solid #000;
+  padding-bottom: 16px;
+}
+
+.gabarito-title h1 {
+  margin: 0 0 4px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.gabarito-title h2 {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.gabarito-exam-name {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.gabarito-note {
+  margin: 12px 0 0;
+  font-size: 0.92rem;
+}
+
 .gabarito-item {
   margin-bottom: 16px;
   padding-bottom: 12px;
@@ -310,7 +380,12 @@ body.print-page {
     background: #fff;
   }
 
-  .no-print {
+  .no-print,
+  .print-controls,
+  .font-picker,
+  .exam-error,
+  .nav-link,
+  .hint {
     display: none !important;
   }
 
@@ -320,10 +395,22 @@ body.print-page {
     margin: 0;
   }
 
+  #exam-container,
+  #gabarito-container {
+    display: block !important;
+  }
+
   .exam-document,
   .gabarito-document {
     box-shadow: none;
     padding: 0;
+    display: block !important;
+  }
+
+  .gabarito-code-banner {
+    background: none !important;
+    border: 1px solid #000;
+    border-radius: 0;
   }
 
   @page {

@@ -4,33 +4,13 @@ export const CONFIG = {
   studentAge: 9,
   grade: "4º ano EF",
   subject: "Geografia",
-  examDate: "2026-06-17",
+  examDate: "2026-06-15",
   questionsPerRound: 8,
+  vfPerRound: 2,
   passScore: 7,
   streakRequired: 3,
   maxHearts: 3,
 };
-
-export const DISSERTATIVE_QUESTIONS = [
-  {
-    id: "diss-q1",
-    tema: "Participação cidadã",
-    questionText:
-      "Explique com suas palavras por que é importante que os cidadãos participem da vida do município e acompanhem as ações do governo.",
-    explicacao:
-      "Espera-se que o aluno explique que a participação dos cidadãos ajuda a melhorar o município, fiscalizar os governantes, apresentar sugestões, acompanhar os gastos públicos e garantir que os direitos da população sejam respeitados.",
-    points: 1,
-  },
-  {
-    id: "diss-q2",
-    tema: "Cidadania no dia a dia",
-    questionText:
-      "Cite duas atitudes que demonstram cidadania e explique por que elas são importantes para a convivência em comunidade.",
-    explicacao:
-      "Exemplos: respeitar espaços públicos, separar lixo para reciclagem, cuidar dos animais, participar do grêmio estudantil, respeitar regras da escola ou acompanhar ações do governo. O aluno deve explicar que essas atitudes ajudam na convivência, no respeito ao próximo e na construção de uma sociedade melhor.",
-    points: 1,
-  },
-];
 
 export const BASE_QUESTIONS = [
   // —— Modelo 1 (questões 1–8) ——
@@ -425,10 +405,11 @@ export const BASE_QUESTIONS = [
     explicacao: "Transparência permite fiscalizar se o governo cumpre suas promessas.",
   },
 
-  // —— Verdadeiro ou Falso ——
+  // —— Modelo 3 – Parte 2: Verdadeiro ou Falso (questões 21–28) ——
   {
-    id: "vf-q1",
+    id: "m3-q1",
     tipo: "vf",
+    examNumber: 21,
     tema: "Distritos",
     questionText: "Os distritos são divisões administrativas dos municípios.",
     options: ["Verdadeiro", "Falso"],
@@ -436,8 +417,9 @@ export const BASE_QUESTIONS = [
     explicacao: "Verdadeiro — distritos dividem o município em partes menores.",
   },
   {
-    id: "vf-q2",
+    id: "m3-q2",
     tipo: "vf",
+    examNumber: 22,
     tema: "Poderes municipais",
     questionText: "Os vereadores pertencem ao Poder Judiciário.",
     options: ["Verdadeiro", "Falso"],
@@ -445,8 +427,9 @@ export const BASE_QUESTIONS = [
     explicacao: "Falso — vereadores fazem parte do Poder Legislativo municipal.",
   },
   {
-    id: "vf-q3",
+    id: "m3-q3",
     tipo: "vf",
+    examNumber: 23,
     tema: "Impostos",
     questionText: "Os impostos ajudam a manter serviços públicos.",
     options: ["Verdadeiro", "Falso"],
@@ -454,8 +437,9 @@ export const BASE_QUESTIONS = [
     explicacao: "Verdadeiro — saúde, educação e transporte dependem dessa arrecadação.",
   },
   {
-    id: "vf-q4",
+    id: "m3-q4",
     tipo: "vf",
+    examNumber: 24,
     tema: "ODS",
     questionText:
       "Os ODS têm como objetivo melhorar a qualidade de vida das pessoas e do planeta.",
@@ -464,8 +448,9 @@ export const BASE_QUESTIONS = [
     explicacao: "Verdadeiro — os 17 objetivos tratam de pessoas, sociedade e natureza.",
   },
   {
-    id: "vf-q5",
+    id: "m3-q5",
     tipo: "vf",
+    examNumber: 25,
     tema: "Espaços públicos",
     questionText: "Os espaços públicos devem ser utilizados apenas pelos adultos.",
     options: ["Verdadeiro", "Falso"],
@@ -473,8 +458,9 @@ export const BASE_QUESTIONS = [
     explicacao: "Falso — crianças também têm direito de usar praças, ruas e parques.",
   },
   {
-    id: "vf-q6",
+    id: "m3-q6",
     tipo: "vf",
+    examNumber: 26,
     tema: "Grêmio estudantil",
     questionText:
       "O grêmio estudantil incentiva a participação dos estudantes na vida escolar.",
@@ -483,8 +469,9 @@ export const BASE_QUESTIONS = [
     explicacao: "Verdadeiro — o grêmio representa os alunos e propõe melhorias.",
   },
   {
-    id: "vf-q7",
+    id: "m3-q7",
     tipo: "vf",
+    examNumber: 27,
     tema: "Cidadania",
     questionText:
       "Crianças podem exercer a cidadania por meio de atitudes responsáveis no dia a dia.",
@@ -494,8 +481,9 @@ export const BASE_QUESTIONS = [
       "Verdadeiro — respeitar regras, reciclar e colaborar já são atos de cidadania.",
   },
   {
-    id: "vf-q8",
+    id: "m3-q8",
     tipo: "vf",
+    examNumber: 28,
     tema: "Lei de Acesso à Informação",
     questionText:
       "A Lei de Acesso à Informação permite que os cidadãos acompanhem ações do poder público.",

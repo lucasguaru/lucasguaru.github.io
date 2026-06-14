@@ -195,6 +195,85 @@ body.print-page {
   margin-bottom: 6px;
 }
 
+.exam-part-title {
+  margin: 24px 0 16px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.exam-part-break {
+  margin-top: 32px;
+  page-break-before: auto;
+}
+
+.exam-question-vf .exam-question-text {
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+
+.exam-question-vf .exam-question-number {
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.exam-question-essay {
+  margin-bottom: 28px;
+}
+
+.essay-lines {
+  margin-top: 12px;
+}
+
+.essay-line {
+  border-bottom: 1px solid #000;
+  height: 28px;
+  margin-bottom: 8px;
+}
+
+.gabarito-model-section {
+  margin-bottom: 32px;
+}
+
+.gabarito-model-title {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #000;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #000;
+}
+
+.gabarito-model-desc {
+  margin: 8px 0 16px;
+  font-size: 0.9rem;
+  color: #444;
+  font-style: italic;
+}
+
+@media print {
+  .gabarito-model-break {
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  .gabarito-model-section + .gabarito-model-section {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .gabarito-model-title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+}
+
+.gabarito-item-essay .gabarito-explanation {
+  font-style: normal;
+  line-height: 1.45;
+}
+
 .exam-question-text {
   margin: 0 0 10px;
   line-height: 1.45;
@@ -238,9 +317,52 @@ body.print-page {
   text-align: center;
 }
 
-.gabarito-title {
+.gabarito-screen-subject {
+  margin: -8px 0 16px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #78350f;
+}
+
+.gabarito-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  border-bottom: 2px solid #000;
+  padding-bottom: 16px;
+}
+
+.gabarito-header h1 {
+  margin: 0 0 4px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.gabarito-header h2 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.gabarito-exam-title {
+  margin: 12px 0 6px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.gabarito-code-line {
+  margin: 8px 0 4px;
+  font-size: 0.95rem;
+}
+
+.gabarito-note {
+  margin: 8px 0 0;
+  font-size: 0.9rem;
+}
+
+.gabarito-body {
+  margin-top: 8px;
 }
 
 .gabarito-item {
@@ -295,6 +417,19 @@ body.print-page {
   .gabarito-document {
     box-shadow: none;
     padding: 0;
+  }
+
+  .gabarito-header {
+    border-bottom-color: #000;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .gabarito-header h1,
+  .gabarito-header h2,
+  .gabarito-exam-title,
+  .exam-subject {
+    color: #000 !important;
   }
 
   @page {

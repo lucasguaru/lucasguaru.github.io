@@ -369,3 +369,113 @@ Qual sequência associa cada atividade (1, 2, 3) ao local correto?`,
       "Mina (ouro), Engenho (cana e casa-grande), Cidade (vendas e ofícios) → Mina – Engenho – Cidade.",
   },
 ];
+
+/** Parte II – Verdadeiro ou Falso (também entra no quiz online) */
+export const VF_QUESTIONS = [
+  {
+    id: "m3-vf-q1",
+    tema: "V ou F · Povos africanos",
+    questionType: "vf",
+    questionText: "Os povos africanos tinham diferentes línguas e costumes.",
+    options: ["Verdadeiro", "Falso"],
+    correctOptionIndex: 0,
+    explicacao:
+      "Sim! A África é enorme e reúne muitos povos, cada um com sua língua e tradições.",
+  },
+  {
+    id: "m3-vf-q2",
+    tema: "V ou F · Navios negreiros",
+    questionType: "vf",
+    questionText: "Os navios negreiros ofereciam boas condições de viagem.",
+    options: ["Verdadeiro", "Falso"],
+    correctOptionIndex: 1,
+    explicacao:
+      "Falso. A viagem era longa, apertada, com pouca comida, água e ar — condições terríveis.",
+  },
+  {
+    id: "m3-vf-q3",
+    tema: "V ou F · Tráfico",
+    questionType: "vf",
+    questionText: "Os escravizados eram tratados como mercadorias.",
+    options: ["Verdadeiro", "Falso"],
+    correctOptionIndex: 0,
+    explicacao:
+      "Verdadeiro. Infelizmente eram comprados e vendidos como se fossem objetos.",
+  },
+  {
+    id: "m3-vf-q4",
+    tema: "V ou F · Senzalas",
+    questionType: "vf",
+    questionText: "As senzalas tinham muitos móveis e conforto.",
+    options: ["Verdadeiro", "Falso"],
+    correctOptionIndex: 1,
+    explicacao:
+      "Falso. As senzalas eram barracões simples, apertados e com pouco conforto.",
+  },
+  {
+    id: "m3-vf-q5",
+    tema: "V ou F · Minas",
+    questionType: "vf",
+    questionText: "O trabalho nas minas apresentava riscos, como desmoronamentos.",
+    options: ["Verdadeiro", "Falso"],
+    correctOptionIndex: 0,
+    explicacao:
+      "Verdadeiro. Cavar túneis era perigoso e podia desabar a qualquer momento.",
+  },
+  {
+    id: "m3-vf-q6",
+    tema: "V ou F · Escravos de ganho",
+    questionType: "vf",
+    questionText:
+      "Escravos de ganho podiam guardar parte do dinheiro para tentar comprar sua liberdade.",
+    options: ["Verdadeiro", "Falso"],
+    correctOptionIndex: 0,
+    explicacao:
+      "Verdadeiro. Alguns juntavam dinheiro aos poucos para pagar a própria alforria.",
+  },
+  {
+    id: "m3-vf-q7",
+    tema: "V ou F · Século XIX",
+    questionType: "vf",
+    questionText: "As fotografias do século XIX ajudam a compreender a história do Brasil.",
+    options: ["Verdadeiro", "Falso"],
+    correctOptionIndex: 0,
+    explicacao:
+      "Verdadeiro. Fotos antigas mostram como as pessoas viviam e trabalhavam na época.",
+  },
+  {
+    id: "m3-vf-q8",
+    tema: "V ou F · Leis atuais",
+    questionType: "vf",
+    questionText: "Atualmente, o tráfico de pessoas é permitido pelas leis brasileiras.",
+    options: ["Verdadeiro", "Falso"],
+    correctOptionIndex: 1,
+    explicacao:
+      "Falso. O tráfico de pessoas é crime grave e é proibido pelas leis do Brasil.",
+  },
+];
+
+/** Parte III – Dissertativas (somente Modelo 3 para imprimir) */
+export const ESSAY_QUESTIONS = [
+  {
+    id: "m3-essay-q1",
+    number: 9,
+    tema: "Navios negreiros",
+    questionText:
+      "Explique como era a viagem dos africanos escravizados nos navios negreiros e cite duas dificuldades enfrentadas por eles.",
+    suggestedAnswer:
+      "A viagem era longa e ocorria em condições precárias. Os africanos viajavam apertados, em porões escuros e mal ventilados, recebiam pouca água e comida, e muitos adoeciam ou morriam durante o trajeto.",
+  },
+  {
+    id: "m3-essay-q2",
+    number: 10,
+    tema: "Trabalho escravizado",
+    questionText:
+      "Compare o trabalho das pessoas escravizadas nos engenhos, nas minas e nas cidades. Cite uma atividade realizada em cada um desses lugares.",
+    suggestedAnswer:
+      "Nos engenhos, trabalhavam na lavoura da cana-de-açúcar e em serviços domésticos; nas minas, extraíam ouro e diamantes usando bateias e picaretas; nas cidades, atuavam como vendedores, barbeiros, carregadores e escravos de ganho.",
+  },
+];
+
+/** Banco usado no quiz online (múltipla escolha + V/F) */
+export const QUIZ_QUESTIONS = [...BASE_QUESTIONS, ...VF_QUESTIONS];

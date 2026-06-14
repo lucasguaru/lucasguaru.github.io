@@ -26,6 +26,9 @@
         <button type="button" class="btn btn-primary" data-mode="model" data-model="2">
           Modelo 2
         </button>
+        <button type="button" class="btn btn-primary" data-mode="model" data-model="3">
+          Modelo 3 (V/F + dissertativa)
+        </button>
         <button type="button" class="btn btn-secondary" data-mode="random">
           Simulado aleatório (8)
         </button>
@@ -39,7 +42,7 @@
           Imprimir prova
         </button>
         <a id="gabarito-link" class="btn btn-outline" href="gabarito.html" style="pointer-events:none;opacity:0.5;">
-          Abrir gabarito
+          Abrir gabarito (História)
         </a>
       </div>
 
@@ -93,7 +96,11 @@
           }
         } else {
           gabaritoBaseUrl = `gabarito.html?model=${modelNumber}`;
-          examStatus.textContent = `Modelo ${modelNumber} pronto. Imprima a prova e abra o gabarito do modelo ${modelNumber}.`;
+          const modelLabel =
+            modelNumber === 3
+              ? "Modelo 3 (Partes II e III — 10 questões)"
+              : `Modelo ${modelNumber}`;
+          examStatus.textContent = `${modelLabel} pronto. Imprima a prova e abra o gabarito do modelo ${modelNumber}.`;
         }
 
         gabaritoLink.href = appendFontToUrl(gabaritoBaseUrl);

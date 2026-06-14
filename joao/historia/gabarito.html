@@ -11,13 +11,14 @@
 <body class="print-page">
   <div class="print-shell">
     <div class="print-controls no-print">
-      <h1>Gabarito</h1>
+      <h1>Gabarito — História</h1>
+      <p class="gabarito-screen-subject">História · 4º ano · Aprender Juntos</p>
       <p id="gabarito-hint">Carregando gabarito…</p>
 
       <div id="font-picker-container"></div>
 
       <div class="control-buttons">
-        <button type="button" id="print-gabarito-btn" class="btn btn-primary">
+        <button type="button" id="print-gabarito-btn" class="btn btn-primary" disabled>
           Imprimir gabarito
         </button>
         <a class="btn btn-secondary" href="prova-imprimir.html">Gerar nova prova</a>
@@ -28,7 +29,8 @@
         Gabaritos fixos:
         <a href="?model=1">Modelo 1</a> ·
         <a href="?model=2">Modelo 2</a> ·
-        <a href="?full=1">Completo (26)</a>
+        <a href="?model=3">Modelo 3 (V/F + dissertativa)</a> ·
+        <a href="?all=1"><strong>Gabarito completo (Modelos 1, 2 e 3)</strong></a>
       </p>
     </div>
 
@@ -38,19 +40,21 @@
   <script type="module">
     import {
       getQuestionsByModel,
-      getAllQuestions,
       loadExamSession,
       resolveQuestionsFromSession,
       renderGabaritoDocument,
+      renderModel3GabaritoDocument,
+      renderAllModelsGabaritoDocument,
     } from "./print.js";
     import { initPrintFontPicker, PRINT_FONTS } from "./print-fonts.js";
 
     const container = document.getElementById("gabarito-container");
     const hint = document.getElementById("gabarito-hint");
+    const printBtn = document.getElementById("print-gabarito-btn");
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
     const model = params.get("model");
-    const full = params.get("full");
+    const all = params.get("all");
     const fontParam = params.get("font");
     const initialFontId =
       fontParam && PRINT_FONTS.some((font) => font.id === fontParam) ? fontParam : undefined;
@@ -59,9 +63,11 @@
       initialFontId,
     });
 
-    let title = "História 4º Ano";
+    let title = "História — Gabarito geral";
     let questions = [];
     let examCode = null;
+    let isModel3 = false;
+    let isAllModels = false;
 
     if (code) {
       const session = loadExamSession(code);
@@ -69,36 +75,56 @@
         questions = resolveQuestionsFromSession(session);
         title = session.title || title;
         examCode = code;
-        hint.textContent = `Gabarito da prova com código ${code}.`;
+        hint.textContent = `Gabarito de História · prova com código ${code}.`;
       } else {
         hint.textContent = `Código "${code}" não encontrado. Gere a prova novamente em "Prova para Imprimir" (mesma aba do navegador).`;
       }
+    } else if (all === "1") {
+      isAllModels = true;
+      hint.textContent =
+        "Gabarito completo de História — Modelo 1, Modelo 2 e Modelo 3 em uma única impressão.";
+    } else if (model === "3") {
+      isModel3 = true;
+      title = "História — Modelo 3 (Partes II e III)";
+      hint.textContent = "Gabarito de História · Modelo 3 — V/F (1–8) e dissertativas (9–10).";
     } else if (model === "1" || model === "2") {
       questions = getQuestionsByModel(Number(model));
-      title = `Modelo ${model}`;
-      hint.textContent = `Gabarito fixo do Modelo ${model}.`;
-    } else if (full === "1") {
-      questions = getAllQuestions();
-      title = `Simulado Completo (${questions.length} questões)`;
-      hint.textContent = `Gabarito de todas as ${questions.length} questões.`;
+      title = `História — Modelo ${model}`;
+      hint.textContent = `Gabarito de História · Modelo ${model}.`;
     } else {
-      hint.textContent = "Escolha um gabarito fixo abaixo ou abra pelo código da prova aleatória.";
+      hint.textContent =
+        "Escolha um gabarito fixo abaixo, o gabarito completo ou abra pelo código da prova aleatória.";
     }
 
-    if (questions.length) {
+    if (isAllModels) {
+      renderAllModelsGabaritoDocument(container);
+      printBtn.disabled = false;
+    } else if (isModel3) {
+      renderModel3GabaritoDocument(container, { title });
+      printBtn.disabled = false;
+    } else if (questions.length) {
       renderGabaritoDocument(container, { title, questions, examCode });
+      printBtn.disabled = false;
     } else if (!code) {
       container.innerHTML = `
         <div class="gabarito-document">
+          <header class="gabarito-header">
+            <h1>Gabarito</h1>
+            <h2>História – 4º Ano do Ensino Fundamental</h2>
+            <p class="exam-subject">Livro: Aprender Juntos – História</p>
+          </header>
           <p style="text-align:center;color:#666;">
             Nenhum gabarito selecionado. Use os links acima ou gere uma prova aleatória em
             <a href="prova-imprimir.html">Prova para Imprimir</a>.
           </p>
         </div>
       `;
+      printBtn.disabled = true;
+    } else {
+      printBtn.disabled = true;
     }
 
-    document.getElementById("print-gabarito-btn").addEventListener("click", () => window.print());
+    printBtn.addEventListener("click", () => window.print());
   </script>
 </body>
 
