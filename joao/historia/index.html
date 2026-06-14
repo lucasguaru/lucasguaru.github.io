@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>História – Treino João Lucas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Quiz de História 4º ano – escravidão e tráfico de africanos no Brasil" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="page">
+    <header class="page-header">
+      <span class="badge-top">História · 4º ano</span>
+      <h1>Treino para a Prova</h1>
+      <p class="subtitle">Olá, <strong id="student-name-label">João Lucas Fabiano</strong>! Bora revisar a história do Brasil?</p>
+    </header>
+
+    <main class="layout">
+      <section class="card exam-card">
+        <div id="home-screen" class="view">
+          <h2>Desafio TV</h2>
+          <p>
+            Faça provas com <strong>8 questões aleatórias</strong>. Para liberar a TV,
+            você precisa de <strong id="streak-required-label">3 vitórias seguidas</strong>
+            com pelo menos <strong id="pass-score-label">7 acertos (90%)</strong>.
+          </p>
+
+          <div class="gamification">
+            <div class="stat-grid">
+              <div class="stat-box">
+                <span class="stat-label">Sequência</span>
+                <div class="streak-dots" id="streak-dots" aria-label="Progresso da sequência"></div>
+                <span class="stat-value"><span id="streak-count">0</span>/<span id="streak-total">3</span></span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Corações</span>
+                <div class="hearts" id="hearts-display" aria-label="Corações restantes"></div>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Meta</span>
+                <span class="stat-value">90%</span>
+              </div>
+            </div>
+          </div>
+
+          <ul class="rules-list">
+            <li>Cada rodada sorteia <strong>8 perguntas</strong> diferentes.</li>
+            <li><strong>7 ou mais acertos</strong> = vitória (+1 na sequência).</li>
+            <li>Menos de 7 acertos = sequência zera e você perde <strong>1 coração</strong>.</li>
+            <li><strong id="hearts-rule">3 corações</strong> no dia — sem corações, revise e recupere 1.</li>
+          </ul>
+
+          <div id="tv-unlocked-banner" class="result-banner tv-unlocked hidden">
+            <div class="confetti">🏆 📺 📜</div>
+            <h3>Desafio completo!</h3>
+            <p>Três vitórias seguidas com 90%. TV liberada — papai/mamãe confirma!</p>
+          </div>
+
+          <div id="no-hearts-message" class="result-banner fail hidden">
+            <h3>Sem corações</h3>
+            <p>Revise as explicações abaixo no histórico ou na última prova, depois recupere 1 coração.</p>
+          </div>
+
+          <div class="actions-row">
+            <button id="start-btn" class="btn btn-primary" type="button">
+              Iniciar rodada
+            </button>
+            <button id="recover-heart-btn" class="btn btn-secondary hidden" type="button">
+              Recuperar 1 coração
+            </button>
+            <a href="prova-imprimir.html" class="btn btn-secondary" style="text-decoration:none;text-align:center;">
+              Prova para imprimir
+            </a>
+          </div>
+        </div>
+
+        <div id="quiz-screen" class="view hidden">
+          <div class="exam-header-row">
+            <div>
+              <div id="question-counter" class="question-counter">Questão 1 de 8</div>
+              <div class="progress-bar" aria-hidden="true">
+                <div id="progress-bar-fill" class="progress-bar-fill"></div>
+              </div>
+            </div>
+            <div class="timer">Tempo: <span id="timer-label">00:00</span></div>
+          </div>
+
+          <div class="question-meta">
+            <span id="question-category" class="badge badge-category">Tema</span>
+          </div>
+
+          <h2 id="question-text" class="question-text"></h2>
+
+          <div id="options-container" class="options"></div>
+
+          <div class="exam-footer-row">
+            <button id="prev-btn" class="btn btn-secondary" type="button" disabled>
+              Anterior
+            </button>
+            <button id="next-btn" class="btn btn-primary" type="button" disabled>
+              Próxima
+            </button>
+            <button id="finish-btn" class="btn btn-primary hidden" type="button" disabled>
+              Finalizar prova
+            </button>
+          </div>
+        </div>
+
+        <div id="result-screen" class="view hidden">
+          <div id="result-banner" class="result-banner">
+            <h3 id="result-title">Resultado</h3>
+            <p id="result-message"></p>
+          </div>
+
+          <div class="score-grid">
+            <div class="score-item">
+              <span>Acertos</span>
+              <strong id="result-score">0/8</strong>
+            </div>
+            <div class="score-item">
+              <span>Percentual</span>
+              <strong id="result-percentage">0%</strong>
+            </div>
+            <div class="score-item">
+              <span>Tempo</span>
+              <strong id="result-time">00:00</strong>
+            </div>
+          </div>
+
+          <h2>Revisão</h2>
+          <p id="incorrect-empty-message" class="empty-message hidden">
+            Parabéns! Você acertou todas as questões desta rodada.
+          </p>
+          <ul id="review-list" class="review-list"></ul>
+
+          <div class="actions-row">
+            <button id="home-btn" class="btn btn-secondary" type="button">
+              Voltar ao início
+            </button>
+            <button id="retry-btn" class="btn btn-primary" type="button">
+              Nova rodada
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card side-card history-card">
+        <h2>Histórico de hoje</h2>
+        <p class="empty-message" id="history-empty-message">
+          Nenhuma rodada ainda. Boa sorte!
+        </p>
+        <div class="history-table-wrap">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Hora</th>
+                <th>Nota</th>
+                <th>Status</th>
+                <th>Seq.</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body"></tbody>
+          </table>
+        </div>
+        <button id="clear-history-btn" class="btn btn-danger" type="button">
+          Limpar histórico
+        </button>
+      </aside>
+    </main>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+
+</html>
