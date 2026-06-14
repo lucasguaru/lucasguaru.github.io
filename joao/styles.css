@@ -1,0 +1,261 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-card: #ffffff;
+  --green-900: #14532d;
+  --green-700: #15803d;
+  --green-500: #22c55e;
+  --green-300: #86efac;
+  --amber-500: #f59e0b;
+  --blue-700: #1d4ed8;
+  --blue-500: #3b82f6;
+  --amber-700: #b45309;
+  --text-main: #1a2e1f;
+  --text-muted: #4b6354;
+  --shadow: 0 18px 45px rgba(15, 31, 23, 0.18);
+  --radius: 16px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--text-main);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(34, 197, 94, 0.18), transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(245, 158, 11, 0.12), transparent 35%),
+    linear-gradient(160deg, #e8f5ec 0%, #d7eadf 45%, #c9dfd0 100%);
+}
+
+body {
+  line-height: 1.5;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.badge-top {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(20, 83, 45, 0.12);
+  color: var(--green-900);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.page-header h1 {
+  margin: 10px 0 8px;
+  font-size: clamp(1.75rem, 5vw, 2.4rem);
+  color: var(--green-900);
+}
+
+.subtitle {
+  margin: 0 auto;
+  max-width: 34rem;
+  color: var(--text-muted);
+  font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+}
+
+.subjects {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .subjects {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .subjects {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.subject-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 20px;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  border: 2px solid transparent;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  min-height: 100%;
+}
+
+.subject-card:hover,
+.subject-card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 50px rgba(15, 31, 23, 0.22);
+  outline: none;
+}
+
+.subject-card:focus-visible {
+  border-color: var(--green-500);
+}
+
+.subject-card--ciencias:focus-visible,
+.subject-card--ciencias:hover {
+  border-color: var(--green-500);
+}
+
+.subject-card--geografia:focus-visible,
+.subject-card--geografia:hover {
+  border-color: var(--blue-500);
+}
+
+.subject-card--historia:focus-visible,
+.subject-card--historia:hover {
+  border-color: var(--amber-500);
+}
+
+.subject-icon {
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.subject-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.subject-card--ciencias .subject-badge {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--green-900);
+}
+
+.subject-card--geografia .subject-badge {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--blue-700);
+}
+
+.subject-card--historia .subject-badge {
+  background: rgba(245, 158, 11, 0.18);
+  color: var(--amber-700);
+}
+
+.subject-card h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 3vw, 1.35rem);
+  color: var(--green-900);
+}
+
+.subject-card p {
+  margin: 0;
+  flex: 1;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.subject-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--bg-soft, #f0f7f2);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.tag--date {
+  background: rgba(239, 68, 68, 0.1);
+  color: #b91c1c;
+}
+
+.subject-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  background: var(--green-700);
+  transition: background 0.15s ease;
+}
+
+.subject-card--geografia .subject-cta {
+  background: var(--blue-700);
+}
+
+.subject-card--historia .subject-cta {
+  background: var(--amber-700);
+}
+
+.subject-card:hover .subject-cta,
+.subject-card:focus-visible .subject-cta {
+  filter: brightness(1.08);
+}
+
+.how-it-works {
+  margin-top: 28px;
+  padding: 20px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 8px 24px rgba(15, 31, 23, 0.08);
+}
+
+.how-it-works h2 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  color: var(--green-900);
+}
+
+.how-it-works ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.how-it-works li + li {
+  margin-top: 6px;
+}
+
+.page-footer {
+  margin-top: 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
