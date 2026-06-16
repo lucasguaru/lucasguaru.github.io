@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Prova para Imprimir — Matemática</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="print.css" />
+</head>
+
+<body class="print-page">
+  <div class="print-shell">
+    <div class="print-controls no-print">
+      <h1>Prova para Imprimir</h1>
+      <p>
+        Gere uma prova no formato escolar para o <strong>João Lucas</strong>.
+        Modelos 1 e 2 espelham a avaliação do Capítulo 4 (20 questões no total).
+        Imprima a prova primeiro; o gabarito fica em página separada.
+      </p>
+
+      <div id="font-picker-container"></div>
+
+      <div class="control-buttons">
+        <button type="button" class="btn btn-primary" data-mode="model" data-model="1">
+          Modelo 1 (questões 1–10)
+        </button>
+        <button type="button" class="btn btn-primary" data-mode="model" data-model="2">
+          Modelo 2 (questões 11–20)
+        </button>
+        <button type="button" class="btn btn-secondary" data-mode="full">
+          Prova completa (20 questões)
+        </button>
+        <button type="button" class="btn btn-secondary" data-mode="random">
+          Simulado aleatório (8)
+        </button>
+      </div>
+
+      <div class="control-buttons">
+        <button type="button" id="print-exam-btn" class="btn btn-primary" disabled>
+          Imprimir prova
+        </button>
+        <a id="gabarito-link" class="btn btn-outline" href="gabarito.html" style="pointer-events:none;opacity:0.5;">
+          Abrir gabarito
+        </a>
+      </div>
+
+      <p id="exam-status" class="hint">Escolha um modelo ou simulado acima para visualizar a prova.</p>
+      <p id="exam-error" class="exam-error no-print hidden"></p>
+      <a class="nav-link" href="index.html">← Voltar ao quiz online</a>
+    </div>
+
+    <div id="exam-container"></div>
+  </div>
+
+  <script type="module">
+    const APP_VERSION = "1";
+
+    function showError(message) {
+      const errorEl = document.getElementById("exam-error");
+      errorEl.textContent = message;
+      errorEl.classList.remove("hidden");
+      document.getElementById("exam-status").textContent =
+        "Não foi possível carregar a prova.";
+    }
+
+    if (location.protocol === "file:") {
+      showError(
+        "Abra esta página com um servidor local (não pelo Explorer). Na pasta matematica, rode: python -m http.server 8080 e acesse http://localhost:8080/prova-imprimir.html"
+      );
+    } else {
+      try {
+        const [{ buildAndShowExam }, { appendFontToUrl, initPrintFontPicker }] = await Promise.all([
+          import(`./print.js?v=${APP_VERSION}`),
+          import(`./print-fonts.js?v=${APP_VERSION}`),
+        ]);
+
+        const container = document.getElementById("exam-container");
+        const printBtn = document.getElementById("print-exam-btn");
+        const gabaritoLink = document.getElementById("gabarito-link");
+        const examStatus = document.getElementById("exam-status");
+
+        let gabaritoBaseUrl = "gabarito.html";
+
+        function updateGabaritoLink() {
+          if (gabaritoLink.style.pointerEvents === "none") return;
+          gabaritoLink.href = appendFontToUrl(gabaritoBaseUrl);
+        }
+
+        initPrintFontPicker(document.getElementById("font-picker-container"), {
+          onChange: updateGabaritoLink,
+        });
+
+        document.querySelectorAll("[data-mode]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            try {
+              const mode = btn.dataset.mode;
+              const modelNumber = btn.dataset.model ? Number(btn.dataset.model) : null;
+
+              buildAndShowExam(container, {
+                mode,
+                modelNumber,
+                count: 8,
+              });
+
+              printBtn.disabled = false;
+              document.getElementById("exam-error").classList.add("hidden");
+
+              if (mode === "model") {
+                gabaritoBaseUrl = `gabarito.html?model=${modelNumber}`;
+                examStatus.textContent = `Modelo ${modelNumber} pronto. Imprima a prova e abra o gabarito do modelo ${modelNumber}.`;
+              } else if (mode === "full") {
+                gabaritoBaseUrl = "gabarito.html?full=1";
+                examStatus.textContent = "Prova completa pronta (20 questões). Imprima a prova e abra o gabarito completo.";
+              } else {
+                const codeEl = container.querySelector(".exam-footer strong");
+                const code = codeEl ? codeEl.textContent : "";
+                gabaritoBaseUrl = `gabarito.html?code=${code}`;
+                examStatus.textContent = `Prova gerada! Código: ${code} — imprima a prova e abra o gabarito pelo código.`;
+              }
+
+              gabaritoLink.href = appendFontToUrl(gabaritoBaseUrl);
+              gabaritoLink.style.pointerEvents = "";
+              gabaritoLink.style.opacity = "";
+            } catch (error) {
+              showError(`Erro ao gerar prova: ${error.message}`);
+            }
+          });
+        });
+
+        printBtn.addEventListener("click", () => window.print());
+      } catch (error) {
+        showError(
+          `Erro ao carregar scripts: ${error.message}. Tente recarregar com Ctrl+F5.`
+        );
+      }
+    }
+  </script>
+</body>
+
+</html>

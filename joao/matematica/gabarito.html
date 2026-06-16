@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Gabarito — Matemática</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="print.css" />
+</head>
+
+<body class="print-page">
+  <div class="print-shell">
+    <div class="print-controls no-print">
+      <h1>Gabarito — Matemática</h1>
+      <p id="gabarito-hint">Carregando gabarito de Matemática…</p>
+
+      <div id="font-picker-container"></div>
+
+      <div class="control-buttons">
+        <button type="button" id="print-gabarito-btn" class="btn btn-primary">
+          Imprimir gabarito
+        </button>
+        <a class="btn btn-secondary" href="prova-imprimir.html">Gerar nova prova</a>
+        <a class="btn btn-outline" href="index.html">Quiz online</a>
+      </div>
+
+      <p class="hint">
+        Gabaritos fixos:
+        <a href="?model=1">Modelo 1 (1–10)</a> ·
+        <a href="?model=2">Modelo 2 (11–20)</a> ·
+        <a href="?full=1">Prova completa (20)</a> ·
+        <a href="?complete=1">Gabarito completo (todos os modelos)</a>
+      </p>
+      <p id="gabarito-error" class="exam-error no-print hidden"></p>
+    </div>
+
+    <div id="gabarito-container"></div>
+  </div>
+
+  <script type="module">
+    const APP_VERSION = "1";
+
+    function showError(message) {
+      const errorEl = document.getElementById("gabarito-error");
+      errorEl.textContent = message;
+      errorEl.classList.remove("hidden");
+      document.getElementById("gabarito-hint").textContent = "Não foi possível carregar o gabarito.";
+    }
+
+    if (location.protocol === "file:") {
+      showError(
+        "Abra com servidor local: python -m http.server 8080 na pasta matematica, depois http://localhost:8080/gabarito.html"
+      );
+    } else {
+      try {
+        const [
+          {
+            getPrintQuestionsByModel,
+            loadExamSession,
+            resolveQuestionsFromSession,
+            renderGabaritoDocument,
+            renderCompleteGabaritoDocument,
+          },
+          { initPrintFontPicker, PRINT_FONTS },
+        ] = await Promise.all([
+          import(`./print.js?v=${APP_VERSION}`),
+          import(`./print-fonts.js?v=${APP_VERSION}`),
+        ]);
+
+        const container = document.getElementById("gabarito-container");
+        const hint = document.getElementById("gabarito-hint");
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get("code");
+        const model = params.get("model");
+        const complete = params.get("complete");
+        const full = params.get("full");
+        const fontParam = params.get("font");
+        const initialFontId =
+          fontParam && PRINT_FONTS.some((font) => font.id === fontParam) ? fontParam : undefined;
+
+        initPrintFontPicker(document.getElementById("font-picker-container"), {
+          initialFontId,
+        });
+
+        let title = "Modelo";
+        let questions = [];
+        let examCode = null;
+        let layout = "print";
+
+        if (code) {
+          const session = loadExamSession(code);
+          if (session) {
+            questions = resolveQuestionsFromSession(session);
+            title = session.title?.replace(/^Prova – /, "") || "Simulado Aleatório";
+            layout = session.layout || "mc";
+            examCode = code;
+            hint.textContent = `Gabarito de Matemática — prova ${code}.`;
+          } else {
+            hint.textContent = `Código "${code}" não encontrado. Gere a prova novamente em "Prova para Imprimir" (mesma aba do navegador).`;
+          }
+        } else if (model === "1" || model === "2") {
+          questions = getPrintQuestionsByModel(Number(model));
+          title = `Modelo ${model} — Questões ${model === "1" ? "1 a 10" : "11 a 20"}`;
+          hint.textContent = `Gabarito de Matemática — Modelo ${model}.`;
+        } else if (full === "1") {
+          questions = getPrintQuestionsByModel();
+          title = "Prova Completa — 20 questões";
+          hint.textContent = "Gabarito de Matemática — prova completa (20 questões).";
+        } else if (complete === "1") {
+          renderCompleteGabaritoDocument(container);
+          hint.textContent =
+            "Gabarito completo de Matemática — Modelo 1 e Modelo 2 em uma única impressão.";
+        } else {
+          hint.textContent = "Escolha um gabarito de Matemática abaixo ou abra pelo código da prova aleatória.";
+        }
+
+        if (complete === "1") {
+          // já renderizado acima
+        } else if (questions.length) {
+          renderGabaritoDocument(container, { title, questions, examCode, layout });
+        } else if (!code) {
+          container.innerHTML = `
+            <div class="gabarito-document">
+              <p style="text-align:center;color:#666;">
+                Nenhum gabarito selecionado. Use os links acima ou gere uma prova aleatória em
+                <a href="prova-imprimir.html">Prova para Imprimir</a>.
+              </p>
+            </div>
+          `;
+        }
+
+        document.getElementById("print-gabarito-btn").addEventListener("click", () => window.print());
+      } catch (error) {
+        showError(`Erro ao carregar scripts: ${error.message}. Tente Ctrl+F5.`);
+      }
+    }
+  </script>
+</body>
+
+</html>
