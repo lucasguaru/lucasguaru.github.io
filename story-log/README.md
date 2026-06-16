@@ -44,6 +44,8 @@ The app supports three scenarios:
 
 The side panel controls start, pause, and scenario selection. OrbitControls provide rotation, zoom, and pan for inspecting the model.
 
+On mobile devices, **Enable Motion Control** activates device-orientation navigation when the browser supports it. Sideways tilt pans across the tabletop, forward/back tilt controls zoom, and rotating the phone orbits the architectural model. iOS browsers require the button tap so Safari can request sensor permission from a user gesture.
+
 ## How to extend the simulation
 
 1. Add or update systems in `src/simulation/systems.ts`.
