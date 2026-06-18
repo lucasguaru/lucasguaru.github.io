@@ -1,0 +1,28 @@
+# CSV / TSV para Excel (Windows)
+
+## Problema
+
+Arquivos UTF-8 **sem BOM** abertos no Excel (Windows) exibem acentos quebrados:
+`SolicitaÃ§Ã£o` em vez de `Solicitação`, `Ãºltimos` em vez de `últimos`.
+
+Causa: Excel assume Windows-1252/ISO-8859-1 quando não detecta UTF-8.
+
+## Regra ao criar CSV/TSV para o usuário abrir no Excel
+
+1. **Encoding:** UTF-8 **com BOM** (`\uFEFF` no início do arquivo).
+2. **Separador:** **vírgula (`,`)** quando o usuário abrir direto no Excel (padrão PRODESP layout); campos com vírgula interna entre aspas. Alternativa PT-BR: `;` se o Excel local esperar ponto-e-vírgula.
+3. **Quebras de linha:** `\r\n` (CRLF) para compatibilidade Excel Windows.
+4. **Acentos:** escrever texto em UTF-8 normal (ã, ç, ú, →); não escapar para entidades HTML.
+5. **Evitar** caracteres raros (◯, ≠) em arquivos destinados ao Excel — usar ASCII quando possível (`END`, `!=`).
+
+## Ao ler CSV enviado pelo usuário
+
+Se aparecer padrão `Ã§`, `Ã£`, `Ãº`, tratar como UTF-8 lido como Latin-1 e corrigir na resposta/arquivo gerado.
+
+## Implementação (agente)
+
+Ao gravar CSV para Excel no repo, usar Node ou equivalente:
+
+```javascript
+fs.writeFileSync(path, '\uFEFF' + content, 'utf8');
+```

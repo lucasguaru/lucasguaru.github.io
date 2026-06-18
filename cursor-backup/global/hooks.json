@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "py -3 C:\\Users\\lucas\\.cursor\\hooks\\yaml-read-proxy.py",
+        "matcher": "Read|Grep"
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": "py -3 C:\\Users\\lucas\\.cursor\\hooks\\block-sensitive.py --mode read",
+        "failClosed": false
+      }
+    ],
+    "beforeTabFileRead": [
+      {
+        "command": "py -3 C:\\Users\\lucas\\.cursor\\hooks\\block-sensitive.py --mode read",
+        "failClosed": false
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "py -3 C:\\Users\\lucas\\.cursor\\hooks\\block-sensitive.py --mode shell",
+        "failClosed": true
+      }
+    ]
+  }
+}

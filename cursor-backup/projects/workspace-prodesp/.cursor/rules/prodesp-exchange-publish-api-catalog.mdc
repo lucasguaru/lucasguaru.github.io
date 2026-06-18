@@ -1,0 +1,139 @@
+---
+description: Publicar assets RAML no Anypoint Exchange via API Catalog CLI (PRODESP)
+globs: workspace-prodesp-api/**/*
+alwaysApply: false
+---
+
+# Publicar API RAML no Exchange — API Catalog CLI (PRODESP)
+
+Fluxo preferido para publicar contratos em `workspace-prodesp-api/{asset}/` **sem Anypoint Studio**, quando o usuário pedir publicação no Exchange.
+
+**Gate obrigatório:** publicar RAML **somente** após validação explícita do usuário (versão + diff + confirmação) — regra **`prodesp-raml-commit-publish-gate`**. Dry-run não substitui confirmação final.
+
+Alternativa legada: publicar pelo Studio/Design Center (ver `mulesoft-workspace`).
+
+Documentação MuleSoft: [Publishing Assets Using API Catalog CLI](https://docs.mulesoft.com/exchange/apicat-publish-using-api-catalog-cli) · [Install CLI](https://docs.mulesoft.com/exchange/apicat-install-api-catalog-cli)
+
+## Pré-requisitos (máquina do dev)
+
+1. **Node.js LTS** + npm.
+2. **CLI instalado globalmente:**
+   ```bash
+   npm install -g api-catalog-cli@latest
+   ```
+3. **Credenciais** (variáveis de ambiente do usuário — **não** commitar):
+   | Variável | Uso |
+   |----------|-----|
+   | `ANYPOINT_CLIENT_ID` | Client ID da Connected App |
+   | `ANYPOINT_CLIENT_SECRET` | Client secret |
+   | `ANYPOINT_ORG` | Organization ID PRODESP: `1c8711d7-2135-4686-89f0-fb014e1662ac` |
+   | `ANYPOINT_ENV` | (Opcional) Nome do environment principal, se o CLI exigir |
+
+   Nomes **não** suportados pelo CLI: `ANYPOINT_CONNECTED_APP_*` — usar exatamente os nomes acima.
+
+   Alternativa local: `api-catalog conf client_id …` / `client_secret` / `organization` → `%APPDATA%\api-catalog-cli-nodejs\Config\config.json`
+
+4. **Connected App** (client credentials — “acts on its own behalf”), com scopes no business group **PRODESP**:
+   - **API Catalog Contributor**
+   - **View Environment** (selecionar os 3 environments PRODESP)
+   - **View Organization** (necessário para `GET .../organizations/{org}/environments` — sem isso o CLI retorna 401)
+   - **Exchange Contributor** (ou Creator/Administrator, conforme política da org)
+
+5. Após **alterar scopes**, obter token novo: o Anypoint reutiliza o mesmo `access_token` até `expires_in` (~1h). Aguardar expiração ou testar com token fresco antes de concluir que falhou.
+
+## Arquivos no projeto do asset
+
+Diretório: `workspace-prodesp-api/{asset}/`
+
+| Arquivo | Função |
+|---------|--------|
+| `exchange.json` | Metadados do asset (`assetId`, `version`, `groupId`, `dependencies`, …). **Versão a publicar** deve estar correta **antes** do publish (usuário define na publicação; agente não incrementa “no chute” — ver `mulesoft-workspace`). |
+| `catalog.yaml` | Descriptor do CLI — manter no asset: |
+| `{asset}.raml` | API principal |
+
+**`catalog.yaml` para publicação** — **não** confiar só em `create-descriptor` (pode duplicar entradas em `.exchange_modules_tmp`).
+
+**Windows (api-catalog CLI):** `ref: exchange.json` faz o AMF resolver `main` como path **absoluto** e falha com `Error resolving path: For input string: ""`. Usar `main` **relativo** no descriptor (metadados continuam em `exchange.json` para o Studio):
+
+```yaml
+#%Catalog Descriptor 1.0
+projects:
+  - main: data-wallet-integrator-s-api.raml
+    assetId: data-wallet-integrator-s-api
+    version: "1.0.16"
+    apiVersion: v1
+```
+
+Alinhar `version` / `apiVersion` / `assetId` com `exchange.json` antes do publish.
+
+**Linux/macOS:** `ref: exchange.json` costuma funcionar:
+
+```yaml
+#%Catalog Descriptor 1.0
+projects:
+  - ref: exchange.json
+```
+
+Se `catalog.yaml` não existir, o agente pode criá-lo conforme o SO. Não commitar segredos.
+
+## Comandos (sempre na pasta do asset)
+
+```bash
+cd workspace-prodesp-api/{asset}
+
+# 1) Validar descriptor + auth (não publica)
+api-catalog publish-asset -d catalog.yaml --dry-run --verbose
+
+# 2) Publicar
+api-catalog publish-asset -d catalog.yaml
+
+# Republicar mesma versão / forçar nova versão no Exchange
+api-catalog publish-asset -d catalog.yaml --force-publish
+```
+
+Com env vars definidas, **não** passar `--client_id`, `--client_secret` nem `--organization` na linha de comando.
+
+## Validação rápida de auth (opcional)
+
+```bash
+# Token
+curl -s -X POST "https://anypoint.mulesoft.com/accounts/api/v2/oauth2/token" \
+  -H "Content-Type: application/json" \
+  -d "{\"grant_type\":\"client_credentials\",\"client_id\":\"$ANYPOINT_CLIENT_ID\",\"client_secret\":\"$ANYPOINT_CLIENT_SECRET\"}"
+
+# Deve retornar JSON de environments (não "Unauthorized")
+curl -s -H "Authorization: Bearer <access_token>" \
+  "https://anypoint.mulesoft.com/accounts/api/organizations/$ANYPOINT_ORG/environments"
+```
+
+No Postman: **somente** `Authorization: Bearer <access_token>` — **não** enviar header `Cookie`.
+
+## Após publicar com sucesso
+
+1. Confirmar asset/versão no Exchange (org PRODESP).
+2. **Registrar** em `tarefas/deploy-log/registry.yaml` — skill **`prodesp-deploy-registry`** (`type: exchange-raml`).
+3. Ler `workspace-prodesp-api/{asset}/.exchange.xml` (campo `<version>`) — gerado/atualizado pelo tooling.
+4. Alinhar `api.version` no `pom.xml` de `workspace-prodesp-app/{asset}/` com `.exchange.xml` (obrigatório — ver `mulesoft-workspace`).
+5. Apps consumidoras: atualizar `mule-plugin-{asset}` se necessário.
+
+## O que o agente NÃO faz
+
+- Não publicar (`publish-asset`) sem validação explícita do usuário nesta conversa — ver **`prodesp-raml-commit-publish-gate`**.
+- Não alterar `version` em `exchange.json` durante implementação de RAML/refactor (salvo pedido explícito do usuário para publicar).
+- Não commitar credenciais nem `config.json` do `api-catalog conf`.
+- Não fazer `git push` em `workspace-prodesp-api/`.
+- Não editar `exchange.json` campo `version` do asset no Exchange tooling — versão na publicação; o usuário confirma o número antes do `publish-asset`.
+
+## Maven (`mvn deploy`)
+
+Projetos RAML em `workspace-prodesp-api/` **não** usam `pom.xml` para publish. Maven + `settings.xml` (`~~~Client~~~`) é fluxo separado para **apps** (`workspace-prodesp-app/`), não substitui este CLI para contratos RAML.
+
+## Troubleshooting
+
+| Sintoma | Causa provável |
+|---------|----------------|
+| `No authentication mechanism` | Env vars ausentes ou IDE não reiniciada após definir env |
+| 401 em `.../organizations/.../environments` | Falta **View Organization** ou token antigo (pré-scope) |
+| Exchange OK, Accounts API 401 | Mesmo caso — scopes de org/environment |
+| `create-descriptor` com 2 projetos iguais | Pasta `.exchange_modules_tmp` — usar `catalog.yaml` com `ref: exchange.json` |
+| Dry-run OK, publish não sobe versão | Ajustar `version` em `exchange.json` antes do publish ou usar `--force-publish` |

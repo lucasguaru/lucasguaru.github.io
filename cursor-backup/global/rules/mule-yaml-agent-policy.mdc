@@ -1,0 +1,38 @@
+---
+description: YAML Mule em src/main/resources — não contornar bloqueio; pedir confirmação ao usuário
+alwaysApply: true
+---
+
+# Política do agente — YAML com possíveis segredos (Mule)
+
+Hooks globais (`~/.cursor/hooks.json`) e `.cursorignore` protegem YAML sob `**/src/main/resources/**` (e `config-secure-*`).
+
+## Proibido (sem confirmação explícita do usuário)
+
+- **Shell** abrindo o YAML **original** em `src/main/resources` (o hook reescreve `cat`/`head` para `.cursor/redacted/` — não contornar para o path real).
+- **Workarounds** após bloqueio: outro caminho, subshell, `allowlist`, copiar para `/tmp`, etc.
+- **Grep** no YAML original em `src/main/resources` (hooks bloqueiam; usar alternativas abaixo).
+- Colar ou repetir **valores** de segredos na resposta (mesmo se vazarem por engano).
+
+## Quando Read/Grep falhar (Permission denied, cursorignore, hook, proxy)
+
+1. **Parar** — não tentar outro canal na mesma rodada.
+2. **Informar** em português: o YAML pode conter credenciais; o acesso está restrito por design (ignore + hooks).
+3. **Perguntar** explicitamente se o usuário quer prosseguir mesmo assim e **como**:
+   - colar trecho **sem segredos** (só chaves ou valores fictícios);
+   - autorizar edição pontual com o usuário no editor;
+   - ajustar temporariamente `.cursorignore` / reiniciar o IDE se hooks retornarem erro (ex. JSON inválido).
+4. Só continuar após resposta **explícita** (“pode ler”, “use a cópia redigida”, “colei abaixo”, etc.).
+
+## Alternativas preferidas (sem ler o YAML original)
+
+- Chaves e paths: `${...}` nos XML em `src/main/mule/`, `z-global-config.xml`, flows.
+- Contrato: RAML, `product-definition/**` (sem proxy de segredos Mule).
+- Cópia redigida: **Read** em `.cursor/redacted/**` **somente** se o proxy/hook permitir e o usuário autorizar leitura de config.
+- Skill: `mule-yaml-sensitive-access` — fluxo completo de confirmação.
+
+## Referências
+
+- Hooks: `~/.cursor/hooks/` (`block-sensitive.py`, `yaml-read-proxy.py`, `redact_yaml.py`)
+- Regra por glob: `mule-yaml-proxy.mdc`
+- Setup ignore: skill `mulesoft-cursorignore-setup`

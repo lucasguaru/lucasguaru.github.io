@@ -1,0 +1,78 @@
+---
+description: Externalizar DataWeave inline (>1 linha) para arquivo .dwl em apps MuleSoft PRODESP
+globs: **/src/main/mule/**/*.xml
+alwaysApply: false
+---
+
+# DWL inline → arquivo `.dwl` externo
+
+**Regra:** qualquer bloco DataWeave com mais de 1 linha dentro de um `ee:transform` **deve** ser extraído para um arquivo `.dwl` e referenciado via atributo `resource=`.
+
+## ❌ ERRADO — DWL inline no XML
+
+```xml
+<ee:set-variable variableName="resultSetPayment"><![CDATA[%dw 2.0
+output application/java
+var data = if (payload is Array) payload[0] else payload
+---
+{ idOrderSummary: data["Id"], ... }
+]]></ee:set-variable>
+```
+
+## ✅ CORRETO — referência ao arquivo `.dwl`
+
+```xml
+<ee:set-variable
+  resource="dwl/credenciais/result-set-payment.dwl"
+  variableName="resultSetPayment" />
+```
+
+---
+
+## Convenção de pastas para o arquivo `.dwl`
+
+Raiz: `src/main/resources/dwl/`
+
+### Critério principal: o DWL é genérico ou específico de domínio?
+
+**DWL genérico** — não depende de variáveis de fluxo, funciona em qualquer contexto → `dwl/variables/<tipo>/<nome>.dwl`
+
+| Tipo | Caminho |
+|---|---|
+| Contexto inbound (headers HTTP) | `dwl/variables/context/<nome>.dwl` |
+| Query params | `dwl/variables/queryParams/<nome>.dwl` |
+| URI params | `dwl/variables/uriParams/<nome>.dwl` |
+| Headers outbound | `dwl/variables/headers/<nome>.dwl` |
+| HTTP status | `dwl/variables/httpStatus/<nome>.dwl` |
+| Transformação request/response | `dwl/<operacao>-<backend>-<request\|response>-transformation.dwl` |
+
+**DWL específico de domínio/fluxo** — depende de `vars.*` ou dados da query do fluxo → `dwl/<dominio>/<nome>.dwl`
+
+```
+dwl/credenciais/result-set-payment.dwl       ← vars.resultSetPayment do job de credenciais
+dwl/credenciais/item-tracking-context.dwl    ← usa vars.credenciaisJobCorrelationId
+dwl/credenciais/scheduler-tracking-context.dwl
+dwl/pagamentos/result-set-payment.dwl        ← estrutura diferente (OrderPaymentSummary)
+```
+
+> **Sinal de alerta:** se o DWL lê `vars.<algo>` que só existe em um fluxo específico, ele **não é genérico** — deve ir em `dwl/<dominio>/`, não em `dwl/variables/`.
+>
+> Arquivos em `dwl/variables/` com prefixo de domínio no nome (ex.: `credenciais-item-tracking-context.dwl`) são um anti-padrão: indicam que deveriam estar em `dwl/credenciais/`.
+
+---
+
+## Exceção: 1 linha é permitida inline
+
+```xml
+<!-- OK: expressão de 1 linha -->
+<ee:set-variable variableName="foo"><![CDATA[%dw 2.0 output application/java --- payload.id]]></ee:set-variable>
+```
+
+---
+
+## Checklist ao criar ou editar um `ee:transform`
+
+- [ ] DWL tem mais de 1 linha? → extrair para `.dwl`
+- [ ] Nome do arquivo reflete o `variableName` ou a operação
+- [ ] Pasta escolhida conforme tabela acima
+- [ ] `resource=` aponta para o caminho relativo a `src/main/resources/` (sem esse prefixo)

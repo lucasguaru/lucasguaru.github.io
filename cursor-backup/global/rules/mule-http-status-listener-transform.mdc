@@ -1,0 +1,32 @@
+---
+description: Mule 4 — status HTTP via vars.httpStatus no listener; transforms; mudança de código de status
+globs: "**/src/main/mule/**/*.xml"
+alwaysApply: false
+---
+
+# Mule 4 — `httpStatus` no `http:listener` e alterações de status HTTP
+
+## Como o status da resposta HTTP é definido
+
+- Em muitas apps, o `http:listener` usa **`statusCode="#[vars.httpStatus]"`** em **`http:response`** e **`http:error-response`**.
+- **“A API retorna HTTP 400/299/…”** neste padrão significa: **algum ponto do fluxo definiu a variável `httpStatus`** (ou vale o default do erro se nada tiver setado). Ao escrever tickets, pode referir este mecanismo em vez de só o número.
+
+## Antes de mudar um código de status HTTP
+
+1. Procurar no repositório por: `httpStatus`, `vars.httpStatus`, `variableName="httpStatus"`, `ee:set-variable` com `httpStatus`.
+2. Abrir o **`http:listener`** relevante e confirmar que o status vem de **`vars.httpStatus`**.
+3. Se **já existir** um `set-variable` / `ee:set-variable` / `ee:transform` que define `httpStatus` no fluxo ou error handler certo: **alterar só esse ponto**; **evitar duplicar** (ex.: `ee:set-variable` com `299` e logo a seguir outro `set-variable` com o mesmo valor).
+4. Se **não houver** set explícito ou o comportamento depender de **error handler global / APIkit**: **perguntar** se deve adicionar `set-variable` no flow, setar dentro de `ee:transform`, ou investigar outro ficheiro.
+
+## `ee:transform` vs `set-variable`
+
+- **Dentro de `ee:transform`**: usar **`ee:set-variable`** para `httpStatus`:
+  - **literal simples**: corpo em **CDATA** com DataWeave válido (ex.: `299`, `"texto"`);
+  - **lógica reutilizável**: `resource="dwl/....dwl"`.
+- **Fora do transform**, o padrão comum é o **`set-variable`** do núcleo com **`value="..."`** (ex.: `204`) — é outro mecanismo; **não assumir** que `value="..."` dentro de um bloco de transform substitui `ee:set-variable`.
+- Se o pedido for ambíguo (“só mudar o status”), perguntar: **inline (CDATA)** vs **ficheiro `.dwl`**.
+
+## Testes / build após alteração
+
+- Para **MUnit** e propriedades JVM/AWS, seguir a regra global `mule-munit-maven.mdc`.
+- Para **validação rápida de empacotamento** após mudanças em XML/DWL, quando fizer sentido no ambiente: **`mvn clean package`** na raiz da app (ajustar se o repo documentar outro comando).

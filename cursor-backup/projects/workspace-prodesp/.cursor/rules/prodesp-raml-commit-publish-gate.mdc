@@ -1,0 +1,42 @@
+---
+description: Gate obrigatório — commit e publicação de RAML só com validação explícita do usuário
+alwaysApply: true
+---
+
+# PRODESP — Gate commit / publicação RAML
+
+Skill detalhada: `.cursor/skills/prodesp-raml-commit-publish-gate/SKILL.md`
+
+## Regra (obrigatória)
+
+Em `workspace-prodesp-api/` (RAML, traits, dataTypes, `catalog.yaml`, `exchange.json`):
+
+| Ação | Sem validação explícita do usuário |
+|------|-------------------------------------|
+| Editar contrato (implementação) | ✅ Permitido |
+| `git commit` local | ❌ **Proibido** |
+| `git push` | ❌ **Proibido** (já era manual) |
+| `api-catalog publish-asset` | ❌ **Proibido** |
+| Orientar publicação no Studio | ❌ **Proibido** sem confirmação |
+| Alterar `version` em `exchange.json` / `catalog.yaml` para publish | ❌ **Proibido** |
+
+**Validação explícita** = o usuário confirmou **nesta conversa**, em mensagem dedicada, com **sim/publica/commita** (ou equivalente inequívoco) **depois** do agente apresentar o resumo abaixo.
+
+## Resumo obrigatório antes de commit ou publish
+
+1. Asset (`data-*-p-api`, etc.)
+2. Versão a publicar/commitar (número exato — agente **não** incrementa sozinho)
+3. Diff principal (endpoints/arquivos)
+4. Canal: commit local | API Catalog CLI | Studio
+5. Pergunta fechada: *"Posso commitar/publicar a versão X?"*
+
+Se o usuário pedir só "implementa o endpoint" → **não** commitar nem publicar ao final.
+
+## Publicação ≠ deploy de app
+
+`mvn clean deploy` em `workspace-prodesp-app/` **não** publica RAML. Contrato RAML segue gate desta regra + `prodesp-exchange-publish-api-catalog`.
+
+## Após publish confirmado
+
+1. Registrar em `tarefas/deploy-log/` (skill **`prodesp-deploy-registry`**)
+2. Alinhar `api.version` no `pom.xml` da app com `.exchange.xml`

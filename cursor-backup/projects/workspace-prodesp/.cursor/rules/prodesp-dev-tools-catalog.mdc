@@ -1,0 +1,13 @@
+---
+description: Catálogo de ferramentas locais do projeto — consultar ou registrar tools em .ia/dev-tools.yaml
+alwaysApply: true
+---
+
+# Ferramentas locais do workspace
+
+**Catálogo:** [`.ia/dev-tools.yaml`](../../.ia/dev-tools.yaml)  
+**Skill:** `.cursor/skills/prodesp-dev-tools-catalog/SKILL.md`
+
+Quando o usuário perguntar **quais ferramentas existem**, **como subir** (ex. Flow Visual Hub, porta 8790), **o que compartilhar**, pedir **registrar tool nova**, ou usar **frases naturais** (ex. “playwright”, “gerar massa no portal”, “pagamentos pré-pago”) → ler o YAML, casar **`aliases`** / **`intents`**, e seguir a skill.
+
+Não listar de memória — o YAML é a fonte da verdade.

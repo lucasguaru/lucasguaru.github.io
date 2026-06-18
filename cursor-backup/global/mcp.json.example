@@ -1,0 +1,71 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    },
+    "azure-devops": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@azure-devops/mcp",
+        "orangedoorit",
+        "-d",
+        "core",
+        "-d",
+        "work-items",
+        "-d",
+        "repositories",
+        "-d",
+        "search"
+      ]
+    },
+    "mulesoft-dsp": {
+      "type": "streamable-http",
+      "url": "http://127.0.0.1:8688/mcp",
+      "headers": {
+        "Authorization": "Bearer ***REDACTED***"
+      }
+    },
+    "mulesoft-prodesp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mulesoft-mcp-server",
+        "start"
+      ],
+      "env": {
+        "ANYPOINT_CLIENT_ID": "***REDACTED***",
+        "ANYPOINT_CLIENT_SECRET": "***REDACTED***",
+        "ANYPOINT_REGION": "PROD_US"
+      }
+    },
+    "mulesoft": {
+      "type": "streamable-http",
+      "url": "http://127.0.0.1:8687/mcp",
+      "headers": {
+        "Authorization": "Bearer ***REDACTED***"
+      }
+    },
+    "salesforce-prodesp-dev": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@salesforce/mcp@latest",
+        "-o",
+        "prodesp-dev",
+        "--toolsets",
+        "data,orgs"
+      ]
+    }
+  }
+}

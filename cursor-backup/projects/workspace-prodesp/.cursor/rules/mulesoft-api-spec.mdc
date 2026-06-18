@@ -1,0 +1,38 @@
+---
+description: Padrões RAML para API specs em workspace-prodesp-api
+globs: workspace-prodesp-api/**/*
+alwaysApply: false
+---
+
+# API Spec (RAML) — workspace-prodesp-api
+
+Ao alterar ou criar endpoints, siga o skill **mulesoft-api-spec** (`.cursor/skills/mulesoft-api-spec/SKILL.md`).
+
+## Checklist rápido
+
+0. **Aderência backend (obrigatório):** validar params, tipos e response contra Swagger/doc original — regra **`prodesp-backend-spec-alignment`** + skill **`prodesp-backend-spec-alignment`**
+1. DataTypes em `dataTypes/commons/{domínio}/` (entidade) e `dataTypes/{domínio}/` (lista/request/response)
+2. Traits reutilizáveis em `traits/queryParams/{domínio}/` ou `traits/headers/`
+3. Registrar em `library/library.raml` com alias **camelCase**
+4. Recurso no `.raml` raiz com `type: lib.collectionType` e `lib.errorResponse` do Exchange `common-data-types` (**1.0.2**)
+5. `is: [lib.headerAuthorization]` no recurso quando exigir Bearer
+6. Rastreabilidade: **não** no contrato RAML — skill **`prodesp-mule-intra-mule-http`** (runtime Mule via `vars.context`); traits do fragmento ficam só na library com comentário (ver **`mulesoft-common-data-types`**)
+7. **Não** editar `version` do asset em `exchange.json` durante implementação — versão na publicação (ver `mulesoft-workspace`). Para publicar via CLI: regra **`prodesp-exchange-publish-api-catalog`**. **Pode** atualizar dependência `common-data-types` para 1.0.2
+
+## Convenções de nome
+
+- Arquivos: **kebab-case** (`consultar-aplicacao.raml`, `pedidos-compra.raml`)
+- Alias na library: **camelCase** (`consultarAplicacao`, `pedidosCompra`)
+- Paths REST: português, plural (`/empresas`, `/pedidos/compra`)
+
+## Dependência Exchange
+
+`common-data-types` **1.0.2** fornece `collectionType`, `errorResponse` e traits de rastreio (referência interna na library — **não** aplicar nos recursos). Ver skill `mulesoft-common-data-types`.
+
+## Git e publicação
+
+- **Gate obrigatório:** commit e publicação RAML **somente** com validação explícita do usuário — regra **`prodesp-raml-commit-publish-gate`** + skill **`prodesp-raml-commit-publish-gate`**.
+- **Não fazer `git push`** em `workspace-prodesp-api/` — push Git continua manual; publicação Exchange via **API Catalog CLI** ou Studio (regra **`prodesp-exchange-publish-api-catalog`**).
+- Commits locais apenas quando o usuário solicitar **e** confirmar versão/resumo; mensagem em português (ver `mulesoft-workspace`).
+- Após publicação: registrar em **`tarefas/deploy-log/`** (skill **`prodesp-deploy-registry`**) e alinhar `api.version` no `pom.xml` da app com `.exchange.xml`.
+

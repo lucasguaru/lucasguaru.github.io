@@ -1,0 +1,204 @@
+# Catálogo de ferramentas locais — workspace-prodesp
+#
+# Fonte da verdade para "quais ferramentas existem neste projeto".
+# Skill de consulta/atualização: .cursor/skills/prodesp-dev-tools-catalog/SKILL.md
+#
+# Ao criar ferramenta nova em outro chat: adicionar entrada em `tools:` abaixo.
+
+version: 1
+
+tools:
+  - id: flow-visual-hub
+    name: Flow Visual Hub
+    summary: >-
+      Hub local — schedules CH2 → execuções → clique no pedido → diagrama swimlane
+      com logs por nó (badge L, painel visual).
+    path: tarefas/flow-visual-hub
+    type: server
+    url: http://127.0.0.1:8790
+    port: 8790
+    start:
+      cwd: tarefas/flow-visual-hub
+      command: npm run start:platform
+      alternatives:
+        - command: npm run start:fixture
+          note: logs offline (fixture)
+        - command: npm start
+          note: auto (AMC → fixture se OAuth falhar)
+    env:
+      required_for_platform:
+        - ANYPOINT_CLIENT_ID
+        - ANYPOINT_CLIENT_SECRET
+        - ANYPOINT_ENV=DEV
+    depends_on:
+      - tarefas/pagamentos-job-recente-visual
+    skill: .cursor/skills/prodesp-flow-visual-hub/SKILL.md
+    readme: tarefas/flow-visual-hub/README.md
+    related:
+      - ch2-logs-cli
+      - pagamentos-job-recente-visual
+
+  - id: pagamentos-job-recente-visual
+    name: Diagrama swimlane — job pagamentos recente
+    summary: >-
+      Diagrama vertical (CSV-first) do fluxo pagamentos. Sozinho = estático (Live Server).
+      Com Flow Visual Hub = logs por nó via ?session=.
+    path: tarefas/pagamentos-job-recente-visual
+    type: static
+    url_via_hub: http://127.0.0.1:8790/flows/pagamentos/
+    start:
+      note: >-
+        Preferir via flow-visual-hub. Standalone: abrir index.html com Live Server
+        (sem painel de logs).
+    skill: .cursor/skills/prodesp-flow-visual-csv-first/SKILL.md
+    related:
+      - flow-visual-hub
+
+  - id: ch2-logs-cli
+    name: CH2 Logs CLI
+    summary: >-
+      CLI Node — listar apps CH2 Dev e buscar logs AMC por correlationId/regexp
+      (mesmo endpoint da UI Runtime Manager).
+    path: tarefas/ch2-logs-cli
+    type: cli
+    start:
+      cwd: tarefas/ch2-logs-cli
+      examples:
+        - npm run list-apps
+        - npm run logs -- --app management-payments-receipts-s-api --correlation-id <uuid> --minutes 60 --format text
+    env:
+      required:
+        - ANYPOINT_CLIENT_ID
+        - ANYPOINT_CLIENT_SECRET
+        - ANYPOINT_ENV=DEV
+    skill: .cursor/skills/prodesp-mule-runtime-logging/SKILL.md
+    readme: tarefas/ch2-logs-cli/README.md
+    related:
+      - flow-visual-hub
+
+  - id: mapeamento-visual-flows
+    name: Diagramas visuais horizontais (board)
+    summary: >-
+      Board zoom/pan para flows Mule (credenciais, etc.). JSON + HTML/SVG —
+      distinto do swimlane vertical CSV.
+    path: tarefas/mapeamento-visual-flows
+    type: static
+    start:
+      note: Abrir index.html com Live Server
+    skill: .cursor/skills/mulesoft-flow-visual-diagram/SKILL.md
+
+  - id: run-local-v2-acessos-stack
+    name: Stack local Mule — GET /v2/acessos
+    summary: >-
+      Sobe portal-ecom-tech-e-api (:8081) + data-integrator-p-api (:8082) +
+      data-wallet-integrator-s-api (:8085) no runtime Mule DX via CLI (sem Studio).
+    path: workspace-prodesp-app/scripts
+    type: cli
+    start:
+      cwd: workspace-prodesp-app/scripts
+      command: ./run-local-v2-acessos-stack.sh start
+      alternatives:
+        - command: ./run-local-v2-acessos-stack.sh status
+        - command: ./run-local-v2-acessos-stack.sh stop
+        - command: SKIP_BUILD=1 ./run-local-v2-acessos-stack.sh start
+    skill: .cursor/skills/prodesp-mule-local-runtime/SKILL.md
+    readme: workspace-prodesp-app/scripts/README-run-local-v2-acessos.md
+    aliases:
+      - mule local
+      - rodar mule local
+      - stack local
+      - v2 acessos local
+
+  - id: portal-apis-playwright
+    name: Portal de APIs — Playwright (dashboard + massa DEV)
+    summary: >-
+      Automação E2E do portal DEV (pré-pago Match Facial): criar pedido, assinar contrato,
+      comprar cotas/PIX. Dashboard web com pedidos locais e log ao vivo; menu CLI alternativo.
+    path: >-
+      tarefas/PBI 21304-prevencao-de-duplicidade-de-pedidos-em-retentativas-de-integracao/teste-portal-apis
+    type: combo
+    url: http://localhost:4173
+    port: 4173
+    start:
+      cwd: >-
+        tarefas/PBI 21304-prevencao-de-duplicidade-de-pedidos-em-retentativas-de-integracao/teste-portal-apis
+      command: npm run dashboard
+      alternatives:
+        - command: npm start
+          note: menu interativo CLI (sem dashboard web)
+        - command: npm run auth:manual
+          note: login Gov.br + hCaptcha — grava user.json
+        - command: npm run test:criar:headed
+          note: criar pedido pré-pago (Playwright headed)
+        - command: npm run test:comprar:headed
+          note: comprar créditos/cotas PIX (pedido já assinado)
+    env:
+      required:
+        - PORTAL_CPF
+        - PORTAL_PASSWORD
+        - PEDIDO_CNPJ
+      optional:
+        - PEDIDO_NUMERO
+        - PEDIDO_ORDER_SUMMARY_ID
+        - PORTAL_DASHBOARD_PORT
+        - PORTAL_URL
+    readme: >-
+      tarefas/PBI 21304-prevencao-de-duplicidade-de-pedidos-em-retentativas-de-integracao/teste-portal-apis/README.md
+    docs: >-
+      tarefas/PBI 21304-prevencao-de-duplicidade-de-pedidos-em-retentativas-de-integracao/teste-portal-apis/docs/passo-a-passo-dev.md
+    related:
+      - flow-visual-hub
+      - ch2-logs-cli
+    # Como achar esta tool sem lembrar o nome — agente: match aliases + intents antes de pedir detalhes
+    aliases:
+      - playwright
+      - portal apis
+      - portal de apis
+      - portal-de-apis
+      - teste portal
+      - dashboard portal
+      - massa portal
+      - gerar massa
+      - gerar pedido
+      - criar pedido portal
+      - match facial sp
+      - pré-pago
+      - pre-pago
+      - prepago
+      - comprar créditos
+      - comprar cotas
+      - pagamento pix
+      - pagamentos pré-pago
+      - gov.br
+      - hcaptcha
+    intents:
+      - phrases:
+          - gerar massa no portal
+          - gerar massa no portal de api
+          - gerar massa portal apis
+          - criar pedido no portal
+          - pedido pré-pago dev
+        action: Abrir dashboard ou npm run test:criar:headed — fluxo Match Facial SP checkout
+      - phrases:
+          - gerar pagamentos do pré-pago
+          - gerar pagamentos pre pago
+          - comprar créditos portal
+          - comprar cotas pix
+          - testar pagamento wallet
+        action: >-
+          Pedido assinado + conta ativada → dashboard Comprar créditos ou
+          npm run test:comprar:headed (dispara fluxo Mule pedidos/compra)
+      - phrases:
+          - playwright portal
+          - rodar playwright
+          - automação portal apis
+        action: cd path + npm run dashboard ou npm start; ver README
+      - phrases:
+          - login gov.br
+          - captcha portal
+          - renovar sessão portal
+        action: npm run auth:manual — salva playwright/.auth/user.json
+
+# Entradas futuras: copiar bloco acima, novo `id`, preencher path/start/skill.
+# Tipos: server | cli | static | combo (server + artefato estático acoplado)
+# aliases + intents: frases naturais para achar a tool sem lembrar id/nome

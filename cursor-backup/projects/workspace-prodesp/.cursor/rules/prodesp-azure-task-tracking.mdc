@@ -1,0 +1,163 @@
+---
+description: Acompanhamento de tarefas PRODESP no Azure DevOps — PRs por ambiente, tags de deploy e consulta de status
+alwaysApply: true
+---
+
+# Acompanhamento de tarefas — Azure DevOps
+
+Fonte da verdade para **status de implementação, PRs e deploy** de tarefas PRODESP.
+
+## Projetos Azure DevOps
+
+| Escopo | Projeto | Uso |
+|--------|---------|-----|
+| Work items (tasks, PBIs) | **OrangeDoor Global Projects** | Tickets, comentários, tags de deploy |
+| Repos de app Mule | **PRODESP** | PRs, branches `develop` / `qa` / `main` |
+
+Org: `https://dev.azure.com/orangedoorit`
+
+Spec técnica local: `tarefas/*.md` (complementar; não substitui o ticket).
+
+## Criar/atualizar Description (Markdown)
+
+Campos grandes no Azure DevOps são **HTML por padrão**. `az boards work-item update --description @arquivo.md` deixa o texto como **raw** até o usuário clicar em "Convert this field".
+
+**Obrigatório:** publicar Description como **Markdown** — skill **`.cursor/skills/prodesp-azure-work-item-markdown/SKILL.md`**.
+
+Resumo:
+
+1. Preferir MCP `wit_update_work_items_batch` ou `wit_create_work_item` com `"format": "Markdown"` em `System.Description`.
+2. Se `multilineFieldsFormat` continuar `html`, REST Patch no mesmo request: `/fields/System.Description` + `/multilineFieldsFormat/System.Description` = `Markdown`.
+3. **Não** usar só `az boards work-item update --description` nem `wit_update_work_item` sem format.
+
+## Responder comentário de ticket (Amazing / MuleSoft)
+
+Fluxo completo: skill **`.cursor/skills/prodesp-azure-ticket-comment-response/SKILL.md`**.
+
+Convenções fixas (comentários da squad Amazing):
+
+| Papel | Menção |
+|-------|--------|
+| **To** | `@Bruno Almeida` `@Joao Moura` — sempre os dois, mesmo que só um tenha escrito |
+| **CC** | `CC: @Leila Mesquita de Oliveira` no final |
+
+Rascunho local antes de postar: `tarefas/PBI {id}-{slug}/respostas-comentario-{commentId}.md` — corpo enxuto (só o texto do comentário).
+
+Publicar: MCP `wit_add_work_item_comment` com **`"format": "Html"`** e menções via `data-vss-mention` (GUIDs e templates na skill §4–5). **`@Nome` em Markdown não vira link nem dispara notificação.** Postar **somente** quando o usuário pedir.
+
+## Branches, PRs e ambientes
+
+| Target branch | Ambiente | Tag de deploy |
+|---------------|----------|---------------|
+| `develop` | Dev | `deploy-dev` |
+| `qa` | QA | `deploy-qa` |
+| `main` | Prod | `deploy-prod` |
+
+Uma task pode ter **PR aberto e deploy no ambiente ao mesmo tempo** (ex.: testando em Dev enquanto aguarda aprovação do PR para `develop`).
+
+## Ao criar um PR
+
+Usar **Azure CLI (`az`)** — ver também regra `mulesoft-workspace` (seção Pull requests).
+
+1. Criar PR com `az repos pr create` (`--project PRODESP`, `--target-branch` = `develop`, `qa` ou `main`).
+2. Vincular ao work item: `az repos pr update --id <prId> --work-items <taskId>`.
+3. **Comentar no work item** (MCP `wit_add_work_item_comment` ou `az boards work-item update`) com formato **obrigatório**:
+
+```
+[PRODESP-PR] target=<develop|qa|main> | ambiente=<Dev|QA|Prod> | repo=<nome-repo> | source=<branch-origem> | PR=#<id> | status=<active|completed|abandoned>
+
+<url-web-do-pr>
+```
+
+Exemplo:
+```
+[PRODESP-PR] target=develop | ambiente=Dev | repo=data-wallet-integrator-s-api | source=feature-configs | PR=#119 | status=active
+
+https://dev.azure.com/orangedoorit/PRODESP/_git/data-wallet-integrator-s-api/pullrequest/119
+```
+
+4. Se o PR for **mergeado**, adicionar **novo comentário** (não editar o anterior) com `status=completed`.
+5. No Windows, descrição do PR: `--description "@c:/caminho/descricao.md"`.
+
+## Ao implantar em um ambiente
+
+Adicionar tag no work item (`System.Tags`), **sem remover tags existentes** (separador `;`):
+
+| Ambiente implantado | Tag |
+|---------------------|-----|
+| Dev | `deploy-dev` |
+| QA | `deploy-qa` |
+| Prod | `deploy-prod` |
+
+Via MCP: `wit_update_work_item` com `op=add` em `/fields/System.Tags` (ou `replace` concatenando tags já existentes).
+
+Deploy e PR são **independentes**: pode existir `deploy-dev` com PR para `develop` ainda `active`.
+
+## Quando o usuário pedir status das tarefas
+
+1. Identificar work items (ID no arquivo `tarefas/` ou número informado).
+2. Ler work item: `wit_get_work_item` (project **OrangeDoor Global Projects**).
+3. Ler comentários: `wit_list_work_item_comments` — filtrar linhas que começam com `[PRODESP-PR]`.
+4. Para cada PR citado, consultar status atual: `az repos pr show --id <id>`.
+5. Ler tags: `deploy-dev`, `deploy-qa`, `deploy-prod`.
+6. Responder com síntese:
+   - State do work item (ex.: In Progress, Resolved)
+   - PRs por ambiente/target (criado, ativo, mergeado)
+   - Deploys (tags presentes)
+   - Pendências (ex.: falta PR para `qa`/`main`)
+
+Se o usuário passar **link de PR**, extrair `pullrequest/<id>`, consultar `az repos pr show` e cruzar com comentários `[PRODESP-PR]` das tasks relacionadas (work items linkados ou busca nos comentários).
+
+## Consultas úteis (Azure CLI)
+
+```bash
+# Status do PR
+az repos pr show --org https://dev.azure.com/orangedoorit --id <id>   --query "{status:status, source:sourceRefName, target:targetRefName, title:title}"
+
+# Listar PRs ativos de um repo
+az repos pr list --org https://dev.azure.com/orangedoorit --project PRODESP   --repository <repo> --status active
+```
+
+## Work item de referência
+
+- Task **#21580**: GET pedidos-compra v2 — spec em `tarefas/PBI 21304-prevencao-de-duplicidade-de-pedidos-em-retentativas-de-integracao/TASK 21580-implementar-get-pedidos-compra/spec.md`
+
+## Manifesto de deploy no PBI (`[PRODESP-DEPLOY]`)
+
+Pacote de apps Mule para produção — **comentário único** no PBI parent, atualizado (não criar novo a cada evento).
+
+### Estrutura local (`tarefas/`)
+
+```
+tarefas/PBI {pbi-id}-{slug-titulo}/
+  manifesto-deploy.md              # espelho do comentário (+ <!-- azure-comment-id: N -->)
+  TASK {task-id}-{slug-task}/spec.md
+```
+
+### Tabela no comentário
+
+| Ordem | App | Task | Versão App | Versão API | PRs pendentes | Deployado em |
+
+- **PRs pendentes:** `[develop #N](url) · qa · main` — link só em PRs active; remover ao mergear.
+- **Deployado em:** `✅ Dev · QA · Prod` — emoji só nos ambientes implantados; demais sem emoji.
+- **Task:** link markdown `[# {id}](https://dev.azure.com/orangedoorit/OrangeDoor%20Global%20Projects/_workitems/edit/{id})` — não usar `#21580` colado (mention vira card).
+- **Versão API:** sempre preenchida (histórico).
+
+### Sincronização Task → PBI
+
+Ao criar/atualizar `[PRODESP-PR]` na task, **atualizar também** o `[PRODESP-DEPLOY]` do PBI parent e `manifesto-deploy.md` local.
+
+| Evento | Ação no manifesto |
+|--------|-------------------|
+| PR criado | Adicionar link no target em PRs pendentes |
+| PR mergeado/abandonado | Remover link do target |
+| Deploy | Adicionar `✅` no ambiente |
+| Release | Atualizar Versão App / Versão API |
+
+### Consultar status
+
+1. Ler comentário `[PRODESP-DEPLOY]` no PBI (ou `manifesto-deploy.md`).
+2. Ler comentários `[PRODESP-PR]` nas tasks filhas.
+3. Validar PRs com `az repos pr show`.
+4. Tags de deploy nas tasks: `deploy-dev`, `deploy-qa`, `deploy-prod`.
+

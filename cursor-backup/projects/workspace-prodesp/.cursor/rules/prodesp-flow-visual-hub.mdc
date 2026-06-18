@@ -1,0 +1,30 @@
+---
+description: Flow Visual Hub — logs CH2 no diagrama swimlane (tarefas/flow-visual-hub)
+globs:
+  - tarefas/flow-visual-hub/**
+  - tarefas/*-visual/data/*_flow-log-points*.json
+  - tarefas/*-visual/public/js/flow-log-bridge.js
+alwaysApply: false
+---
+
+# Flow Visual Hub
+
+Skill completa: `.cursor/skills/prodesp-flow-visual-hub/SKILL.md`.
+
+## Escopo
+
+App Node `tarefas/flow-visual-hub/` (8790): schedules → pedido → diagrama com logs por nó.
+
+## Regras rápidas
+
+- **Dois correlations:** job (scheduler) + item (`tracing:with-correlation-id`); sessão merge dos dois.
+- **log-points:** tokens na **mensagem runtime** (`matchBefore`/`matchAfter`/`matchInfo`); overrides em `*_flow-log-points-overrides.json`; gerar com `npm run extract-log-points`.
+- **Dedupe:** por conteúdo semântico (`logSemanticKey`), não só `raw`.
+- **UI:** cards em `log-view.js` — sem prefixo `SCHEDULE … -`; JSON multiline no parser.
+- **Logs CH2:** API AMC — skill `prodesp-mule-runtime-logging`; Windows: `npm run start:platform`.
+- **Testes:** `npm test` em `flow-visual-hub` após mudar `log-parser.js`.
+- Reiniciar hub após alterar `server.js` / parser / JS público.
+
+## Diagrama swimlane
+
+CSV/layout: skill `prodesp-flow-visual-csv-first`. Hub **consome** `flow.json` + log-points; não substitui o CSV.

@@ -1,0 +1,56 @@
+---
+description: Padrões de implementação Mule em workspace-prodesp-app
+globs: workspace-prodesp-app/**/*
+alwaysApply: false
+---
+
+# App Mule — workspace-prodesp-app
+
+Ao implementar ou alterar flows, siga o skill **mulesoft-app-implementation** (`.cursor/skills/mulesoft-app-implementation/SKILL.md`).
+
+## Rastreabilidade na entrada (quando pedido)
+
+1. App tem flow **main** com `apikit:router`? Se **não** → avisar o usuário (padrão não se aplica).
+2. `common/c-inbound-tracking-context.xml` + `dwl/variables/context/inbound-tracking-context.dwl`
+3. No main: `http:listener` → `c-inbound-tracking-context` → `c-apikit-inbound-request-context` → (opcional) log DEBUG APIKit inline no `logger` + `modules/log/ApikitInboundLogHeaders.dwl` → `apikit:router` (não no console)
+4. Sub-flow: `vars.context` + logger INFO; log APIKit → skill `mulesoft-app-implementation` (seção Log DEBUG APIKit); outbound → `prodesp-mule-intra-mule-http`
+5. Referência: `data-integrator-p-api`, `data-wallet-integrator-s-api`
+
+## Checklist rápido (s-api)
+
+0. **Aderência backend (obrigatório):** conferir query vs header, nomes e schema de resposta na spec oficial antes do outbound — regra **`prodesp-backend-spec-alignment`**
+1. Flow APIKit em `{app}.xml`: `{method}:\{resource}:data-wallet-integrator_apikit_config` (ou config da app)
+2. `ee:transform` "Variaveis" → DWL em `dwl/variables/queryParams|uriParams|headers/`
+3. `flow-ref` → `c-get-access-token` quando backend exige token RHSSO
+4. `until-successful` + `http:request` com `target="payloadResponse"` e `erros-http_commons`
+5. Novo `on-error-propagate` / `on-error-continue` → skill global **`mulesoft-error-handler`** (perguntar `enableNotifications` / `logException` antes do XML)
+6. `choice` "Verifica Response" em `vars.payloadResponse.messages`
+7. Transform de sucesso: `dwl/{operacao}-{backend}-{request|response}-transformation.dwl`
+
+## Checklist rápido (p-api / e-api)
+
+- Subflow em `implementation/{verb}-{recurso}-{backend}_subflow.xml`
+- Operação via `mule-plugin-{s-api}` em vez de HTTP direto
+- Config do plugin em `common/z-global-config.xml` (`requestData{Backend}.*`)
+
+## Estrutura obrigatória
+
+```
+src/main/mule/{app}.xml
+src/main/mule/common/z-global-config.xml
+src/main/mule/common/z-common-error.xml
+src/main/mule/implementation/*_flow.xml
+src/main/resources/dwl/...
+src/main/resources/properties/config*.yaml
+```
+
+## Referência
+
+Copiar de `data-wallet-integrator-s-api` para novos endpoints s-api no mesmo domínio Wallet/CEP.
+
+## Versão da API (`api.version`)
+
+**Obrigatório** em toda entrega RAML + app do mesmo asset — ver rule global `mulesoft-workspace` (seção **`api.version` no `pom.xml` da app**).
+
+Resumo: após publicar no Exchange, ler `<version>` em `workspace-prodesp-api/{asset}/.exchange.xml` e espelhar em `<api.version>` no `pom.xml` da app.
+

@@ -1,0 +1,50 @@
+---
+description: Acesso programático ao Design Center PRODESP (Git, API, CLI) via Connected App
+globs: workspace-prodesp-api/**/*
+alwaysApply: false
+---
+
+# Design Center PRODESP — acesso programático (Git / API / CLI)
+
+Skill detalhada: `.cursor/skills/prodesp-designcenter-access/SKILL.md`
+
+## Credenciais (ambiente local — não commitar)
+
+| Variável | Uso |
+|----------|-----|
+| `ANYPOINT_CLIENT_ID` | Connected App (client credentials) |
+| `ANYPOINT_CLIENT_SECRET` | Client secret |
+| `ANYPOINT_ORG` | `1c8711d7-2135-4686-89f0-fb014e1662ac` |
+
+Connected App atual (host user): atua como `lucas_fabiano_prodesp` — `x-owner-id` da API Designer = `a1651c01-f9c1-422b-abd5-ee207ae60afd` (obter via `GET /accounts/api/me` se mudar de app).
+
+## Scope obrigatório na Connected App
+
+- **Design Center Developer** — sem isso: Git 401, API 403, CLI 401.
+
+Scopes já usados para Exchange: API Catalog Contributor, View Organization, View Environment, Exchange Contributor.
+
+## Git do Design Center (workspace-prodesp-api)
+
+Remote padrão: `https://anypoint.mulesoft.com/git/{orgId}/{projectId}` (project-id no `.git/config`).
+
+- **Não** usar `~~~Client~~~` / `clientId~?~clientSecret` — isso é para Exchange/Maven, não para Git do Design Center.
+- **Usar** OAuth: username `oauth2` + `access_token` como password (helper renova a cada operação).
+
+Setup (uma vez por máquina, após clonar o monorepo):
+
+```bash
+bash .cursor/scripts/setup-designcenter-git.sh
+```
+
+Scripts: `.cursor/scripts/anypoint_oauth_token.py`, `.cursor/scripts/anypoint_git_credential_helper.py`
+
+## API e CLI (resumo)
+
+- API: `GET https://anypoint.mulesoft.com/designcenter/api-designer/projects` + headers `Authorization`, `x-organization-id`, `x-owner-id`
+- CLI: `anypoint-cli-v4 designcenter project list <nome> -o json` com `ANYPOINT_ORG` / client env vars
+- MCP `user-mulesoft-prodesp`: `search_asset` no Exchange — não lê draft do Design Center
+
+## Após alterar scopes
+
+Token OAuth é reutilizado até ~1h. Se adicionar scope novo, aguardar expiração ou forçar token novo antes de concluir que falhou.

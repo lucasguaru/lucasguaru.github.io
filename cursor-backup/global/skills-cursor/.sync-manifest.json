@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "skills": {
+    "babysit": {
+      "lastSyncedAt": 1781739643356
+    },
+    "canvas": {
+      "lastSyncedAt": 1781739643356
+    },
+    "create-hook": {
+      "lastSyncedAt": 1781739643356
+    },
+    "create-rule": {
+      "lastSyncedAt": 1781739643356
+    },
+    "create-skill": {
+      "lastSyncedAt": 1781739643356
+    },
+    "create-subagent": {
+      "lastSyncedAt": 1781739643356
+    },
+    "migrate-to-skills": {
+      "lastSyncedAt": 1781739643356
+    },
+    "shell": {
+      "lastSyncedAt": 1781739643356
+    },
+    "statusline": {
+      "lastSyncedAt": 1781739643356
+    },
+    "update-cli-config": {
+      "lastSyncedAt": 1781739643356
+    },
+    "update-cursor-settings": {
+      "lastSyncedAt": 1781739643356
+    },
+    "split-to-prs": {
+      "lastSyncedAt": 1781739643356
+    },
+    "sdk": {
+      "lastSyncedAt": 1781739643356
+    },
+    "loop": {
+      "lastSyncedAt": 1781739643356
+    },
+    "automate": {
+      "lastSyncedAt": 1781739643356
+    },
+    "review": {
+      "lastSyncedAt": 1781739643356
+    },
+    "review-bugbot": {
+      "lastSyncedAt": 1781739643356
+    },
+    "review-security": {
+      "lastSyncedAt": 1781739643356
+    }
+  },
+  "lastInventoryAt": 1781735900748
+}

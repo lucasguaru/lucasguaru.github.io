@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "hooks": {},
+  "_comment": "Hooks globais em ~/.cursor/hooks.json \u2014 evitar duplicar preToolUse/beforeReadFile aqui."
+}

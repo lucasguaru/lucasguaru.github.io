@@ -1,0 +1,24 @@
+{
+  "loggingConfiguration": [
+    {
+      "itemName": "PRODESP - APIKit entrada HTTP",
+      "itemData": {
+        "message": "#[%dw 2.0\noutput text/plain\nvar sensitiveKeys = [\"authorization\", \"client_secret\"]\nfun redactHeader(k, v) = if (sensitiveKeys contains lower(k as String)) (if (v == null) null else \"***REDACTED***\") else v\nfun headersForLog(h) = (h default {}) mapObject ((v, k) -> (k): redactHeader(k, v))\n---\n(attributes.method default \"\") ++ \" \" ++ (attributes.relativePath default \"\") ++ \" - APIKit Request - \" ++ write({ titulo: \"APIKit - entrada HTTP\", fase: \"antes\", correlationId: correlationId, request: { method: attributes.method, path: attributes.relativePath, queryParams: attributes.queryParams, uriParams: attributes.uriParams default {}, headers: headersForLog(attributes.headers), body: if (isEmpty(payload.^raw)) null else payload } }, \"application/json\")]",
+        "category": "br.gov.sp.prodesp.api.gateway",
+        "level": "INFO",
+        "firstSection": true,
+        "secondSection": false
+      }
+    },
+    {
+      "itemName": "PRODESP - APIKit saida HTTP",
+      "itemData": {
+        "message": "#[%dw 2.0\noutput text/plain\n---\n(attributes.method default \"\") ++ \" \" ++ (attributes.relativePath default \"\") ++ \" - APIKit Response - \" ++ write({ titulo: \"APIKit - saida HTTP\", fase: \"depois\", correlationId: correlationId, httpStatus: attributes.statusCode, response: if (isEmpty(payload.^raw)) null else payload }, \"application/json\")]",
+        "category": "br.gov.sp.prodesp.api.gateway",
+        "level": "INFO",
+        "firstSection": false,
+        "secondSection": true
+      }
+    }
+  ]
+}

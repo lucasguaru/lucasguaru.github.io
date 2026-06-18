@@ -1,0 +1,18 @@
+---
+description: >-
+  Mule 4 — on-error-propagate/continue: enableNotifications, logException.
+  Perguntar erro esperado, notificação e log antes de editar XML.
+globs: "**/src/main/mule/**/*.xml"
+alwaysApply: false
+---
+
+# Mule 4 — error handler (`on-error-*`)
+
+Ao criar ou alterar `<on-error-propagate>` / `<on-error-continue>`:
+
+1. Skill **`mulesoft-error-handler`** — `~/.cursor/skills/mulesoft-error-handler/SKILL.md`
+2. **AskQuestion** (modo question) por handler — ids `erro-esperado`, `notificar-monitoramento`, `log-aplicacao` (ver skill).
+3. `enableNotifications="false"` / `logException="false"` → escrever explicitamente no XML
+4. `logException="false"` sem logger no handler → avisar risco de perda de diagnóstico
+
+Validação: `py -3 ~/.cursor/skills/mulesoft-error-handler/scripts/check_error_handlers.py <app-path> [--git-diff]`

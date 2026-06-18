@@ -1,0 +1,16 @@
+---
+description: Ponte para product-definition no workspace de desenvolvimento
+alwaysApply: true
+---
+
+# Workspace de desenvolvimento
+
+Definições de produto e mapping de integrações: ver [`.ia/workspace-links.yaml`](../../.ia/workspace-links.yaml).
+
+- **product-definition:** `../product-definition/`
+- **Mapping:** `../product-definition/mappings/mulesoft-integrations.yaml`
+- **Ferramentas locais (catálogo):** [`.ia/dev-tools.yaml`](../../.ia/dev-tools.yaml) — skill `prodesp-dev-tools-catalog`
+
+Diagramas de sequência: skill global `integration-sequence-diagram`.
+
+Mesa de trabalho dev (planos, rascunhos): `tarefas/` — não confundir com product-definition.

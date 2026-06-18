@@ -1,0 +1,85 @@
+---
+description: Promoção de ambientes Mule PRODESP — um PR por repo (develop→qa, qa→main); não monorepo
+alwaysApply: true
+---
+
+# PRODESP — PRs de promoção entre ambientes (Mule apps)
+
+Cada app em `workspace-prodesp-app/{asset}/` é **repositório Git independente** no Azure DevOps (`PRODESP/_git/{asset}`). **Não existe PR único** no monorepo local.
+
+## Mapa branch → ambiente
+
+| Target branch | Ambiente | Tag deploy (work item) |
+|---------------|----------|-------------------------|
+| `develop` | Dev | `deploy-dev` |
+| `qa` | QA | `deploy-qa` |
+| `main` | Prod | `deploy-prod` |
+
+## Regra: um PR por app por salto
+
+| Promoção | Source | Target | Quando |
+|----------|--------|--------|--------|
+| Dev → QA | `develop` | `qa` | Após merge/deploy validado em Dev |
+| QA → Prod | `qa` | `main` | Após validação em QA |
+
+Para promover **N apps**, criar **N PRs** (mesmo título/descrição padronizados, repos diferentes).
+
+## Criar PR develop → qa (Azure CLI)
+
+Por repo no escopo (tabela em `mulesoft-workspace.mdc`):
+
+```bash
+# Ver delta
+git -C workspace-prodesp-app/{asset} fetch origin
+git -C workspace-prodesp-app/{asset} rev-list --count origin/qa..origin/develop
+
+# PR (Windows: descrição via arquivo)
+az repos pr create \
+  --org https://dev.azure.com/orangedoorit \
+  --project PRODESP \
+  --repository {asset} \
+  --source-branch develop \
+  --target-branch qa \
+  --title "Promoção Dev → QA — {asset}" \
+  --description "@c:/workspace-orange/workspace-prodesp/tarefas/pr-promocao-dev-qa-template.md"
+```
+
+Template de descrição: `tarefas/pr-promocao-dev-qa-template.md`.
+
+## PR develop → qa com conflito
+
+1. Abandonar PR antigo (`az repos pr update --id N --status abandoned`) — não reutilizar PR stale.
+2. Criar PR novo `develop` → `qa` (mesmo repo).
+3. Se `mergeStatus: conflicts`, resolver no Azure ou local (`git checkout qa && git merge origin/develop`) **no repo da app**, push em branch de fix ou resolver na UI — nunca misturar repos.
+
+## Comentário no work item (opcional)
+
+Mesmo formato de `[PRODESP-PR]` da regra `prodesp-azure-task-tracking`, trocando target/ambiente:
+
+```
+[PRODESP-PR] target=qa | ambiente=QA | repo={asset} | source=develop | PR=#<id> | status=active
+```
+
+## qa → main
+
+Mesmo padrão: **um PR por repo**, `source=qa`, `target=main`, título `Promoção QA → Prod — {asset}`, tag pós-deploy `deploy-prod`.
+
+## Consulta rápida (8 apps)
+
+```bash
+for repo in data-adobe-sign-s-api data-documents-p-api data-integrator-p-api \
+  data-management-integrator-s-api data-wallet-integrator-s-api \
+  management-payments-receipts-p-api management-payments-receipts-s-api \
+  portal-ecom-tech-e-api; do
+  git -C workspace-prodesp-app/$repo fetch origin -q
+  echo "$repo: $(git -C workspace-prodesp-app/$repo rev-list --count origin/qa..origin/develop) commits develop→qa"
+done
+```
+
+## Intenções do usuário
+
+| Pedido | Ação |
+|--------|------|
+| "subir pra QA" / "promover develop qa" | Listar delta por repo → criar **um PR por app** com delta > 0 (ou lista explícita) |
+| "PR de todas as apps pra qa" | Loop nos 8 repos escopo → `az repos pr create` cada um |
+| "depois qa pra prod" | Mesmo loop com `source=qa` `target=main` |

@@ -1,0 +1,52 @@
+---
+description: Defaults para Azure DevOps (org orangedoorit, projeto OrangeDoor Global Projects) quando o utilizador refere work items apenas pelo número.
+alwaysApply: true
+---
+
+# Azure DevOps - Defaults
+
+## Organização e projeto padrão
+
+- **Organização**: `orangedoorit` (https://dev.azure.com/orangedoorit)
+- **Projeto Azure DevOps padrão para work items**: `OrangeDoor Global Projects`
+
+Na prática, os “projetos” de produto (DSP, etc.) aparecem como **épicos / áreas** dentro deste projeto ADO quando se trata de **boards / backlog** — não substituem onde o Git está hospedado.
+
+Estes valores aplicam-se até serem alterados manualmente nesta regra. Se no futuro existir trabalho **fora** da OrangeDoor, o utilizador avisa para atualizar esta regra.
+
+### Work items vs repositório Git (DSP)
+
+- Os **work items** do trabalho DSP (tasks, bugs, etc.) costumam ser lidos e atualizados no projeto **`OrangeDoor Global Projects`** (default acima).
+- Os **repositórios Git** das apps DSP (`dsp-*`, etc.) ficam num **projeto Azure DevOps à parte**, normalmente **`DSP`** — não usar `OrangeDoor Global Projects` em `--project` nem em chamadas MCP de Git/Repos para esses clones.
+- Para **nome exato do repositório** e operações **`az repos`**, **`repo_*`** (MCP), **PR**, **branch** remota referente ao código DSP: usar `project=DSP` (ou confirmar na UI do Azure DevOps) e o nome tal como aparece em `az repos list --organization "https://dev.azure.com/orangedoorit" --project "DSP"`.
+
+## Resolução de work items pelo número
+
+Quando o utilizador pedir para trabalhar num ticket/work item e passar apenas o número (ex.: `20271`, `#20271`, `AB#20271`):
+
+- Assumir `project=OrangeDoor Global Projects` e `org=orangedoorit`, salvo indicação explícita em contrário.
+- Não pedir confirmação destes defaults — usar diretamente.
+
+## Retrieval / updates
+
+- Preferir **ler o work item primeiro** para preservar e melhorar a descrição existente em vez de sobrescrever cegamente.
+- Ao ler via MCP, usar **`expand=relations`** e seguir [ado-work-item-attachments.mdc](ado-work-item-attachments.mdc): verificar anexos (`AttachedFile`), **não** ler conteúdo sem confirmação; avisar o utilizador se existirem.
+- Ao atualizar a descrição, usar cabeçalhos claros quando fizer sentido:
+  - Contexto
+  - Objetivo
+  - Escopo
+  - Endpoints
+  - Comportamento atual/desejado
+  - Contrato RAML
+  - Critérios de aceite
+  - Não escopo
+  - Testes
+
+## Fluxo "criar plano para o ticket X" / "implementar o ticket X"
+
+Quando o utilizador disser algo como *"cria um plano para o ticket 20271"* ou *"implementa o ticket 20271"*:
+
+1. **Primeiro**, ler o work item via MCP do Azure DevOps (quando disponível) usando `org=orangedoorit` e `project=OrangeDoor Global Projects`.
+2. **Depois**, seguir o fluxo normal (planeamento / implementação) usando o contexto do work item lido.
+
+Se o MCP do Azure DevOps não estiver disponível, avisar o utilizador e pedir o conteúdo do ticket antes de avançar.

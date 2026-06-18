@@ -1,0 +1,38 @@
+---
+description: Work items Azure DevOps — verificar anexos via MCP sem ler conteúdo; avisar e perguntar antes de baixar.
+alwaysApply: true
+---
+
+# Azure DevOps — Anexos em work items
+
+Alinhar org/projeto com [ado-defaults.mdc](ado-defaults.mdc). Usar MCP **`user-azure-devops`**.
+
+## Ao ler um ticket (qualquer pedido que envolva `wit_get_work_item`)
+
+1. Chamar `wit_get_work_item` com **`expand=relations`** (ou `all`) para incluir relações.
+2. Nas relações, procurar **`rel=AttachedFile`**.
+3. **Não** chamar `wit_get_work_item_attachment` neste passo — só confirmar existência e metadados (`attributes.name`, URL/GUID se vier na resposta).
+
+## O que informar ao utilizador
+
+- **Sem anexos**: não mencionar anexos (silencioso).
+- **Com anexos**: indicar quantidade e **nome(s)** do(s) ficheiro(s). Exemplo: *"O ticket tem 2 anexos: `screenshot.png`, `log.txt`."*
+
+## Quando perguntar se deve ler o conteúdo
+
+| Situação | Comportamento |
+|----------|---------------|
+| Pedido genérico (*ver ticket*, *resumir*, *contexto*, *criar plano*, *implementar*) | Avisar que há anexo(s) e **perguntar** se quer que leia algum (ou todos). **Não** assumir que anexo entra no contexto. |
+| Pedido explícito sobre anexo (*lê o screenshot*, *o que diz o PDF*, *analisa o anexo*) | Pode chamar `wit_get_work_item_attachment` para o(s) ficheiro(s) pedidos. |
+| Utilizador responde **sim** / indica ficheiro | Ler só o(s) pedido(s) via `wit_get_work_item_attachment` (`attachmentId` + `fileName`). |
+| Utilizador responde **não** / *só a descrição* | Continuar só com campos/comentários do WI; **não** voltar a insistir nos anexos salvo pedido novo. |
+
+## Regras de leitura de conteúdo
+
+- **Default: não ler** conteúdo de anexos — só metadados de existência.
+- Só baixar/interpretar anexo após **confirmação explícita** do utilizador ou pedido direto sobre o ficheiro.
+- Se houver vários anexos, perguntar **quais** ler (não descarregar todos de uma vez sem confirmação).
+
+## Evolução
+
+Esta regra é intencionalmente mínima; critérios (ex.: ler imagens automaticamente em bugs visuais) podem ser afinados depois.

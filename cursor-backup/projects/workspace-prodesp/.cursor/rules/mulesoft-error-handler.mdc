@@ -1,0 +1,35 @@
+---
+description: >-
+  Tratamento de erros Mule — on-error-propagate/continue, enableNotifications,
+  logException. Perguntar ao usuário antes de editar XML.
+globs: workspace-prodesp-app/**/src/main/mule/**/*.xml
+alwaysApply: false
+---
+
+# MuleSoft — error handler (`on-error-*`)
+
+Ao **criar ou alterar** `<on-error-propagate>` / `<on-error-continue>` (flow, sub-flow, `try`, scope local):
+
+1. Ler skill global **`mulesoft-error-handler`** (`~/.cursor/skills/mulesoft-error-handler/SKILL.md`).
+2. **Perguntar ao usuário** via **AskQuestion** (modo question), por handler / `type`, antes de codificar — ids: `erro-esperado`, `notificar-monitoramento`, `log-aplicacao` (ver skill).
+3. Aplicar matriz da skill; registrar decisão em uma linha no chat antes do XML.
+4. Handlers globais PRODESP: `common/z-common-error.xml` (`cf-error::api_kit`, `erros-http_commons`) — evitar duplicar `type` já coberto.
+5. `logException="false"` → garantir logger útil no handler; não logar segredos.
+
+## Atributos
+
+| Atributo | Default | `false` |
+|----------|---------|---------|
+| `enableNotifications` | `true` | Sem alerta de monitoramento |
+| `logException` | `true` | Sem stack trace automático da Mule |
+
+Valor `false` → **sempre** explicitar no XML. Default `true` → omitir ou explicitar conforme estilo do mesmo `error-handler`.
+
+## Validação (opcional)
+
+```bash
+py -3 ~/.cursor/skills/mulesoft-error-handler/scripts/check_error_handlers.py workspace-prodesp-app/<app>
+py -3 ~/.cursor/skills/mulesoft-error-handler/scripts/check_error_handlers.py workspace-prodesp-app/<app> --git-diff
+```
+
+Falha se `logException="false"` sem `<logger>` / `json-logger` no bloco.

@@ -1,0 +1,63 @@
+---
+description: Azure DevOps + Git workflow (DSP Mule) — branch master, PR develop, AB# traceability
+alwaysApply: true
+---
+
+# Git + Azure DevOps
+
+## Antes de iniciar alterações (ticket Azure DevOps)
+Só começar código depois desta sequência no repositório certo:
+1. **`git status`**: working tree **limpa** — sem ficheiros modificados/untracked que devam entrar noutro trabalho (commit, `git stash push -u`, ou descartar conforme o caso). Evita levar alterações acidentais para `master` ou misturar tickets.
+2. **`git checkout master && git pull`**: base atualizada com o remoto.
+3. **`git checkout -b`** `feature/<WI>-<slug>` ou `bugfix/<WI>-<slug>` a partir desse `master`.
+4. Daí iniciar o desenvolvimento e commits com `AB#<WI>`.
+
+## Branching
+- **Base para novas branches**: `master` (atualize antes: `git checkout master && git pull`).
+- **PR de integração diária**: abrir para `refs/heads/develop`.
+- **HML/PROD**: somente via **PRs explícitos** e processo de release; evitar merge "em massa" de `develop` → `master` fora de acordo do time.
+
+## Nome de branch
+- `feature/<WorkItemId>-<slug-curto>` ou `bugfix/<WorkItemId>-<slug-curto>`.
+- Inclua sempre o **ID numérico** do Work Item.
+
+## Commits
+- Primeira linha (padrão preferido — **Opção A: domínio/feature**): `AB#<WorkItemId> <DominioOuFeature>: <ação curta em português>`.
+  - Exemplos:
+    - `AB#20289 CND: mapear 400 do downstream para 299`
+    - `AB#20289 CND: documentar resposta 299 no RAML`
+- Corpo (opcional, 1–3 linhas): contexto mínimo do **porquê** e do **efeito** (sem colar diffs enormes).
+- O padrão `AB#` liga o commit ao Work Item no Azure DevOps.
+- **Não adicionar trailers** como `Co-authored-by:` / `Signed-off-by:` **a menos que o utilizador peça explicitamente** (algumas UIs sugerem isso automaticamente).
+- **Revisão obrigatória antes de commitar**:
+  - Sempre mostrar ao utilizador o **diff completo** do que entrará no commit (`git diff` e `git diff --cached`) e aguardar o “ok”.
+  - Depois do “ok”, o assistente deve **apenas fornecer os comandos** para o utilizador executar localmente (não executar commits automaticamente):
+    - `git add <ficheiros>`
+    - `git commit -m "<mensagem>"` (ou `-m "<título>" -m "<corpo>"`)
+  - O comando sugerido **não** pode incluir `--trailer` nem inserir `Co-authored-by:` por defeito.
+
+## Pull requests
+- Título: `AB#<WorkItemId> <título>`.
+- Descrição: contexto, impacto, **como testar**, e link/referência ao Work Item se faltar automação.
+- Rastreio "foi para `develop` / `master`?": use **PRs associados ao Work Item** (target branch + merge), não só o nome da branch.
+- **Aprovação obrigatória antes de criar o PR**:
+  - Preparar o resumo (branch, commits, diff ou lista de ficheiros, resultado de **`mvn -q test`** ou bloqueio explicado).
+  - **Não** executar criação do PR na Azure DevOps / `az repos pr create` / equivalente até o utilizador responder com **aprovação explícita** (ex.: “ok, abre o PR”, “pode criar”).
+  - Se o utilizador só pediu implementação ou até commit/push, **parar aí** e perguntar se deve abrir o PR.
+
+### Comentário no Work Item com links dos PRs
+- **Onde o ticket já se relaciona com o PR (ADO):** (1) associação explícita do PR ao WI (UI ou API, ex. parâmetro `workItems` em `repo_create_pull_request`) — aparece em *Development* / PRs relacionados; (2) commits com `AB#<WorkItemId>` — rastreio no histórico, não substitui o PR como artefacto de revisão.
+- **Depois de criar o PR** (com aprovação prévia acima): no work item **AB#<WorkItemId>**, adicionar um **comentário** (Markdown) com **uma linha por PR**: branch alvo, título curto e URL completa `https://dev.azure.com/<org>/<RepoProject>/_git/<repo>/pullrequest/<id>`. Vários PRs (ex. `develop` + `master`) no **mesmo** comentário.
+- **Implementação:** MCP `wit_add_work_item_comment` com `workItemId`, `comment` em Markdown e **`project` = projeto Azure DevOps onde o work item existe** (não assumir o projeto do repositório Git; o repo pode estar em *DSP* e o WI em *OrangeDoor Global Projects*, etc.). Se só existir o número do WI, usar o projeto do work item já conhecido na conversa ou o default de [ado-defaults.mdc](ado-defaults.mdc) quando for o caso habitual.
+- **Objetivo do comentário:** visibilidade no histórico *Discussion* do ticket; se `workItems` já associou o PR ao WI, o comentário **complementa** essa ligação, não a duplica funcionalmente.
+- **Não** adicionar este comentário se o utilizador pedir explicitamente para não comentar no WI, ou se não houver `workItemId` identificável.
+
+## Após implementar alterações (app Mule — fecho do ticket no código)
+
+Antes de considerar o trabalho **pronto para PR** ou “implementação concluída” num repositório **Mule** (onde exista `pom.xml` da app):
+
+1. Na **raiz desse repositório**, executar pelo menos o gate de empacotamento (sem testes), para validar que o código gera um artefacto válido:
+   - **`mvn -q -DskipTests package`**
+2. Quando existirem testes aplicáveis (ex.: MUnit) e não houver indicação explícita para pular, executar também **`mvn -q test`** com as propriedades JVM indicadas na regra global **`mule-munit-maven.mdc`** (ex.: `-Daws.accessKeyId`, `-Daws.secretAccessKey`, `-Dmule.env`), salvo o utilizador ou o `README`/`pom.xml` indicarem outro comando oficial.
+3. Se o projeto **não** tiver testes (ou houver acordo explícito para não rodar), manter pelo menos o passo 1 e seguir a documentação do repo; em dúvida, **perguntar** ao utilizador em vez de saltar qualquer gate.
+4. **Não** abrir PR nem declarar conclusão sem ter corrido o(s) gates Maven aplicáveis (package e/ou test) ou sem explicar bloqueio (ambiente, credenciais, comando alternativo acordado).

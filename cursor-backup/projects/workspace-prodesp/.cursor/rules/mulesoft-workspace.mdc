@@ -1,0 +1,137 @@
+---
+description: Contexto geral MuleSoft PRODESP — apps e API specs em workspaces separados
+alwaysApply: true
+---
+
+# Workspace MuleSoft PRODESP
+
+Este repositório separa **contrato (RAML)** e **implementação (Mule)**:
+
+| Workspace | Caminho | Conteúdo |
+|-----------|---------|----------|
+| API specs | `workspace-prodesp-api/` | RAML, traits, dataTypes, `exchange.json` |
+| Apps Mule | `workspace-prodesp-app/` | Flows XML, DWL, properties, `pom.xml` |
+
+## Apps Mule em escopo (PRODESP)
+
+Quando o usuário mencionar **projetos Mule**, **apps** ou um asset pelo nome, resolver em `workspace-prodesp-app/{asset}/` — **não** explorar outras pastas salvo pedido explícito.
+
+| Asset | Caminho | Camada |
+|-------|---------|--------|
+| `data-adobe-sign-s-api` | `workspace-prodesp-app/data-adobe-sign-s-api/` | s-api |
+| `data-documents-p-api` | `workspace-prodesp-app/data-documents-p-api/` | p-api |
+| `data-integrator-p-api` | `workspace-prodesp-app/data-integrator-p-api/` | p-api |
+| `data-management-integrator-s-api` | `workspace-prodesp-app/data-management-integrator-s-api/` | s-api |
+| `data-wallet-integrator-s-api` | `workspace-prodesp-app/data-wallet-integrator-s-api/` | s-api |
+| `management-payments-receipts-p-api` | `workspace-prodesp-app/management-payments-receipts-p-api/` | p-api |
+| `management-payments-receipts-s-api` | `workspace-prodesp-app/management-payments-receipts-s-api/` | s-api |
+| `portal-ecom-tech-e-api` | `workspace-prodesp-app/portal-ecom-tech-e-api/` | e-api |
+
+**Fora de escopo** (ignorar por padrão): `correlation-id-novo/`, `govbr-proxy-s-api/`, `itsm-proxy-s-api/`, `scripts/`, caches (`.mule/`, `.metadata/` — em `.cursorignore`) e demais pastas em `workspace-prodesp-app/` que não constam na tabela acima.
+
+Cada app é um **repositório Git independente** no Azure DevOps (`PRODESP/_git/{asset}`).
+
+## Camadas de API (sufixo no nome do asset)
+
+- **`-s-api`**: system API — integração HTTP direta com backend
+- **`-p-api`**: process API — orquestração via `mule-plugin-*` de s-apis
+- **`-e-api`**: experience API — BFF agregando p-apis
+
+## Fluxo de implementação de um endpoint
+
+0. **Validar aderência** à Swagger/doc do backend (query vs header, nomes, response) — regra **`prodesp-backend-spec-alignment`**
+1. **RAML** em `workspace-prodesp-api/{asset}/` — ver skill `mulesoft-api-spec`
+2. **Publicar** o RAML no Exchange — **API Catalog CLI** (recomendado fora do Studio): ver regra **`prodesp-exchange-publish-api-catalog`**. Alternativa: Anypoint Studio/Design Center (janela de versão na publicação).
+3. **App** em `workspace-prodesp-app/{asset}/` — sincronizar `api.version` no `pom.xml` com a versão em `workspace-prodesp-api/{asset}/.exchange.xml` (gerado/atualizado **após** a publicação) e implementar flow — ver skill `mulesoft-app-implementation`
+4. Apps consumidoras (p/e-api) atualizam dependência `mule-plugin-*` se expuserem nova operação
+
+## `exchange.json` — não editar pelo agente
+
+- **Nunca** alterar `exchange.json` (campo `version` ou demais campos) durante implementação de RAML, tasks ou refactors.
+- A versão do asset é definida **somente** na publicação manual no Exchange (janela de versão do Design Center/Studio); o próprio tooling atualiza `exchange.json` e gera/atualiza `.exchange.xml`.
+- O agente altera apenas **RAML**, traits, dataTypes, documentação e código Mule.
+- Depois que o usuário publicar: alinhar `api.version` no `pom.xml` da app com `.exchange.xml` (não com suposição de versão no `exchange.json` antes da publicação).
+
+
+## `app.runtime` no `pom.xml` da app (CloudHub 2 LTS)
+
+- **`app.runtime`** deve refletir o **runtime LTS** implantado no CloudHub 2 do ambiente PRODESP (referência atual: **`4.9.18`**).
+- `releaseChannel` LTS no `cloudhub2Deployment` deve ser coerente com essa versão.
+- **MUnit:** no `munit-maven-plugin`, declarar `<runtimeVersion>${app.runtime}</runtimeVersion>` e `<runtimeProduct>MULE_EE</runtimeProduct>`. Sem isso, o MUnit remote runner pode tentar resolver `mule-runtime-impl-no-services-bom` em **Maven Central** (`repo.maven.apache.org`) — repositório padrão do Maven, **não** configurado no `<repositories>` do pom (que usa `maven.anypoint.mulesoft.com` e `repository.mulesoft.org`).
+
+## `api.version` no `pom.xml` da app (obrigatório)
+
+Sempre que alterar **RAML + app Mule do mesmo asset** na mesma entrega:
+
+1. **Publicar** o RAML no Exchange (CLI ou Studio — ver regra **`prodesp-exchange-publish-api-catalog`**; versão definida na publicação).
+2. Ler a versão publicada em `workspace-prodesp-api/{asset}/.exchange.xml` (campo `<version>`).
+3. Atualizar **`api.version`** no `pom.xml` de `workspace-prodesp-app/{asset}/` para **o mesmo valor**.
+4. A dependência `mule-plugin-{asset}` usa `${api.version}` — versão defasada quebra build ou gera contrato/APIKit desalinhado.
+
+**Fonte da versão:** `.exchange.xml` (após publicação). **Não** inferir versão editando `exchange.json` nem incrementar `api.version` “no chute” antes da publicação.
+
+Se o usuário informar que já publicou (ex.: “está na 1.0.15”), usar `.exchange.xml` ou a versão informada para alinhar o `pom.xml` na mesma sessão.
+
+## Git e commits
+
+### Mensagens de commit
+
+- **Sempre em português** (título e corpo), em frases completas, focando no *porquê* da mudança.
+- Aplica a **todo** o workspace (`workspace-prodesp-api/`, `workspace-prodesp-app/`, `tarefas/`, etc.) quando o agente criar commits.
+
+### `workspace-prodesp-api/` (projetos RAML)
+
+- **Gate obrigatório:** commit ou publicação Exchange de RAML **somente** com validação explícita do usuário — regra **`prodesp-raml-commit-publish-gate`**, skill **`prodesp-raml-commit-publish-gate`**.
+- Quando o usuário pedir **commit** em projeto de API spec: apresentar resumo (asset, versão, diff) → aguardar confirmação → **commit local** apenas (RAML, traits, dataTypes, etc.).
+- **Nunca fazer `git push`** em `workspace-prodesp-api/` — o usuário não autentica Git fora do Anypoint Studio; **push e publicação no Exchange** são feitos **dentro do Studio**.
+- Commits locais somente quando o usuário solicitar **e** confirmar.
+
+### Pull requests (`workspace-prodesp-app/` — Azure DevOps)
+
+Repositórios de app no Azure DevOps (ex.: `data-wallet-integrator-s-api`). **Usar Azure CLI (`az`)**, não `gh`.
+
+Ver regra **`prodesp-azure-task-tracking`** para: targets `develop`/`qa`/`main`, comentário `[PRODESP-PR]` no work item, tags de deploy e consulta de status.
+
+1. Comparar branch de feature com o target: `git log origin/<target>..<branch>` e `git diff origin/<target>...<branch>`.
+2. Criar PR com `az repos pr create` (`--org`, `--project PRODESP`, `--repository`, `--source-branch`, `--target-branch`, `--title`, `--description`).
+   - Targets: `develop` (Dev), `qa` (QA), `main` (Prod).
+   - No Windows, preferir `--description "@c:/caminho/descricao.md"` para evitar problemas de encoding.
+3. Após criar PR: comentar no work item com prefixo `[PRODESP-PR]` (ver regra de task tracking).
+4. Descrição em português: resumo, alterações principais, arquivos impactados e plano de testes.
+5. URL base: `https://dev.azure.com/orangedoorit/PRODESP/_git/<repo>/pullrequests`
+6. PR somente quando o usuário solicitar; branch já publicada em `origin`.
+
+## Referências canônicas
+
+- API: `workspace-prodesp-api/data-wallet-integrator-s-api/`
+- App: `workspace-prodesp-app/data-wallet-integrator-s-api/`
+
+
+## Properties YAML, `.cursorignore` e hooks (proxy)
+
+| Arquivo | Agent / Tab | Conteúdo para o modelo |
+|---------|-------------|-------------------------|
+| `config-{env}.yaml` sob `src/main/resources/` | Read permitido (proxy) | Estrutura + valores não sensíveis; chaves em `.cursor/hooks/redact_yaml.py` (`SENSITIVE_KEYS`) → `***REDACTED***` |
+| `config-secure-{env}.yaml` | Bloqueado (`.cursorignore`) | Valores Blowfish — inferir só `${...}` nos XMLs |
+| `product-definition/**` mappings | Leitura normal | Sem redação |
+
+**Escopo do proxy:** qualquer `*.yaml` / `*.yml` em `**/src/main/resources/**` (pasta `properties` ou `config` no futuro).
+
+**Hooks** (`.cursor/hooks.json`): `yaml-read-proxy.py` (`preToolUse` Read/Grep) + `block-sensitive.py` (`beforeReadFile`, shell). Cópia redigida: `.cursor/redacted/`.
+
+**Práticas para o agente:**
+
+- Preferir **Read** em `config-*.yaml` (não-secure) para paths e chaves; não usar shell (`cat`/`rg`) no original.
+- **Grep** em YAML Mule em `src/main/resources` é bloqueado — usar Read.
+- Não commitar segredos; novos campos sensíveis → incluir nome da chave em `SENSITIVE_KEYS` (`redact_yaml.py`).
+- Testes: `py -3 .cursor/hooks/run-tests.py`
+
+## Regras transversais
+
+- **Run local (testar alteração sem Studio):** skill/rule **`prodesp-mule-local-runtime`** — script `workspace-prodesp-app/scripts/run-local-v2-acessos-stack.sh`, runtime Mule DX, `mule.env=local`, credenciais `.anypoint-local.env`
+- **Deploy CH2 local:** skill `prodesp-mule-ch2-deploy` (`mvn clean deploy` com `-DANYPOINT_*` para publish no Exchange; `mvn mule:deploy` sem `-D`); gate — se publish falhar, **não** rodar CH2 (regra `prodesp-mule-ch2-deploy-gate`); após sucesso registrar em `tarefas/deploy-log/` (skill **`prodesp-deploy-registry`**)
+- Ver seção **`api.version` no `pom.xml` da app** acima — obrigatório em toda entrega RAML + app do mesmo asset
+- Reutilizar padrões existentes; não inventar estrutura de pastas nova
+- Query params no contrato RAML → variáveis DWL em `dwl/variables/queryParams/` → repasse conforme backend (query, header ou body)
+- Não commitar segredos; configs sensíveis em `config-secure-{env}.yaml`
+- `config-secure-*.yaml` em `.cursorignore`; demais properties em `src/main/resources` via Read + proxy (seção acima); inferir chaves pelos `${...}` nos XMLs

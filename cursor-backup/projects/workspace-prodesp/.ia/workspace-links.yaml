@@ -1,0 +1,17 @@
+# Ponte workspace → product-definition
+
+# Caminho relativo à raiz deste monorepo (workspace-prodesp)
+productDefinition:
+  path: ../product-definition
+  mappings: mappings/mulesoft-integrations.yaml
+  client: prodesp
+
+# Apps Mule neste workspace (organização local)
+devApps:
+  apps: workspace-prodesp-app
+  apis: workspace-prodesp-api
+
+# Ferramentas locais (CLI, servidores Node, diagramas com hub)
+# Skill: prodesp-dev-tools-catalog
+devTools:
+  catalog: .ia/dev-tools.yaml

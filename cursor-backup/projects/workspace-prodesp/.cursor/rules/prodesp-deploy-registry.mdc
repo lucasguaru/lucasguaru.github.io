@@ -1,0 +1,41 @@
+---
+description: Registro local de deploys e publicações Exchange — pasta tarefas/deploy-log/
+alwaysApply: true
+---
+
+# PRODESP — Registro de deploys e publicações
+
+Skill: `.cursor/skills/prodesp-deploy-registry/SKILL.md`  
+Fonte da verdade: `tarefas/deploy-log/registry.yaml`
+
+## Quando registrar
+
+Após **sucesso** (exit 0 ou confirmação Exchange), registrar:
+
+| Evento | `type` |
+|--------|--------|
+| RAML no Exchange (CLI/Studio) | `exchange-raml` |
+| App no Exchange (`mvn clean deploy`) | `exchange-app` |
+| CH2 (`mvn mule:deploy`) | `ch2` |
+
+## Campos mínimos
+
+- `timestamp` (ISO 8601 UTC)
+- `asset` (nome lógico `-api`, ex. `data-integrator-p-api`)
+- `version` (app ou RAML)
+- `environment` (`Dev` | `QA` | `Prod` | `Exchange` para só contrato)
+- `channel` (`api-catalog-cli` | `studio` | `mvn-deploy` | `mvn-mule-deploy`)
+- `success: true`
+
+## Consulta
+
+Quando o usuário perguntar "publicamos ontem?", "qual versão está em QA?", etc.:
+
+1. Ler `tarefas/deploy-log/registry.yaml` (e entrada em `entries/` se existir)
+2. Cruzar com Exchange MCP `search_asset` se registro local ausente ou duvidoso
+3. Informar registro local + Exchange quando divergirem
+
+## O agente NÃO registra
+
+- Tentativas falhas (anotar em `notes` só se usuário pedir histórico de falha)
+- Deploy/publish **antes** de concluir com sucesso

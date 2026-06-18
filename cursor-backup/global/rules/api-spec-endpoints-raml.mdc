@@ -1,0 +1,23 @@
+---
+description: DSP — specs em api-spec; tasks podem referenciar endpoints MuleSoft (mapear para RAML)
+alwaysApply: true
+---
+
+# DSP API Spec (RAML) — localização e mapeamento de endpoints
+
+## Onde ficam os projetos de API spec
+- A pasta oficial dos projetos de especificação (RAML) é `api-spec` dentro do workspace:
+  - `C:\workspace-orange\git\dsp\api-spec`
+
+## Como referenciar endpoints em tasks vs RAML
+- Nas tasks, você pode indicar os endpoints como aparecem no MuleSoft, mesmo que no RAML existam diferenças leves (principalmente versionamento no path).
+- Ao implementar/ajustar no RAML, mapeie o endpoint da task para o path real do arquivo `.raml`.
+
+### Exemplo (task → RAML)
+- Task (MuleSoft):
+  - `GET \v1\certidaoNegativaDebito`
+  - `GET \v2\certidaoNegativaDebito`
+- RAML:
+  - `/v1/certidaoNegativaDebito` (com `get:` dentro)
+  - `/v2/certidaoNegativaDebito` (com `get:` dentro)
+

@@ -1,0 +1,6 @@
+# DEPRECATED — migrado para product-definition/mappings/mulesoft-integrations.yaml
+# Ponte: .ia/workspace-links.yaml
+# Ver .cursor/mappings/README.md
+version: 0
+deprecated: true
+redirect: ../product-definition/mappings/mulesoft-integrations.yaml

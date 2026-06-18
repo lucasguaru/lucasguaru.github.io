@@ -1,0 +1,18 @@
+---
+description: MUnit e evidências de teste ao mudar flows/endpoints
+globs: "**/src/main/mule/**/*.xml,**/src/test/munit/**/*.xml"
+alwaysApply: false
+---
+
+# Testes (MUnit)
+
+## Quando mudar fluxo ou contrato de comportamento
+- Adicionar ou atualizar **MUnit** cobrindo o cenário novo e **regressão** dos existentes quando possível.
+- Preferir mocks/stubs do system layer conforme padrão do `pom.xml` e estrutura em `src/test/munit/`.
+
+## Bugs e cenários conhecidos
+- Guardar payloads de exemplo em `src/test/resources/fixtures/<area>/` (request/response esperados).
+- Nomes de teste alinhados ao Work Item quando aplicável (`AB#` no comentário do teste ou nome descritivo).
+
+## Build
+- Respeitar gates do projeto (`munit.failBuild`, coverage mínima no `pom.xml` se existir); não reduzir cobertura sem alinhamento.

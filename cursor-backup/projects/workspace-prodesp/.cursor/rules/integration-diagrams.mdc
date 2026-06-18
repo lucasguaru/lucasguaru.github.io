@@ -1,0 +1,15 @@
+---
+description: Ponte para product-definition e skill global de diagramas
+alwaysApply: false
+globs: "**/docs/fluxos/**/*.puml,**/sequencia.puml,**/tarefas/**/sequencia.puml"
+---
+
+# Diagramas e mapping
+
+Mapping canônico de integrações: ver `.ia/workspace-links.yaml` → `product-definition/mappings/mulesoft-integrations.yaml`.
+
+Para diagramas de sequência, usar skill global **`integration-sequence-diagram`** (`~/.cursor/skills/integration-sequence-diagram/`).
+
+Nível padrão: **integração** (apps + HTTP endpoints). Sem auto-referência de subflow.
+
+Skill local `mulesoft-flow-documentation` está deprecada — ver stub em `.cursor/skills/mulesoft-flow-documentation/SKILL.md`.

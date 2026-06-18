@@ -1,0 +1,19 @@
+---
+description: Externalizar config Mule (properties, YAML, secure) — 1 semântica = 1 property
+globs: "**/src/main/mule/**/*.xml,**/src/main/resources/**/*.yaml,**/src/main/resources/**/*.yml,**/src/main/resources/dwl/**/*.dwl,**/pom.xml"
+alwaysApply: false
+---
+
+# Properties e configuração (Mule 4)
+
+## Regras
+- **Não** colocar timeout, retry, intervalo entre tentativas, host, port, client id/secret **hardcoded** em XML/DWL.
+- **Uma property por significado**: não reutilizar `responseTimeout` (ou similar) para `millisBetweenRetries` ou outro parâmetro com semântica diferente; crie `p('...')` dedicada.
+- **Onde definir** (padrão dos repositórios Mule DSP):
+  - defaults e chaves comuns: `src/main/resources/properties/config.yaml` e `config-<env>.yaml`
+  - segredos: `config-secure-<env>.yaml` + referência via `${secure::...}` quando aplicável
+- **Naming sugerido**: `<dominio>.<componente>.<parametro>` (ex.: `infosimples.untilSuccessful.millisBetweenRetries`).
+- Ao adicionar property: garantir valor sensato em **todos os ambientes** usados (`local`, `dev`, `qa`, `prod`) ou default explícito + override por env.
+
+## Ao alterar connector / Until Successful / HTTP Request
+- Confira `responseTimeout`, retries, backoff e políticas de erro já usadas no projeto; mantenha consistência com error handlers existentes.

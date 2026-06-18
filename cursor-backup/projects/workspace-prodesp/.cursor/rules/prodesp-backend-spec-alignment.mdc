@@ -1,0 +1,54 @@
+---
+description: Obrigatório validar parâmetros, campos e respostas contra Swagger/documentação original do backend antes de implementar integração Mule
+globs: workspace-prodesp-api/**/*,workspace-prodesp-app/**/*
+alwaysApply: false
+---
+
+# PRODESP — Aderência à spec do backend (Swagger / doc original)
+
+Skill detalhada: **`.cursor/skills/prodesp-backend-spec-alignment/SKILL.md`**
+
+## Regra (obrigatória)
+
+Antes de **fechar** contrato RAML, plugin Exchange ou flow outbound (s-api), o agente **deve** validar aderência à **documentação oficial do sistema de destino** (OpenAPI/Swagger, WSDL, PDF de integração, etc.).
+
+| O que validar | Contra a spec |
+|---------------|---------------|
+| Nome do parâmetro | Nome exato (`numero-pedido` vs `numeroPedido` na borda Mule) |
+| **Query vs header vs path vs body** | `in: query` / `in: header` / path — **não assumir** padrão v1 ou legado |
+| Obrigatoriedade e tipo | required, format (uuid, date-time), enum |
+| Schema de resposta | Propriedades, paginação, arrays aninhados |
+| Endpoint correto | Não misturar params de paths diferentes (ex.: `/v2/acessos` vs `/v2/acessos/consolidado`) |
+
+## Quando aplicar
+
+- Novo endpoint ou alteração de integração em **s-api** (HTTP direto ao backend)
+- Novo trait/queryParam/dataType em **RAML** espelhando backend externo
+- Revisão de PR de integração (Amazing ou interno)
+
+## Padrão Mule PRODESP (borda vs backend)
+
+- **Contrato Mule** (e-api / p-api / s-api APIKit): preferir **`queryParameters` camelCase** para consumidores (Portal, SF).
+- **s-api → backend Wallet v2**: Swagger costuma definir filtros como **headers kebab-case** — mapear query RAML → `http:headers` outbound (referência: `GET /v2/pedidos/compra` em `data-wallet-integrator-s-api`).
+
+Isso **não** substitui a spec: primeiro ler o Swagger; depois decidir o que expor na borda.
+
+## Fontes de verdade (exemplos neste workspace)
+
+| Backend | Spec |
+|---------|------|
+| Wallet Dados | https://openapi.api.rota.sp.gov.br/wallet-dados-app |
+| Cópia local (tarefas) | `tarefas/PBI */**/wallet-dados-app-openapi.json` |
+| Mapping produto | `../product-definition/mappings/mulesoft-integrations.yaml` |
+
+## Se houver conflito spec × desenho de solução
+
+1. Documentar o gap (tabela spec vs implementação proposta).
+2. **Não mergear** assumindo que “funciona no legado”.
+3. Escalar no ticket (comentário técnico) — produto decide endpoint ou transformação (ex.: `mes`/`ano` → `data-inicio`/`data-fim`).
+
+## Skills relacionadas
+
+- RAML: **`mulesoft-api-spec`**
+- App / outbound: **`mulesoft-app-implementation`**
+- Comentário no Azure: **`prodesp-azure-ticket-comment-response`**

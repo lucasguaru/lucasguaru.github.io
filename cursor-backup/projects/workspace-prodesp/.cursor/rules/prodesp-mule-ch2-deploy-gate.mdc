@@ -1,0 +1,44 @@
+---
+description: Gate obrigatório — não fazer deploy CH2 se publicação no Exchange falhar
+alwaysApply: true
+---
+
+# PRODESP — Gate publish → deploy CH2
+
+Skill completa: `.cursor/skills/prodesp-mule-ch2-deploy/SKILL.md`.
+
+## Regra
+
+Deploy local CH2 em duas etapas:
+
+1. `mvn clean deploy` — publica no Exchange (`-DANYPOINT_CLIENT_ID` / `-DANYPOINT_CLIENT_SECRET` quando settings parametrizado — skill deploy §4)
+2. `mvn mule:deploy` — implanta no CloudHub 2 (env vars no `pom.xml`; **QA:** `-Dmule.env=qa` + `-Denvironment=QA` + `-DpathRewrite=/qa` + Platform via `-DanypointPlatformClientId/Secret` com `ANYPOINT_PLATFORM_CLIENT_ID_QA` / `_SECRET_QA` — skill deploy §5)
+
+**Deploy QA:** parâmetros Maven no passo 2 **somente** — **nunca** alterar `pom.xml`, YAML ou XML no repo para gravar ambiente QA.
+
+**Se o passo 1 falhar (exit code ≠ 0), NÃO executar o passo 2.**
+
+`mvn mule:deploy` sozinho pode redeployar artefato **antigo** do Exchange e retornar sucesso — isso **não** significa que o código local foi implantado.
+
+## Intenções
+
+| Pedido do usuário | Comportamento |
+|-------------------|---------------|
+| Deploy / subir versão / entrega | Passo 1 com sucesso → passo 2. Falha no passo 1 = **deploy não realizado**. |
+| Deploy **QA** | Igual acima; passo 2 com `-D` de ambiente (§5 deploy). **Sem** editar arquivos. |
+| Redeploy / restart (mesma versão, sem código novo) | Apenas `mvn mule:deploy`, com aviso de que **não publica** no Exchange. |
+
+## Reportar ao usuário
+
+- Falha no publish: status **falha de deploy**, não “sucesso parcial”.
+- Não afirmar que CH2 recebeu o build local se o Exchange não publicou.
+- Empacotar JAR em `target/` sem publish **não** conta como deploy concluído.
+
+## Registro após sucesso
+
+Após cada passo concluído com sucesso, registrar em `tarefas/deploy-log/registry.yaml` — skill **`prodesp-deploy-registry`**:
+
+- Passo 1 → `type: exchange-app`
+- Passo 2 → `type: ch2` + ambiente (`Dev` / `QA` / `Prod`)
+
+**Nota:** passo 1 publica a **MuleApp**, não o contrato RAML (gate RAML: **`prodesp-raml-commit-publish-gate`**).

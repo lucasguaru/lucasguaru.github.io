@@ -1,0 +1,12 @@
+# Secure-properties Mule (Blowfish) — não indexar
+**/src/main/resources/**/config-secure-*.yaml
+**/src/main/resources/**/config-secure-*.yml
+
+# YAML em resources — originais; leitura via hooks → .cursor/redacted/
+**/src/main/resources/**/*.yaml
+**/src/main/resources/**/*.yml
+!.cursor/redacted/**
+
+# Credenciais locais
+**/.env
+**/.env.*

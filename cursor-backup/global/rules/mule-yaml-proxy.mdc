@@ -1,0 +1,32 @@
+---
+description: YAML Mule em src/main/resources — proxy de redação (hooks globais do usuário)
+globs: "**/src/main/resources/**"
+alwaysApply: false
+---
+
+# Proxy YAML — properties Mule
+
+Hooks globais em `~/.cursor/hooks/` redigem chaves sensíveis em YAML sob `src/main/resources/`.
+
+Política global do agente (sem bypass): `mule-yaml-agent-policy.mdc`. Fluxo de confirmação: skill `mule-yaml-sensitive-access`.
+
+## `.cursorignore` recomendado no projeto
+
+```gitignore
+**/src/main/resources/**/config-secure-*.yaml
+**/src/main/resources/**/config-secure-*.yml
+**/src/main/resources/**/*.yaml
+**/src/main/resources/**/*.yml
+!.cursor/redacted/**
+**/.env
+**/.env.*
+```
+
+## Agente
+
+- Use **Read** em `config-{env}.yaml`; cópia em `.cursor/redacted/`.
+- Não use Grep/shell no YAML original.
+- Se Read/Grep falhar: **parar** e perguntar ao usuário (skill `mule-yaml-sensitive-access`) — não contornar.
+- `product-definition/**` e mappings: sem proxy.
+
+Skill de verificação: `mulesoft-cursorignore-setup` (`~/.cursor/skills/`) — checar/criar `.cursorignore` antes da primeira leitura de properties.

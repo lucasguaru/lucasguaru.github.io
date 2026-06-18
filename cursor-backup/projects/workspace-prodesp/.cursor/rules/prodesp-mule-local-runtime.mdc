@@ -1,0 +1,48 @@
+---
+description: Rodar apps Mule PRODESP localmente via CLI (Mule DX, stack, API Platform, api.id Dev). Usar skill prodesp-mule-local-runtime ao testar alterações sem Studio.
+globs: workspace-prodesp-app/**/*
+alwaysApply: false
+---
+
+# PRODESP — Mule local runtime
+
+Skill: **`.cursor/skills/prodesp-mule-local-runtime/SKILL.md`**
+
+## Fluxo padrão (sem Studio)
+
+1. Credenciais: `workspace-prodesp-app/scripts/.anypoint-local.env` (não commitar)
+2. `api.id` em `config-local.yaml` = mesmo valor de `config-dev.yaml` (nunca `99999999` para autodiscovery)
+3. `log4j2.xml`: `APP_LOG_NAME` literal — não `${sys:app.name}` no path do arquivo
+4. `./run-local-v2-acessos-stack.sh start` — usa `mule.bat **console**`, não `start`/`stop`
+5. `status` → portas 8081 / 8082 / 8085 UP + apps `DEPLOYED`
+6. Teste: `GET :8081/v2/acessos?numero-pedido=...` + Bearer → 200
+
+**Policy no log:** `PolicyRegistrationException` pode aparecer sem derrubar o endpoint; policy sincroniza do API Manager sem restart (limpar cache `policies/` só se encoding antigo persistir).
+
+## Runtime
+
+- **MULE_HOME:** extensão **Mule DX** no Cursor (licença válida)
+- **Não** usar standalone `AnypointCodeBuilder/runtime/` (falha `LicenseException`)
+- **Não** `mvn mule:run`
+
+## Stack referência (`/v2/acessos`)
+
+`portal-ecom-tech-e-api:8081` → `data-integrator-p-api:8082` → `data-wallet-integrator-s-api:8085` → Wallet HML
+
+`mule.env=local` já está no XML + `config-local.yaml`; VM options só para override de porta.
+
+## Alterou YAML ou log4j2?
+
+Rebuild obrigatório (`start` sem `SKIP_BUILD=1`).
+
+## Conflito com Studio
+
+Mesmas portas — parar Studio ou `run-local-v2-acessos-stack.sh stop` antes de subir via CLI.
+
+## Policy Message Logging após update no API Manager
+
+Se o preset foi republicado (ex.: remoção de acentos), apagar cache local antes do `start`:
+
+```bash
+rm -rf "$MULE_HOME/policies/message-logging-mule-"*
+```

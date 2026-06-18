@@ -1,0 +1,32 @@
+---
+description: Ao executar MUnit/Maven em projetos Mule DSP, usar JVM props com variáveis de ambiente AWS e mule.env.
+alwaysApply: true
+---
+
+# MUnit / Maven (projetos Mule DSP)
+
+Quando o utilizador pedir para correr **MUnit**, **`mvn test`**, **`mvn munit:test`** ou equivalente nestes repositórios, assumir que as credenciais AWS e o ambiente Mule vêm de variáveis de ambiente já configuradas na máquina do utilizador.
+
+## Comando sugerido (ajustar apenas se o utilizador indicar outro perfil)
+
+Passar ao Maven (JVM do Surefire / MUnit), por exemplo:
+
+```bash
+mvn -q test \
+  -Daws.accessKeyId="$DSP_AWS_ACCESS_KEY_ID" \
+  -Daws.secretAccessKey="$DSP_AWS_SECRET_ACCESS_KEY" \
+  -Dmule.env=qa
+```
+
+No Windows (PowerShell), usar `$env:DSP_AWS_ACCESS_KEY_ID` em vez de `$DSP_AWS_...` se for necessário expandir explicitamente; em Git Bash, o form `$VAR` costuma funcionar.
+
+## Regras para o assistente
+
+- **Preferir** incluir estes `-D` quando executar MUnit de forma não interativa, salvo o utilizador pedir outro `mule.env` ou outro conjunto de propriedades.
+- **Não** pedir as chaves AWS ao utilizante se a intenção é usar as env vars já definidas (`DSP_AWS_ACCESS_KEY_ID`, `DSP_AWS_SECRET_ACCESS_KEY`).
+- Se o build falhar por propriedade em falta, verificar se o comando foi invocado **com** estes argumentos antes de sugerir alterações ao código.
+
+## Após concluir alterações num ticket (implementação Mule)
+
+- Quando o assistente terminar mudanças relevantes numa **app Mule** (ex.: `src/main/mule/`, DWL referenciado, `pom.xml` da app), **executar na raiz do repo** o gate de testes Maven por defeito: **`mvn -q test`**, **sempre com os mesmos `-D`** da secção “Comando sugerido” acima (o `-q` só reduz ruído no log; não substitui as props).
+- Alinhar com **`git-ado-workflow.mdc`**: não dar como fechado / pronto para PR sem testes Maven aplicáveis terem passado, ou sem reportar bloqueio (env, credenciais, comando documentado diferente).

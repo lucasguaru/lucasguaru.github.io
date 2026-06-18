@@ -1,0 +1,43 @@
+---
+description: Message Logging API Manager — preset PRODESP APIKit (INFO, br.gov.sp.prodesp.api.gateway), MCP, ref 20249159
+alwaysApply: false
+---
+
+# PRODESP — Log de policy (API Manager)
+
+Skill completa: `.cursor/skills/prodesp-api-manager-policy-logging/SKILL.md`.
+
+Preset JSON: `.cursor/skills/prodesp-api-manager-policy-logging/presets/message-logging-prodesp.json`.
+
+## Quando usar
+
+**Log de policy**, **message logging**, link `apimanager/.../apis/{id}`.
+
+**Não confundir** com scope logging CH2 → **`prodesp-mule-runtime-logging`**.
+
+## Regras rápidas
+
+| Ação | Ferramenta |
+|------|------------|
+| Copiar padrão existente | `list_api_instances` na ref **`20249159`** (`portal-ecom-tech-e-api`) |
+| Aplicar / atualizar | MCP `manage_api_instance_policy` (`apply` ou `update` + `policyId`) |
+| Ver logs | API Manager → **Message Log**; runtime → category `br.gov.sp.prodesp.api.gateway` |
+
+## Preset PRODESP (obrigatório)
+
+- **2 configs:** `PRODESP - APIKit entrada HTTP` (before) + `PRODESP - APIKit saida HTTP` (after)
+- **Level:** `INFO` (não DEBUG genérico)
+- **Category:** `br.gov.sp.prodesp.api.gateway`
+- **Entrada:** JSON com correlationId, request; redact `authorization` e `client_secret`
+- **Saída:** JSON com correlationId, httpStatus, response
+- **ASCII only:** sem acento em `itemName`/strings DWL — `saida`, não `saída` (standalone local quebra `policy.xml` UTF-8)
+
+Não inventar expressão curta (method + headers DEBUG) — usar preset do repo ou copiar da ref.
+
+**Atualizar todas as instâncias:** `list_api_instances` (paginar) + `manage_api_instance_policy` `update` onde existir message-logging PRODESP.
+
+## Constantes
+
+- Org: `1c8711d7-2135-4686-89f0-fb014e1662ac`
+- DEV: `environmentName` **`DEV`**
+- Policy: `message-logging` (`groupId` `68ef9520-24e9-4cf2-b2f5-620025690913`)

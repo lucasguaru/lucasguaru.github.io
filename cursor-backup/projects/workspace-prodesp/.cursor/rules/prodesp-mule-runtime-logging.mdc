@@ -1,0 +1,31 @@
+---
+description: Logs e tracing CH2 — MCP vs CLI, scope logging remoto, consulta de config ativa
+alwaysApply: false
+---
+
+# PRODESP — Logs no runtime (CH2)
+
+Skill completa: `.cursor/skills/prodesp-mule-runtime-logging/SKILL.md`.
+
+## Quando usar
+
+Pedidos de: ativar DEBUG, tail/download de logs, nível por pacote/classe **sem** editar `log4j2.xml`, listar config ativa no servidor, diferença **log vs tracing**.
+
+## Regras rápidas
+
+| Ação | Ferramenta |
+|------|------------|
+| **Message Logging (policy API Manager)** | Skill **`prodesp-api-manager-policy-logging`** — MCP `manage_api_instance_policy` |
+| Mudar nível / scope logging no servidor | **`anypoint-cli-v4`** `application modify` (`--scopeLoggingConfig`) ou API Application Manager |
+| Consultar scopes ativos | Script `get-scope-logging.py` ou API (skill §Consultar) |
+| Ler logs por **correlationId** / `regexp` | **API AMC** ou **`tarefas/ch2-logs-cli`** — **não** exige Titanium |
+| Ler logs (visão geral) | MCP `list_applications` (`includeLogs`) — pode exigir Titanium na org Dev |
+| Tail / download de logs | **CLI** `anypoint-cli-v4 application logs` / `download-logs` |
+| Tracing OpenTelemetry | **Não** é log; MCP `hasTracing`; CLI modify **não** expõe |
+
+**Não afirmar** que logs programáticos são impossíveis na org Dev — o bloqueio Titanium afeta o MCP/Monitoring, não o endpoint AMC `/specs/{version}/logs` (skill §Ler logs CH2).
+
+- Ambiente Anypoint Dev: **`DEV`**. App: `${project.name}-${mule.env}`.
+- Alterar scope logging **reinicia** a app (doc: [ch2-manage-app-logs](https://docs.mulesoft.com/cloudhub-2/ch2-manage-app-logs)).
+- Não afirmar config ativa só pelo `log4j2.xml` local — pode haver override na plataforma.
+- Não expor `secureProperties` de respostas da API.

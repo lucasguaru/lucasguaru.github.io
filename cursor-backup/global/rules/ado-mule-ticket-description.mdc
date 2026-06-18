@@ -1,0 +1,117 @@
+---
+description: Ao pedir descrição de ticket Mule/Azure DevOps — perguntar o que faltar e emitir texto no template padrão (WI + apps + paths do repo + RAML quando relevante).
+alwaysApply: true
+---
+
+# Descrição de ticket MuleSoft (Azure DevOps)
+
+## Idioma
+
+- Usar **português do Brasil (pt-BR)** na descrição colada no Azure DevOps.
+- Evitar vocabulário de português de Portugal: por exemplo **Arquivo(s)** (não “ficheiro(s)”), **atual** (não “actual”), **repositório** quando couber, etc.
+
+## Quando aplicar
+
+Ativar sempre que o utilizador pedir para **criar, melhorar ou detalhar a descrição** de um work item para trabalho **Mule / Anypoint**, com ou sem ID de ticket.
+
+## Defaults ADO
+
+Alinhar com a regra global `ado-defaults.mdc` (mesma pasta): `org=orangedoorit`, projeto **OrangeDoor Global Projects** para **work items**. Repositórios Git DSP: projeto **DSP** (ver `ado-defaults.mdc`). Se vier só o número do WI, ler o item pelo MCP Azure DevOps antes de assumir conteúdo.
+
+## Paths locais da máquina
+
+- **Não** incluir na descrição do work item caminhos absolutos da workstation (ex.: `C:\Users\…`, `D:\workspace-…`).
+- Apenas paths **relativos ao repositório** (ex.: `src/main/mule/…`).
+- Se for útil ao contexto no editor apenas: o utilizador pode manter um ficheiro **local e não versionado** (por exemplo algo em `.cursor/` listado no `.gitignore`) com mapeamento app → pasta clone — **isso não entra** no texto do WI.
+
+## Conteúdo mínimo e omissões
+
+- **Só incluir secções que agreguem informação.** Não listar itens só para dizer que **não** há mudança (ex.: omitir bloco inteiro “Contratos” se não há RAML/Exchange afetado; omitir “Properties” se não há chaves novas ou alteração relevante).
+- **Contratos (RAML / Exchange)**: incluir **apenas** quando houver mudança de contrato, versão, breaking change ou outro detalhe útil. Se nada disso se aplica, **não** criar a seção (nem linhas do tipo “não / n/a”).
+
+## Fluxo obrigatório
+
+1. **Entrada**: número do WI, texto parcial, ou pedido vago (“detalha o ticket”).
+2. Se houver **ID** e MCP disponível: **ler** o work item e usar como base.
+3. **MUnit / testes — clarificar antes de emitir a descrição final**  
+   Inspecionar o **pedido** e o **conteúdo já existente** do WI (título + descrição) quanto a testes automatizados:
+
+   - **Explícito com MUnit**: texto contém `munit`, `MUnit`, `teste automatizado`, `suite`, `src/test/munit` (case-insensitive) **e não** nega MUnit.
+
+   - **Explícito sem MUnit / só manual**: contém `sem munit`, `sem MUnit`, `só manual`, `apenas manual`, `sem teste automatizado`, `munit n/a`, `munit: n/a` (case-insensitive).
+
+   - **Ambíguo**: fazer **uma pergunta objetiva** ao utilizador, por exemplo: *“Quer **MUnit** neste ticket (novo ou ajuste), ou está **fora de escopo** / só validação manual?”* e *“Confirmo que não vai querer teste automatizado aqui — não ficou só por esquecimento no texto do ticket?”* — **não** emitir o bloco final até haver resposta, salvo o utilizador pedir para assumir um dos lados.
+
+   - **Resultado na descrição colada no ADO**:
+     - Se for **com MUnit**: incluir seção **Testes** com o acordado (cenários / notas), alinhado com `mule-munit-maven.mdc` quando couber.
+     - Se for **sem MUnit / n/a**: **omitir por completo** a seção **Testes** no Markdown do WI (sem checkboxes “n/a”, sem parágrafo negativo). Antes de fechar, **na conversa** (não no WI), pode confirmar numa frase se não há escopo de teste automatizado por esquecimento no texto do ticket.
+
+   - **Explícito sem MUnit** após resposta do utilizador: aplicar a omissão da seção **Testes**; se o tom ainda parecer incerto, vale a mesma confirmação rápida **na conversa**.
+
+4. **Identificar lacunas** relativamente ao template abaixo e fazer **perguntas objetivas** (uma ronda ou lista numerada), apenas sobre o que faltar **além** da clarificação de testes acima. Não inventar apps, paths ou comportamento.
+
+5. **Emitir** só no fim um único bloco Markdown **pronto para colar** na Description do Azure DevOps. Se a gravação for pela **API REST ou MCP** (ex.: `wit_update_work_item`), seguir obrigatoriamente a secção **Markdown no Azure DevOps (UI e API/MCP)** abaixo.
+
+## Markdown no Azure DevOps (UI e API/MCP)
+
+- O template desta regra assume **Markdown** na **Description** (`System.Description`). No UI do work item, o campo deve estar em modo **Markdown**. Se estiver como **HTML** / rich text legado, o mesmo texto aparece **cru** (ex.: `## Objetivo` sem formatação).
+- Ao **atualizar programaticamente** (JSON Patch REST ou MCP `wit_update_work_item`), enviar **no mesmo PATCH**:
+  1. `/fields/System.Description` — corpo em Markdown;
+  2. `/multilineFieldsFormat/System.Description` — valor **`Markdown`** (conforme documentação Azure DevOps para multiline fields).
+- **Não** enviar só o passo (1): o work item pode manter formato **HTML** e o Markdown **não será interpretado** na visualização.
+- **Nota**: após o campo passar a **Markdown**, a Microsoft indica que **reverter para HTML** pode não ser suportado — evitar alternar formatos sem necessidade.
+
+## Perguntas mínimas se algo estiver em falta
+
+- Objetivo em uma frase (negócio/técnico).
+- **Apps Mule** / nome do repositório afetado (sem path local da máquina no WI).
+- **Camadas**: Experience / Process / System (marcar).
+- **Contrato RAML / Exchange**: há mudança relevante? breaking? (só perguntar se ainda não estiver claro; se não houver, não gerar seção no template.)
+- **Arquivos concretos**: XML de flow/sub-flow, DWL, YAML de properties.
+- **Comportamento**: **atual** vs **esperado**.
+- **Properties**: apenas se existirem chaves novas, valores ou diferença por ambiente (`local`, `dev`, `qa`, `prod`).
+- **Testes**: resolvido no passo 3; se com MUnit, pedir suites/cenários quando faltar.
+- **Escopo explícito**: o que **não** entra no mesmo ticket (evitar scope creep).
+
+## Template da descrição final
+
+Gerar a descrição com **somente as secções que se aplicarem**, nesta ordem quando existirem. Cabeçalhos fixos onde a seção for incluída:
+
+```markdown
+## Objetivo
+[…]
+
+## Escopo técnico
+- **Tipo**: [Bug | Feature | Refactor | Config]
+- **Camadas**: [ ] Experience [ ] Process [ ] System
+
+### Apps Mule e contexto
+- **App(s) / repositório**: [nome do repo no Azure DevOps, ex.: dsp-system-api-servico]
+
+### Contratos (RAML / Exchange)
+[só quando houver mudança útil — ex.: RAML afetado, bump de versão, breaking]
+
+## Onde alterar (paths relativos ao repo)
+- **Arquivo(s)**: […]
+- **Flow / sub-flow**: […] (quando relevante)
+
+## Comportamento esperado
+- **Atual**: […]
+- **Esperado**: […]
+
+## Properties / configuração
+[só quando houver algo a documentar — chaves, ambientes, valores]
+
+## Testes
+[só quando houver MUnit ou plano de teste explícito a documentar — sem opção “n/a” no WI]
+
+## Referência dos projetos
+[repos ADO, área, ou paths de workspace relevantes para quem for implementar — **sem** mencionar ferramentas de IA ou assistentes]
+
+---
+Work Item: **<id>**
+```
+
+**Não** incluir: “Aceitação (DoD)” como seção do template; parágrafos genéricos de DoD/branch/PR **no corpo da descrição** (isso fica no fluxo de trabalho da equipa, não precisa repetir no WI salvo o utilizador pedir).
+
+Se o utilizador não tiver ainda o número do WI, usar `Work Item: **(a atribuir)**` ou o placeholder que preferir.
