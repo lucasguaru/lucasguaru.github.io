@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "node scripts/prepare-vite-index.mjs && vite",
+    "build": "node scripts/prepare-vite-index.mjs && tsc -b && vite build && node scripts/stage-pages-root.mjs",
     "lint": "eslint src vite.config.ts eslint.config.js --max-warnings=0",
     "preview": "vite preview"
   },
