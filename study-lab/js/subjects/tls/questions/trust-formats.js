@@ -1,0 +1,7 @@
+export const trustAndFormatQuestions = [
+  {id:'formats-1',moduleId:'formats',type:'mc',prompt:'Qual formato é binário?',options:['PEM','DER','CRT obrigatoriamente','CER obrigatoriamente'],correct:'DER',explanation:'DER é a codificação binária; PEM é textual em Base64.'},
+  {id:'formats-2',moduleId:'formats',type:'mc',prompt:'O que identifica visualmente um arquivo PEM?',options:['Blocos BEGIN/END','Extensão .cer','Bytes sem texto','Uma senha obrigatória'],correct:'Blocos BEGIN/END',explanation:'PEM usa cabeçalhos e rodapés ao redor do Base64.'},
+  {id:'formats-3',moduleId:'formats',type:'tf',prompt:'A extensão .crt determina que o conteúdo é PEM.',options:['Verdadeiro','Falso'],correct:'Falso',explanation:'CRT/CER sugerem certificado, mas não determinam PEM ou DER.'},
+  {id:'formats-4',moduleId:'formats',type:'mc',prompt:'O que um arquivo PEM pode conter?',options:['Somente certificado','Certificado, chaves ou vários certificados','Somente private key','Somente CSR'],correct:'Certificado, chaves ou vários certificados',explanation:'PEM é uma representação textual aplicável a diferentes estruturas.'},
+  {id:'formats-5',moduleId:'formats',type:'mc',prompt:'Como a assinatura de um certificado é verificada?',options:['Com a private key do certificado final','Com a public key do emissor','Com o nome do Issuer','Com a session key'],correct:'Com a public key do emissor',explanation:'A verificação criptográfica liga o certificado ao emissor.'}
+];
