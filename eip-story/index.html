@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071421">
+  <meta name="description" content="Uma história interativa para aprender Enterprise Integration Patterns.">
+  <title>Sinal / Ruído — EIP em contexto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Sinal Ruído, início">SINAL <span>/</span> RUÍDO</a>
+    <div class="progress" aria-label="Progresso da história">
+      <span>Cap. 01</span><span>1 de 12</span><i><b></b></i>
+    </div>
+    <button class="sound" type="button" aria-pressed="false"><span class="sound-bars" aria-hidden="true"></span><span>Ambiente: off</span></button>
+  </header>
+
+  <main id="top" class="shell">
+    <aside class="rail" aria-label="Índice da história">
+      <p class="rail-label">Capítulos</p>
+      <ol>
+        <li class="active"><span>01</span><a href="#chapter">Tudo funciona</a></li>
+        <li><span>02</span><i>—</i></li><li><span>03</span><i>—</i></li><li><span>04</span><i>—</i></li>
+        <li><span>05</span><i>—</i></li><li><span>06</span><i>—</i></li><li><span>07</span><i>—</i></li>
+        <li><span>08</span><i>—</i></li><li><span>09</span><i>—</i></li><li><span>10</span><i>—</i></li>
+        <li><span>11</span><i>—</i></li><li><span>12</span><i>—</i></li>
+      </ol>
+      <div class="cast">
+        <p class="rail-label">Personagens</p>
+        <button data-person="lia"><b class="lia">LM</b><span>Lia Martins<small>Arquiteta de Integração</small></span></button>
+        <button data-person="caio"><b class="caio">CN</b><span>Caio Nunes<small>Desenvolvedor Sênior</small></span></button>
+        <button data-person="maya"><b class="maya">MO</b><span>Maya Okafor<small>SRE</small></span></button>
+        <button data-person="renato"><b class="renato">RA</b><span>Renato Alves<small>Product Manager</small></span></button>
+      </div>
+    </aside>
+
+    <article id="chapter" class="chapter">
+      <div class="narrative">
+        <p class="chapter-no">Cap. 01</p>
+        <h1>Tudo funciona</h1>
+        <div class="signal-line" aria-hidden="true"><span></span><i></i></div>
+
+        <p>A NexoLog não era grande. Oito centros de distribuição, cento e vinte pessoas e uma promessa simples: fazer o estoque de pequenos varejistas chegar antes que a prateleira ficasse vazia.</p>
+        <p>Toda venda nascia no sistema mais novo da empresa, o <strong>Orbe</strong>. A Order API validava o pedido, abria uma chamada REST e esperava o ERP Atlas confirmar a reserva. Só então respondia ao vendedor.</p>
+
+        <div class="dialogue">
+          <p><b class="lia">LM</b><span>“Enquanto estiver assim, a gente entrega sem drama.”</span></p>
+          <p><b class="caio">CN</b><span>“Uma chamada, uma resposta. Se falhar, o vendedor sabe na hora.”</span></p>
+          <p><b class="maya">MO</b><span>“Os números estão limpos. Latência estável.”</span></p>
+          <p><b class="renato">RA</b><span>“Simples até demais. Mas simples é bom.”</span></p>
+        </div>
+
+        <p>A simplicidade não era ingenuidade. O Orbe precisava do número de reserva antes de liberar o pedido, o volume era baixo e a equipe controlava as duas pontas. Uma integração síncrona era a decisão certa.</p>
+
+        <section class="scene">
+          <p class="time">Quinta-feira · 16:42</p>
+          <h2>O primeiro sinal</h2>
+          <p>Renato entrou na reunião semanal com o notebook ainda aberto. A rede Mercatto, maior cliente em negociação na história da NexoLog, queria começar um piloto na segunda-feira.</p>
+          <p>Seriam só duas lojas no primeiro mês. Depois, se tudo desse certo, cento e quarenta.</p>
+          <blockquote>“Nada muda agora”, disse Renato. “Talvez só o número de pedidos.”</blockquote>
+          <p>No monitor de Maya, o p95 desenhou um dente quase imperceptível. Quatrocentos e vinte milissegundos. Ainda saudável. Ainda dentro do SLA. Mas 18% acima da semana anterior.</p>
+        </section>
+      </div>
+
+      <aside class="evidence" aria-label="Evidências técnicas">
+        <section class="tech-panel architecture">
+          <header><span>Arquitetura atual</span><em>v1</em></header>
+          <div class="diagram" aria-label="Order API se comunica por REST com ERP Atlas">
+            <div class="node"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 20 6.5v11L12 22l-8-4.5v-11L12 2Z"/><circle cx="12" cy="12" r="2.2"/></svg><span>Order API</span></div>
+            <div class="connection"><i></i><b>REST</b><i></i></div>
+            <div class="node"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v7c0 1.7 3.1 3 7 3s7-1.3 7-3V5M5 12v7c0 1.7 3.1 3 7 3s7-1.3 7-3v-7"/></svg><span>ERP Atlas</span></div>
+          </div>
+          <p class="healthy"><i></i> Fluxo síncrono saudável</p>
+        </section>
+
+        <section class="tech-panel metrics">
+          <header><span>Leitura operacional</span><em>agora</em></header>
+          <div class="metric-grid">
+            <div><span>p95</span><strong>420<small> ms</small></strong><small>Latência</small></div>
+            <div><span>vazão</span><strong>38</strong><small>pedidos/h</small></div>
+            <div><span>24h</span><strong>0</strong><small>erros</small></div>
+          </div>
+          <footer><span><i></i>Status: saudável</span><svg viewBox="0 0 80 24" aria-hidden="true"><polyline points="0,13 20,13 25,10 29,16 33,4 37,21 42,8 47,14 52,13 80,13"/></svg></footer>
+        </section>
+
+        <section class="tech-panel payload">
+          <header><span>Última chamada</span><em>200 OK</em></header>
+          <pre><code><span>POST</span> /atlas/reservations
+{
+  <i>"orderId"</i>: "ORB-1842",
+  <i>"items"</i>: 6,
+  <i>"total"</i>: 1248.90
+}
+
+← 418 ms · reservationId: 90172</code></pre>
+        </section>
+      </aside>
+
+      <section class="decision" aria-labelledby="decision-title">
+        <div class="decision-heading"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 26V3m0 5H6l-3 4 3 4h8m0-2h8l3 4-3 4h-8"/></svg><div><p>Sua decisão</p><h2 id="decision-title">Você mudaria alguma coisa agora?</h2></div></div>
+        <p class="problem">O sistema está saudável. O volume pode crescer muito, mas ainda não cresceu. A única evidência concreta é uma pequena tendência de latência.</p>
+        <form id="decision-form">
+          <div class="choices">
+            <label><input type="radio" name="decision" value="manter" checked><span><b>Manter como está</b><small>A arquitetura atende ao cenário atual. Mudar agora também cria risco.</small></span></label>
+            <label><input type="radio" name="decision" value="instrumentar"><span><b>Instrumentar melhor</b><small>Mais visibilidade agora reduz surpresas quando o piloto começar.</small></span></label>
+            <label><input type="radio" name="decision" value="desacoplar"><span><b>Desacoplar agora</b><small>Separar responsabilidades antes que a complexidade aumente.</small></span></label>
+          </div>
+          <label class="reason"><span>Seu raciocínio <small>(opcional)</small></span><textarea name="reason" rows="3" placeholder="O que pesou na sua decisão?"></textarea></label>
+          <button class="submit" type="submit">Registrar decisão <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6"/></svg></button>
+        </form>
+        <div class="response" hidden aria-live="polite">
+          <p class="response-label">Decisão registrada</p>
+          <h3></h3><p class="response-copy"></p>
+          <div class="locked"><span aria-hidden="true">◇</span> A história pausa aqui. O próximo capítulo só começa depois desta escolha.</div>
+          <button type="button" class="revise">Revisar decisão</button>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <dialog id="person-dialog"><button class="close" aria-label="Fechar">×</button><p class="dialog-role"></p><h2></h2><p class="dialog-copy"></p></dialog>
+  <script src="app.js"></script>
+</body>
+</html>
