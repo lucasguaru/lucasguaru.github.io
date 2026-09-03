@@ -14,6 +14,13 @@ const feedback = {
 const form = document.querySelector('#decision-form');
 const response = document.querySelector('.response');
 
+function showSavedDecision(savedDecision) {
+  const selected = feedback[savedDecision.choice];
+  if (!selected) return;
+  response.querySelector('h3').textContent = selected.title;
+  response.querySelector('.response-copy').textContent = selected.copy;
+}
+
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   const choice = new FormData(form).get('decision');
@@ -54,4 +61,5 @@ if (saved) {
   const input = form.querySelector(`[value="${saved.choice}"]`);
   if (input) input.checked = true;
   if (saved.reason) form.reason.value = saved.reason;
+  showSavedDecision(saved);
 }
