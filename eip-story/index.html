@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=cast-1">
+  <link rel="stylesheet" href="styles.css?v=novel-1">
 </head>
 <body>
   <header class="topbar">
@@ -46,29 +46,44 @@
         <h1>Tudo funciona</h1>
         <div class="signal-line" aria-hidden="true"><span></span><i></i></div>
 
-        <p>Você era <strong>Lucas Almeida</strong>, engenheiro de integração na NexoLog havia dois anos. Entrara para manter APIs e pequenos fluxos entre sistemas; agora começava a ser chamado para reuniões em que uma decisão de quinze minutos podia definir meses de trabalho.</p>
-        <p>A NexoLog não era grande. Oito centros de distribuição, cento e vinte pessoas e uma promessa simples: fazer o estoque de pequenos varejistas chegar antes que a prateleira ficasse vazia.</p>
-        <p>Toda venda nascia no sistema mais novo da empresa, o <strong>Orbe</strong>. A Order API validava o pedido, abria uma chamada REST e esperava o ERP Atlas confirmar a reserva. Só então respondia ao vendedor.</p>
+        <p>Meu nome é <strong>Lucas Almeida</strong>. Quando esta história começou, eu trabalhava havia dois anos como engenheiro de integração na NexoLog.</p>
+        <p>Entrei para cuidar de APIs e de alguns fluxos que ninguém mencionava enquanto continuavam funcionando. Ultimamente, porém, meu nome começara a aparecer em reuniões nas quais uma decisão de quinze minutos podia definir o trabalho do time pelo resto do ano.</p>
+        <p>Na época, eu achava que isso significava que estava ficando bom no meu trabalho. Hoje sei que também significava que os problemas estavam ficando grandes o bastante para aprender meu nome.</p>
 
-        <p>Você ajudara a construir esse fluxo ao lado de <strong>Caio Nunes</strong>, desenvolvedor sênior e veterano das limitações do Atlas. <strong>Lia Martins</strong>, a arquiteta de integração, defendia soluções proporcionais ao problema. <strong>Maya Okafor</strong>, responsável pela confiabilidade, desconfiava de qualquer sistema que a equipe não conseguisse medir. <strong>Renato Alves</strong>, o product manager, carregava para a sala os prazos e as promessas feitas aos clientes.</p>
-        <p>Nas reuniões de status das quintas-feiras, cada um acabava repetindo uma versão da mesma frase:</p>
-        <div class="dialogue">
-          <p><b class="lia">Lia</b><span>“Enquanto estiver assim, a gente entrega sem drama.”</span></p>
-          <p><b class="caio">Caio</b><span>“Uma chamada, uma resposta. Se falhar, o vendedor sabe na hora.”</span></p>
-          <p><b class="maya">Maya</b><span>“Os números estão limpos. Latência estável.”</span></p>
-          <p><b class="renato">Renato</b><span>“Simples até demais. Mas simples é bom.”</span></p>
-          <p><b class="lucas">Lucas</b><span>“E quando alguma coisa dá errado, eu consigo seguir o pedido de uma ponta à outra.”</span></p>
-        </div>
+        <section class="scene first-scene"><p class="time">Dois anos antes</p><h2>A integração que cabia numa seta</h2>
+          <p>A NexoLog não era grande. Tínhamos oito centros de distribuição, cento e vinte funcionários e uma promessa fácil de repetir: colocar o produto na prateleira antes que o varejista percebesse que ela estava vazia.</p>
+          <p>Os pedidos nasciam no Orbe, nosso sistema de vendas. A Order API validava os dados, fazia uma chamada REST para o ERP Atlas e esperava pela confirmação da reserva. Quando o Atlas devolvia o número, a API respondia ao vendedor.</p>
+          <p>Eu desenhara o fluxo tantas vezes que já conseguia fazê-lo enquanto explicava outra coisa:</p>
+          <div class="inline-flow" aria-label="Order API envia uma chamada REST para o ERP Atlas"><span>Order API</span><i>→</i><span>REST</span><i>→</i><span>ERP Atlas</span></div>
+          <p>Caio Nunes tinha construído a primeira versão comigo. Ele trabalhava na empresa desde quando o Atlas ainda era chamado de “o sistema novo”, uma história que ninguém com menos de dez anos de casa acreditava.</p>
+          <p>— Uma chamada, uma resposta — ele dizia. — Se falhar, o vendedor sabe na hora.</p><p>E, durante muito tempo, era exatamente assim.</p>
+        </section>
 
-        <p>A simplicidade não era ingenuidade. O Orbe precisava do número de reserva antes de liberar o pedido, o volume era baixo e a equipe controlava as duas pontas. Uma integração síncrona era a decisão certa.</p>
+        <section class="scene"><p class="time">Quinta-feira · 15:30</p><h2>As frases de sempre</h2>
+          <p>Nossa reunião semanal acontecia numa sala chamada Horizonte, embora a única janela desse para a parede do estacionamento. Lia Martins, a arquiteta de integração, sentava de frente para o quadro. Tinha o hábito de apagar metade de qualquer diagrama antes de discutir a outra metade.</p>
+          <p>Maya Okafor, responsável pela confiabilidade, escolhia a cadeira mais próxima da tela. Ela nunca dizia que um sistema estava saudável sem perguntar primeiro como tínhamos medido aquilo.</p>
+          <p>Renato Alves chegava por último. Como product manager, trazia os prazos e as promessas feitas aos clientes. Não era responsável por todas as tempestades, mas quase sempre era o primeiro a anunciar chuva.</p>
+          <p>Depois de alguns meses, nossas reuniões desenvolveram um ritmo próprio. Lia olhava o diagrama e dizia:</p><blockquote>— Enquanto estiver assim, a gente entrega sem drama.</blockquote>
+          <p>Caio lembrava que uma chamada síncrona era fácil de entender. Maya mostrava a latência estável. Renato dizia que talvez a arquitetura fosse simples demais, fazia uma pausa e acrescentava que simples era bom.</p>
+          <p>Eu normalmente encerrava o assunto com a parte que mais importava para mim:</p><blockquote>— Quando alguma coisa dá errado, eu consigo seguir o pedido de uma ponta à outra.</blockquote>
+          <p>Ninguém discordava. O volume era baixo, a equipe controlava os dois sistemas e o vendedor precisava do número da reserva antes de liberar o pedido. Esperar pela resposta do Atlas não era uma limitação acidental. Era parte do requisito.</p><p>A simplicidade não vinha de falta de experiência. Ela era uma decisão.</p>
+        </section>
 
-        <section class="scene">
-          <p class="time">Quinta-feira · 16:42</p>
-          <h2>O primeiro sinal</h2>
-          <p>Renato entrou na reunião semanal com o notebook ainda aberto. Você conhecia aquela expressão: alguma promessa já havia sido feita antes de a equipe ouvir a pergunta. A rede Mercatto, maior cliente em negociação na história da NexoLog, queria começar um piloto na segunda-feira.</p>
-          <p>Seriam só duas lojas no primeiro mês. Depois, se tudo desse certo, cento e quarenta.</p>
-          <blockquote>“Nada muda agora”, disse Renato. “Talvez só o número de pedidos.”</blockquote>
-          <p>No monitor de Maya, o p95 desenhou um dente quase imperceptível. Quatrocentos e vinte milissegundos. Ainda saudável. Ainda dentro do SLA. Mas 18% acima da semana anterior. Você anotou o número sem saber ainda se estava registrando uma curiosidade ou o começo de alguma coisa.</p>
+        <section class="scene"><p class="time">Quinta-feira · 16:37</p><h2>Trinta e oito por hora</h2>
+          <p>Naquela tarde, analisamos os números da semana. Trinta e oito pedidos por hora nos períodos mais movimentados. Nenhum erro nas últimas vinte e quatro horas. O p95 estava em 420 milissegundos.</p>
+          <p>Caio abriu uma execução recente. O pedido ORB-1842 tinha seis itens e um total de mil duzentos e quarenta e oito reais e noventa centavos. O Atlas levara 391 milissegundos para criar a reserva. Com rede e processamento da API, a resposta completa chegara em 418.</p>
+          <p>— Eu gostaria que todos os nossos problemas fossem assim — falei.</p><p>Maya não sorriu. Ampliou o gráfico até a linha ocupar a tela inteira.</p><p>— Assim como?</p><p>— Previsíveis.</p>
+          <p>Ela moveu o cursor sobre os sete dias anteriores. O número atual continuava confortável, mas a linha subia devagar.</p><p>— Previsível não é a mesma coisa que constante — disse ela.</p>
+          <p>Eu anotei a frase mais por respeito a Maya do que por preocupação. O sistema estava dentro do SLA. Não havia chamados no suporte. Nenhum gerente esperava uma explicação.</p>
+        </section>
+
+        <section class="scene"><p class="time">Quinta-feira · 16:42</p><h2>O primeiro sinal</h2>
+          <p>A porta abriu antes que encerrássemos. Renato entrou equilibrando o notebook e um copo de café, com a expressão de quem já havia prometido alguma coisa antes de trazer a pergunta para o time.</p><p>— A Mercatto aprovou o piloto.</p>
+          <p>Ninguém respondeu de imediato. A Mercatto era a maior rede com quem a NexoLog já negociara.</p><p>— Quantas lojas? — perguntou Lia.</p><p>— Duas na segunda-feira. Se funcionar, cento e quarenta no mês que vem.</p>
+          <p>Caio se recostou na cadeira. Maya voltou os olhos para o gráfico. Eu fiz a conta mais simples: duas lojas não mudariam nada.</p><p>— O comportamento dos pedidos é igual ao dos outros clientes? — perguntei.</p>
+          <p>Renato abriu uma planilha, procurou uma coluna e demorou um segundo a mais do que eu gostaria.</p><p>— Essencialmente.</p><p>Lia girou a caneta entre os dedos.</p><p>— “Essencialmente” não é uma unidade de medida.</p>
+          <p>Renato fechou a planilha.</p><blockquote>— Nada muda agora. Talvez só o número de pedidos.</blockquote>
+          <p>No monitor de Maya, o p95 continuava em 420 milissegundos. Saudável. Dentro do SLA. Dezoito por cento acima da semana anterior.</p><p>Anotei o número ao lado do nome Mercatto. Naquele momento, eu ainda não sabia se estava registrando uma curiosidade ou o começo de alguma coisa.</p>
         </section>
       </div>
 
@@ -109,13 +124,13 @@
       <section class="decision chapter-end" aria-labelledby="chapter-end-title">
         <p class="response-label">Fim do capítulo 01</p>
         <h2 id="chapter-end-title">Um sinal não é uma falha.</h2>
-        <p>Maya viu a latência subir antes de qualquer cliente reclamar. Na manhã seguinte, ela pediria algumas horas para tornar aquele sinal impossível de ignorar.</p>
+        <p>Na manhã seguinte, Maya me pediria quatro horas para tornar aquele sinal impossível de ignorar. O que fizemos com aquelas quatro horas mudaria a forma como enxergávamos o sistema — mas não aumentaria sua capacidade.</p>
         <a class="continue" href="chapter-2.html">Ler “O gráfico inclina” <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6"/></svg></a>
       </section>
     </article>
   </main>
 
   <dialog id="person-dialog"><button class="close" aria-label="Fechar">×</button><p class="dialog-role"></p><h2></h2><p class="dialog-copy"></p></dialog>
-  <script src="app.js?v=cast-1"></script>
+  <script src="app.js?v=novel-1"></script>
 </body>
 </html>
