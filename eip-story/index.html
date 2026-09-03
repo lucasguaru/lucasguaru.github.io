@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=linear-1">
+  <link rel="stylesheet" href="styles.css?v=cast-1">
 </head>
 <body>
   <header class="topbar">
@@ -32,6 +32,7 @@
       </ol>
       <div class="cast">
         <p class="rail-label">Personagens</p>
+        <button data-person="lucas"><b class="lucas">LA</b><span>Lucas Almeida<small>Engenheiro de Integração</small></span></button>
         <button data-person="lia"><b class="lia">LM</b><span>Lia Martins<small>Arquiteta de Integração</small></span></button>
         <button data-person="caio"><b class="caio">CN</b><span>Caio Nunes<small>Desenvolvedor Sênior</small></span></button>
         <button data-person="maya"><b class="maya">MO</b><span>Maya Okafor<small>SRE</small></span></button>
@@ -45,14 +46,18 @@
         <h1>Tudo funciona</h1>
         <div class="signal-line" aria-hidden="true"><span></span><i></i></div>
 
+        <p>Você era <strong>Lucas Almeida</strong>, engenheiro de integração na NexoLog havia dois anos. Entrara para manter APIs e pequenos fluxos entre sistemas; agora começava a ser chamado para reuniões em que uma decisão de quinze minutos podia definir meses de trabalho.</p>
         <p>A NexoLog não era grande. Oito centros de distribuição, cento e vinte pessoas e uma promessa simples: fazer o estoque de pequenos varejistas chegar antes que a prateleira ficasse vazia.</p>
         <p>Toda venda nascia no sistema mais novo da empresa, o <strong>Orbe</strong>. A Order API validava o pedido, abria uma chamada REST e esperava o ERP Atlas confirmar a reserva. Só então respondia ao vendedor.</p>
 
+        <p>Você ajudara a construir esse fluxo ao lado de <strong>Caio Nunes</strong>, desenvolvedor sênior e veterano das limitações do Atlas. <strong>Lia Martins</strong>, a arquiteta de integração, defendia soluções proporcionais ao problema. <strong>Maya Okafor</strong>, responsável pela confiabilidade, desconfiava de qualquer sistema que a equipe não conseguisse medir. <strong>Renato Alves</strong>, o product manager, carregava para a sala os prazos e as promessas feitas aos clientes.</p>
+        <p>Nas reuniões de status das quintas-feiras, cada um acabava repetindo uma versão da mesma frase:</p>
         <div class="dialogue">
-          <p><b class="lia">LM</b><span>“Enquanto estiver assim, a gente entrega sem drama.”</span></p>
-          <p><b class="caio">CN</b><span>“Uma chamada, uma resposta. Se falhar, o vendedor sabe na hora.”</span></p>
-          <p><b class="maya">MO</b><span>“Os números estão limpos. Latência estável.”</span></p>
-          <p><b class="renato">RA</b><span>“Simples até demais. Mas simples é bom.”</span></p>
+          <p><b class="lia">Lia</b><span>“Enquanto estiver assim, a gente entrega sem drama.”</span></p>
+          <p><b class="caio">Caio</b><span>“Uma chamada, uma resposta. Se falhar, o vendedor sabe na hora.”</span></p>
+          <p><b class="maya">Maya</b><span>“Os números estão limpos. Latência estável.”</span></p>
+          <p><b class="renato">Renato</b><span>“Simples até demais. Mas simples é bom.”</span></p>
+          <p><b class="lucas">Lucas</b><span>“E quando alguma coisa dá errado, eu consigo seguir o pedido de uma ponta à outra.”</span></p>
         </div>
 
         <p>A simplicidade não era ingenuidade. O Orbe precisava do número de reserva antes de liberar o pedido, o volume era baixo e a equipe controlava as duas pontas. Uma integração síncrona era a decisão certa.</p>
@@ -60,10 +65,10 @@
         <section class="scene">
           <p class="time">Quinta-feira · 16:42</p>
           <h2>O primeiro sinal</h2>
-          <p>Renato entrou na reunião semanal com o notebook ainda aberto. A rede Mercatto, maior cliente em negociação na história da NexoLog, queria começar um piloto na segunda-feira.</p>
+          <p>Renato entrou na reunião semanal com o notebook ainda aberto. Você conhecia aquela expressão: alguma promessa já havia sido feita antes de a equipe ouvir a pergunta. A rede Mercatto, maior cliente em negociação na história da NexoLog, queria começar um piloto na segunda-feira.</p>
           <p>Seriam só duas lojas no primeiro mês. Depois, se tudo desse certo, cento e quarenta.</p>
           <blockquote>“Nada muda agora”, disse Renato. “Talvez só o número de pedidos.”</blockquote>
-          <p>No monitor de Maya, o p95 desenhou um dente quase imperceptível. Quatrocentos e vinte milissegundos. Ainda saudável. Ainda dentro do SLA. Mas 18% acima da semana anterior.</p>
+          <p>No monitor de Maya, o p95 desenhou um dente quase imperceptível. Quatrocentos e vinte milissegundos. Ainda saudável. Ainda dentro do SLA. Mas 18% acima da semana anterior. Você anotou o número sem saber ainda se estava registrando uma curiosidade ou o começo de alguma coisa.</p>
         </section>
       </div>
 
@@ -111,6 +116,6 @@
   </main>
 
   <dialog id="person-dialog"><button class="close" aria-label="Fechar">×</button><p class="dialog-role"></p><h2></h2><p class="dialog-copy"></p></dialog>
-  <script src="app.js?v=linear-1"></script>
+  <script src="app.js?v=cast-1"></script>
 </body>
 </html>
