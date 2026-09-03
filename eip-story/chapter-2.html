@@ -1,19 +1,140 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#071421"><meta name="description" content="Uma novela técnica sobre arquiteturas de integração que crescem."><title>O gráfico inclina — Sinal / Ruído</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css?v=cast-1"></head>
-<body><header class="topbar"><a class="brand" href="index.html">SINAL <span>/</span> RUÍDO</a><div class="progress"><span>Cap. 02</span><span>2 de 20</span><i><b style="width:18px"></b></i></div><a class="sound history-link" href="index.html">← Capítulo anterior</a></header>
-<main class="shell"><aside class="rail" aria-label="Índice da história"><p class="rail-label">Capítulos</p><ol><li><span>01</span><a href="index.html">Tudo funciona</a></li><li class="active"><span>02</span><a href="#chapter">O gráfico inclina</a></li><li><span>03</span><i>—</i></li><li><span>04</span><i>—</i></li><li><span>05</span><i>—</i></li><li><span>06</span><i>—</i></li><li><span>07</span><i>—</i></li><li><span>08</span><i>—</i></li><li><span>09</span><i>—</i></li><li><span>10</span><i>—</i></li><li><span>…</span><i>—</i></li><li><span>20</span><i>—</i></li></ol><div class="cast"><p class="rail-label">Neste episódio</p><p class="episode-theme">Observabilidade<br><span>não aumenta capacidade</span></p></div></aside>
-<article id="chapter" class="chapter chapter-two"><div class="narrative"><p class="chapter-no">Cap. 02</p><h1>O gráfico inclina</h1><div class="signal-line" aria-hidden="true"><span></span><i></i></div>
-<p>Na sexta-feira, às oito e vinte da manhã, Maya encontrou Lia na copa tentando convencer a máquina de café a aceitar uma moeda amassada. Você chegou logo depois, ainda respondendo a uma mensagem do suporte.</p><p>“Preciso de quatro horas do Lucas”, disse Maya. “A latência subiu de novo durante a madrugada.”</p><p>Lia olhou para o copo ainda vazio. Quatro horas pareciam pouco, até serem multiplicadas por tudo que precisava ficar pronto antes do piloto da Mercatto.</p><p>“Você acha que o ERP vai cair?”, ela perguntou.</p><p>Maya não respondeu imediatamente. Você percebeu que ela não tinha levado uma conclusão para a copa; tinha levado uma dúvida.</p>
-<div class="dialogue"><p><b class="maya">Maya</b><span>“Não acho que vai cair. Acho que não sabemos o suficiente para responder.”</span></p><p><b class="lia">Lia</b><span>“Nada de mudar o fluxo. Só quero saber onde o tempo está sendo gasto.”</span></p><p><b class="lucas">Lucas</b><span>“Eu separo espera por conexão, tempo de rede e execução no Atlas. Se o problema estiver crescendo, vamos ver onde.”</span></p></div>
-<section class="scene"><p class="time">Sexta-feira · 09:05</p><h2>Três relógios</h2><p>Até aquele momento, o painel mostrava apenas o tempo total da requisição. Se uma reserva demorasse dois segundos, ninguém sabia quanto tinha sido gasto esperando uma conexão, atravessando a rede ou executando dentro do Atlas.</p><p>Caio adicionou três medições: <strong>pool_wait</strong>, o tempo até conseguir uma conexão; <strong>atlas_duration</strong>, o tempo da operação no ERP; e <strong>total_duration</strong>, medido desde a entrada na API.</p><p>Maya exigiu mais uma coisa: o mesmo identificador deveria aparecer na API, no conector e no log de auditoria do ERP.</p><div class="event-log"><p><time>traceId</time> 7fc2b4...a91</p><p><time>pool_wait</time> 18 ms</p><p><time>atlas_duration</time> 391 ms</p><p><time>total_duration</time> 420 ms</p></div><p>Caio sugeriu registrar todos os payloads. Maya recusou. Dados de clientes acabariam no sistema de logs, o custo explodiria e procurar uma transação seria como procurar um pedido dentro de outro ERP.</p><p>Eles registraram identificadores, tempos, códigos e tamanhos — o bastante para reconstruir o caminho sem copiar o conteúdo comercial.</p></section>
-<section class="scene"><p class="time">Sexta-feira · 14:40</p><h2>A reunião que não mudou a arquitetura</h2><p>Renato esperava uma decisão sobre filas. Recebeu uma tela com quatro linhas.</p><div class="dialogue"><p><b class="renato">RA</b><span>“Então não vamos fazer nada antes de segunda?”</span></p><p><b class="lia">LM</b><span>“Instrumentar é fazer alguma coisa. Só não altera a promessa para o vendedor antes de termos um motivo.”</span></p><p><b class="caio">CN</b><span>“Se colocarmos uma fila hoje, a API deixa de devolver a reserva do ERP. O produto ainda não sabe mostrar ‘recebido, mas não reservado’.”</span></p><p><b class="renato">RA</b><span>“E aumentar o timeout?”</span></p><p><b class="maya">MO</b><span>“Faria o usuário esperar mais para descobrir a mesma coisa. Timeout não produz capacidade.”</span></p></div><p>A decisão foi conservar o fluxo síncrono. Criaram alertas para o tempo de espera no pool, para a duração no Atlas e para a quantidade de requests simultâneos. Se o p95 passasse de dois segundos por cinco minutos, Maya seria avisada.</p><div class="architecture-note"><span>Decisão da equipe</span><strong>Preservar a arquitetura. Tornar o limite visível.</strong><p>A solução continuava proporcional ao requisito atual. O custo novo era operacional: métricas, correlação e alertas que precisariam ser mantidos.</p></div></section>
-<section class="scene"><p class="time">Segunda-feira · 09:47</p><h2>O alerta chega primeiro</h2><p>O piloto começou sem cerimônia. Durante quarenta minutos, o tráfego mal se distinguiu de uma segunda-feira comum. Renato mandou uma mensagem com apenas duas palavras: “Tudo calmo.”</p><p>Então a Mercatto publicou uma promoção para entrega no mesmo dia.</p><p>Trinta e oito pedidos por hora viraram trezentos e onze. O primeiro alerta chegou antes da primeira reclamação. O Atlas não estava indisponível; continuava respondendo a cada chamada. O problema era que cada chamada permanecia dentro dele um pouco mais.</p><div class="event-log"><p><time>09:52:00</time> pool_wait_p95 = 1.4 s</p><p><time>10:03:00</time> atlas_duration_p95 = 6.1 s</p><p><time>10:11:00</time> <span class="bad">pool_utilization = 88%</span></p></div><p>No monitor de Maya, as linhas formavam uma escada. Mais requisições ocupavam conexões por mais tempo; as novas requisições esperavam por essas conexões; enquanto esperavam, permaneciam abertas na API. O gargalo começava no ERP e se propagava para trás.</p><p>Às 10:13, o pool chegou a 100%. O sistema ainda não registrava erros, mas já não aceitava trabalho na velocidade em que o trabalho chegava.</p></section>
-<section class="scene"><p class="time">Segunda-feira · 10:16</p><h2>A fila que já existia</h2><p>Caio abriu a configuração do pool.</p><div class="dialogue"><p><b class="caio">CN</b><span>“Podemos dobrar de vinte para quarenta conexões.”</span></p><p><b class="maya">MO</b><span>“Ou podemos dobrar o número de operações simultâneas que pressionam o mesmo banco.”</span></p><p><b class="renato">RA</b><span>“Mas existe uma fila ou não?”</span></p><p><b class="lia">LM</b><span>“Existe. Só que é uma fila acidental: requests abertos esperando conexão, consumindo memória e segurando o vendedor na tela.”</span></p></div><p>A distinção mudou a conversa. Eles não estavam escolhendo entre “fila” e “sem fila”. Estavam escolhendo onde a espera aconteceria, quem teria controle sobre ela e qual promessa fariam a quem enviou o pedido.</p><p>Renato pediu um número: quanto tempo restava antes que o cliente percebesse? Maya apontou para o p95 em 9,2 segundos. O gateway encerrava chamadas em dez.</p><p>O primeiro <strong>504 Gateway Timeout</strong> apareceu às 10:17:06.</p><p>O Atlas terminou a reserva às 10:17:08.</p><p>Para a API, o pedido havia falhado. Para o ERP, ele existia.</p></section>
-<section class="scene reveal"><p class="time">Leitura arquitetural</p><h2>O que este capítulo mostrou</h2><p>A equipe tomou uma decisão correta: não introduziu mensageria sem necessidade e adicionou observabilidade antes do crescimento. Isso permitiu detectar saturação antes dos clientes e localizar o tempo gasto.</p><p>Mas observabilidade não oferece <strong>load leveling</strong>. Ela descreve pressão; não a absorve. O pool de conexões virou um buffer implícito e ruim: capacidade limitada, espera sem persistência e requests presos ao ciclo de vida HTTP.</p><p>A integração continua sendo <strong>síncrona</strong>: o produtor precisa manter a conexão até o ERP terminar. O resultado do negócio e a resposta técnica estão acoplados no tempo.</p><div class="pattern-ledger"><div><span>O que melhorou</span><strong>Diagnóstico, correlação e antecedência</strong></div><div><span>O que não melhorou</span><strong>Capacidade, isolamento e tolerância ao pico</strong></div><div><span>Novo risco visível</span><strong>Timeout com resultado de negócio desconhecido</strong></div></div></section>
-<section class="scene"><p class="time">Segunda-feira · 10:18</p><h2>Um pedido, duas verdades</h2><p>O vendedor reenviou o pedido que havia recebido o 504. A segunda tentativa voltou com sucesso. Quatro minutos depois, o centro de distribuição recebeu duas ordens de separação para o mesmo cliente.</p><p>Caio ficou com o cursor sobre o botão de deploy. Sua correção adicionava três tentativas automáticas para qualquer timeout.</p><p>Maya leu o diff e perguntou:</p><blockquote>“Se uma tentativa que parece falhar puder ter sido processada, o que três tentativas fazem com a nossa incerteza?”</blockquote><p>Ninguém respondeu imediatamente.</p></section></div>
-<aside class="evidence" aria-label="Evidências técnicas"><section class="tech-panel"><header><span>Arquitetura atual</span><em>v1 observável</em></header><div class="architecture-flow"><span>Order API</span><i>→</i><span>REST</span><i>→</i><span>ERP Atlas</span></div><p class="healthy warning"><i></i> Fluxo síncrono saturado</p></section><section class="tech-panel"><header><span>Leitura operacional</span><em>10:17</em></header><div class="compare"><p><span>p95</span><strong>9.2 s</strong></p><p><span>pool ocupado</span><strong>100%</strong></p><p><span>vazão entrada</span><strong>311/h</strong></p><p><span>vazão ERP</span><strong>186/h</strong></p></div></section><section class="tech-panel"><header><span>Pedido ORB-2192</span><em>estado incerto</em></header><pre><code>10:16:56  POST /reservations
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071421">
+  <meta name="description" content="Uma novela técnica sobre arquiteturas de integração que crescem.">
+  <title>O gráfico inclina — Sinal / Ruído</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=chapter2-novel-1">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">SINAL <span>/</span> RUÍDO</a>
+    <div class="progress"><span>Cap. 02</span><span>2 de 20</span><i><b style="width:18px"></b></i></div>
+    <a class="sound history-link" href="index.html">← Capítulo anterior</a>
+  </header>
+  <main class="shell">
+    <aside class="rail" aria-label="Índice da história">
+      <p class="rail-label">Capítulos</p>
+      <ol><li><span>01</span><a href="index.html">Tudo funciona</a></li><li class="active"><span>02</span><a href="#chapter">O gráfico inclina</a></li><li><span>03</span><i>—</i></li><li><span>04</span><i>—</i></li><li><span>05</span><i>—</i></li><li><span>06</span><i>—</i></li><li><span>07</span><i>—</i></li><li><span>08</span><i>—</i></li><li><span>09</span><i>—</i></li><li><span>10</span><i>—</i></li><li><span>…</span><i>—</i></li><li><span>20</span><i>—</i></li></ol>
+      <div class="cast"><p class="rail-label">Neste episódio</p><p class="episode-theme">Observabilidade<br><span>não aumenta capacidade</span></p></div>
+    </aside>
+    <article id="chapter" class="chapter chapter-two">
+      <div class="narrative">
+        <p class="chapter-no">Cap. 02</p>
+        <h1>O gráfico inclina</h1>
+        <div class="signal-line" aria-hidden="true"><span></span><i></i></div>
+
+        <p>Na sexta-feira seguinte, cheguei à empresa às oito e vinte da manhã com a impressão de que a véspera ainda não tinha terminado. Havia uma mensagem do suporte no meu celular, duas xícaras esquecidas ao lado do teclado e, no monitor, o mesmo gráfico que Maya me mostrara no fim da reunião. A curva de latência parecia pequena o bastante para ser ignorada. Era justamente isso que me incomodava.</p>
+        <p>Encontrei Maya e Lia na copa. Lia tentava convencer a máquina de café a aceitar uma moeda amassada; Maya segurava o notebook aberto contra o peito, como quem carregava um exame que ainda não sabia interpretar.</p>
+        <p>— Preciso de quatro horas do Lucas — ela disse, antes mesmo de eu me aproximar. — A latência subiu outra vez durante a madrugada.</p>
+        <p>Lia desistiu da moeda e olhou primeiro para Maya, depois para mim. O piloto da Mercatto começaria na segunda-feira. Naquela fase do projeto, quatro horas nunca eram apenas quatro horas. Eram um teste que deixaria de ser executado, uma entrega que escorregaria para a semana seguinte, uma promessa que alguém precisaria renegociar.</p>
+        <p>— O Atlas vai cair? — Lia perguntou.</p>
+        <p>Maya demorou um pouco para responder. Eu conhecia aquele silêncio. Ela não tinha levado uma conclusão para a copa; tinha levado uma dúvida.</p>
+        <p>— Não acho que vai cair. Acho que ainda não sabemos o suficiente para dizer que não vai.</p>
+        <p>Foi assim que ganhei minhas quatro horas.</p>
+
+        <section class="scene">
+          <p class="time">Sexta-feira · 09:05</p>
+          <h2>Três relógios</h2>
+          <p>Caio puxou uma cadeira para o meu lado e abriu o conector do Atlas. Até então, medíamos apenas o tempo total de cada requisição. Se uma reserva levasse dois segundos, sabíamos que dois segundos haviam desaparecido em algum lugar entre o navegador do vendedor e o ERP. Podia ser a espera por uma conexão, a rede ou a própria execução no Atlas. Nosso painel somava tudo e chamava o resultado de latência, como se dar um nome ao mistério fosse o mesmo que explicá-lo.</p>
+          <p>Passamos a manhã instalando três relógios no caminho. O primeiro começava quando a API pedia uma conexão ao pool. O segundo media o tempo dentro do Atlas. O terceiro acompanhava a requisição inteira, da chegada à resposta. Caio batizou as métricas de <strong>pool_wait</strong>, <strong>atlas_duration</strong> e <strong>total_duration</strong>.</p>
+          <p>Maya apareceu atrás de nós quando os primeiros números começaram a surgir.</p>
+          <p>— Falta uma coisa — disse ela. — Quero atravessar o sistema seguindo um único pedido.</p>
+          <p>Incluímos o mesmo identificador na API, no conector e no registro de auditoria do ERP. Pela primeira vez, uma reserva deixava pegadas que podíamos seguir de uma ponta à outra.</p>
+          <div class="event-log"><p><time>traceId</time> 7fc2b4...a91</p><p><time>pool_wait</time> 18 ms</p><p><time>atlas_duration</time> 391 ms</p><p><time>total_duration</time> 420 ms</p></div>
+          <p>Caio sugeriu registrar também o conteúdo de todos os pedidos. Parecia uma solução simples: se algo desse errado, teríamos tudo nos logs. Maya perguntou quanto tempo levaria até que nomes, endereços e condições comerciais de clientes fossem parar na ferramenta de observabilidade. Depois perguntou quanto custaria indexar cada payload quando a Mercatto multiplicasse o volume.</p>
+          <p>A ideia morreu sem precisar de votação. Guardamos identificadores, tempos, códigos de retorno e tamanhos. Era o bastante para reconstruir o trajeto de uma chamada sem transformar o sistema de logs em uma cópia desorganizada do ERP.</p>
+          <p>Às onze e quarenta, o painel já contava uma história mais precisa. O Atlas ainda gastava quase todo o tempo da operação. A espera no pool era curta, mas não constante. Em momentos de maior movimento, surgiam pequenos degraus. Nenhum deles justificava uma mudança de arquitetura. Juntos, justificavam atenção.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Sexta-feira · 14:40</p>
+          <h2>A reunião que não mudou a arquitetura</h2>
+          <p>Renato entrou na sala esperando uma decisão sobre filas. Recebeu uma tela com quatro linhas e uma resposta que parecia modesta demais para o tamanho da reunião.</p>
+          <p>— Então não vamos fazer nada antes de segunda? — ele perguntou.</p>
+          <p>Lia se inclinou sobre a mesa. Disse que instrumentar era fazer alguma coisa; significava apenas não alterar a promessa feita ao vendedor antes de existir um motivo. Caio completou que, se colocássemos uma fila naquele momento, a API deixaria de devolver a reserva confirmada pelo ERP. O produto ainda não sabia representar um pedido que tivesse sido recebido, mas não reservado.</p>
+          <p>Renato sugeriu aumentar o timeout. Maya respondeu que isso daria ao usuário mais tempo para esperar pela mesma falta de capacidade.</p>
+          <p>Eu acompanhei a conversa em silêncio por alguns segundos. Meses antes, eu provavelmente teria defendido a solução mais sofisticada. Naquela tarde, a coisa que mais me preocupava não era a ausência de uma fila. Era a facilidade com que poderíamos introduzir uma sem discutir o que mudaria para quem usava o sistema.</p>
+          <p>Conservar o fluxo síncrono significava preservar uma promessa simples: ao receber sucesso, o vendedor sabia que a reserva existia no Atlas. Torná-lo assíncrono criaria outra promessa: o pedido foi aceito e será processado. A diferença parecia gramatical. Para o negócio, era um novo estado, novas telas, novas formas de falhar e novas perguntas do suporte.</p>
+          <p>Decidimos não mudar a arquitetura. Criamos alertas para o tempo de espera no pool, para a duração no Atlas e para o número de requisições simultâneas. Se o p95 permanecesse acima de dois segundos por cinco minutos, Maya seria avisada.</p>
+          <div class="architecture-note"><span>Decisão da equipe</span><strong>Preservar a arquitetura. Tornar o limite visível.</strong><p>A solução ainda atendia ao requisito daquele momento. O novo custo seria operacional: métricas, correlação e alertas que também precisariam ser mantidos.</p></div>
+          <p>Saí da sala aliviado, embora não soubesse explicar por quê. Talvez porque, pela primeira vez, não tínhamos tratado a dúvida como um defeito a ser escondido. Havíamos lhe dado instrumentos.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Segunda-feira · 09:47</p>
+          <h2>O alerta chega primeiro</h2>
+          <p>O piloto começou sem cerimônia. Durante quarenta minutos, o tráfego mal se distinguiu de uma segunda-feira comum. Renato escreveu no grupo do projeto: “Tudo calmo”. Lia respondeu com o emoji de dedos cruzados. Eu evitei responder. Ainda tinha na memória a curva discreta da semana anterior.</p>
+          <p>Às nove e quarenta e sete, a Mercatto publicou uma promoção para entrega no mesmo dia.</p>
+          <p>Trinta e oito pedidos por hora viraram trezentos e onze. O primeiro alerta chegou antes da primeira reclamação. O Atlas não estava fora do ar; continuava aceitando todas as operações. Apenas levava um pouco mais de tempo para terminar cada uma. No início, foram décimos de segundo. Depois, segundos inteiros.</p>
+          <div class="event-log"><p><time>09:52:00</time> pool_wait_p95 = 1.4 s</p><p><time>10:03:00</time> atlas_duration_p95 = 6.1 s</p><p><time>10:11:00</time> <span class="bad">pool_utilization = 88%</span></p></div>
+          <p>No monitor de Maya, as linhas formavam uma escada. Quanto mais tempo uma operação permanecia no ERP, mais tempo mantinha uma conexão ocupada. As novas requisições esperavam por essas conexões e, enquanto esperavam, continuavam abertas na API. O atraso começava no Atlas e avançava para trás, serviço por serviço, até alcançar a tela do vendedor.</p>
+          <p>Às dez e treze, o pool chegou a cem por cento. O painel de erros continuava vazio. Por alguns instantes, a sala pareceu dividida entre duas versões da realidade: para o monitor antigo, tudo funcionava; para os novos relógios, o sistema já não recebia trabalho na velocidade em que o trabalho chegava.</p>
+          <p>Foi quando entendi que uma falha nem sempre começa com uma mensagem vermelha. Às vezes ela começa com pessoas e conexões apenas esperando.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Segunda-feira · 10:16</p>
+          <h2>A fila que já existia</h2>
+          <p>Caio abriu a configuração do pool e deixou o cursor sobre o número vinte.</p>
+          <p>— Podemos dobrar as conexões — disse. — Quarenta nos devolvem fôlego.</p>
+          <p>Maya perguntou se devolveriam fôlego à API ou se apenas dobrariam a pressão sobre o banco do Atlas. Renato, que acompanhava tudo em pé junto à porta, quis saber se afinal existia uma fila ou não.</p>
+          <p>Olhei para as requisições abertas. Centenas delas aguardavam uma conexão, consumindo memória na API e mantendo vendedores presos a uma tela que não sabia dizer quando terminaria.</p>
+          <p>— Existe — respondi. — Só não foi uma fila que desenhamos.</p>
+          <p>A frase mudou a conversa. Não estávamos escolhendo entre ter ou não ter espera. A espera já estava ali. Precisávamos decidir onde ela aconteceria, quem teria controle sobre ela e qual promessa faríamos a quem enviara o pedido. Nosso pool de conexões tinha se tornado uma sala de espera sem senha, sem assentos suficientes e sem a garantia de que alguém continuaria ali quando chegasse a sua vez.</p>
+          <p>Renato pediu um número. Quanto tempo tínhamos antes que o cliente percebesse? Maya apontou para o p95 em 9,2 segundos. O gateway abandonava qualquer chamada aos dez.</p>
+          <p>Vi a primeira linha vermelha aparecer às 10:17:06.</p>
+          <p><strong>504 Gateway Timeout.</strong></p>
+          <p>Dois segundos depois, o Atlas concluiu a reserva.</p>
+          <p>Fiquei olhando para os dois horários. Para a API, o pedido havia falhado. Para o ERP, ele existia. Nenhum dos sistemas estava mentindo; cada um possuía apenas uma parte da verdade.</p>
+        </section>
+
+        <section class="scene reveal">
+          <p class="time">Leitura arquitetural</p>
+          <h2>O que eu ainda não sabia nomear</h2>
+          <p>Hoje consigo enxergar com clareza o que aconteceu naquela manhã. Tínhamos tomado uma decisão sensata ao não introduzir mensageria antes de existir uma necessidade concreta. A observabilidade nos permitiu perceber a saturação antes dos clientes e localizar onde o tempo desaparecia.</p>
+          <p>Mas observabilidade não oferece <strong>load leveling</strong>. Ela revela a pressão; não a absorve. Sem um mecanismo deliberado para nivelar a carga, o pool virou nosso buffer implícito: pequeno, volátil e preso ao ciclo de vida de cada requisição HTTP.</p>
+          <p>A integração permanecia <strong>síncrona</strong>. A Order API precisava sustentar a conexão até o Atlas terminar. O resultado do negócio e a resposta técnica estavam acoplados no tempo — e, quando o relógio do gateway acabou antes do relógio do ERP, esses dois resultados se separaram.</p>
+          <div class="pattern-ledger"><div><span>O que melhorou</span><strong>Diagnóstico, correlação e antecedência</strong></div><div><span>O que não melhorou</span><strong>Capacidade, isolamento e tolerância ao pico</strong></div><div><span>Novo risco visível</span><strong>Timeout com resultado de negócio desconhecido</strong></div></div>
+        </section>
+
+        <section class="scene">
+          <p class="time">Segunda-feira · 10:18</p>
+          <h2>Um pedido, duas verdades</h2>
+          <p>O telefone do suporte tocou menos de um minuto depois. Um vendedor da Mercatto havia recebido a página de erro e queria saber se deveria tentar novamente. Antes que alguém respondesse, ele tentou.</p>
+          <p>A segunda chamada encontrou uma conexão disponível e voltou com sucesso. Quatro minutos mais tarde, o centro de distribuição identificou duas ordens de separação para o mesmo cliente, com os mesmos produtos e o mesmo endereço. Para o vendedor, havia sido uma tentativa corrigida. Para o Atlas, eram duas reservas perfeitamente válidas.</p>
+          <p>Caio preparou uma alteração que repetiria automaticamente qualquer chamada encerrada por timeout. Três tentativas, com um pequeno intervalo entre elas. A correção cabia em poucas linhas e prometia reduzir os erros que apareciam no painel.</p>
+          <p>Ele estava com o cursor sobre o botão de deploy quando Maya pediu para ver o diff.</p>
+          <p>— Se uma tentativa que parece ter falhado pode ter sido processada — ela perguntou —, o que três tentativas fazem com a nossa incerteza?</p>
+          <p>Caio afastou a mão do mouse. Renato voltou a olhar para o telefone. Eu procurei no painel o identificador do pedido duplicado e encontrei dois rastros quase iguais, separados por vinte e três segundos.</p>
+          <p>Durante meses, tratáramos timeout como sinônimo de falha. Naquela manhã, ele se revelou apenas como o fim da nossa espera. O sistema remoto podia continuar trabalhando depois que desistíamos de ouvi-lo.</p>
+          <p>Ninguém respondeu à pergunta de Maya. Não porque faltassem ideias, mas porque todas elas começavam pela mesma admissão: repetir uma operação não era seguro enquanto o Atlas não soubesse reconhecer que já a havia executado.</p>
+        </section>
+      </div>
+
+      <aside class="evidence" aria-label="Evidências técnicas">
+        <section class="tech-panel"><header><span>Arquitetura atual</span><em>v1 observável</em></header><div class="architecture-flow"><span>Order API</span><i>→</i><span>REST</span><i>→</i><span>ERP Atlas</span></div><p class="healthy warning"><i></i> Fluxo síncrono saturado</p></section>
+        <section class="tech-panel"><header><span>Leitura operacional</span><em>10:17</em></header><div class="compare"><p><span>p95</span><strong>9.2 s</strong></p><p><span>pool ocupado</span><strong>100%</strong></p><p><span>vazão entrada</span><strong>311/h</strong></p><p><span>vazão ERP</span><strong>186/h</strong></p></div></section>
+        <section class="tech-panel"><header><span>Pedido ORB-2192</span><em>estado incerto</em></header><pre><code>10:16:56  POST /reservations
 10:17:06  API → 504 timeout
 10:17:08  ERP → reservation 91881
 10:17:21  cliente tenta novamente
-10:17:29  ERP → reservation 91882</code></pre></section></aside>
-<section class="decision chapter-end" aria-labelledby="chapter-end-title"><p class="response-label">Fim do capítulo 02</p><h2 id="chapter-end-title">A falha terminou. A dúvida ficou.</h2><p>A equipe agora precisa decidir o que fazer quando uma chamada falha tecnicamente, mas pode ter sido concluída pelo sistema remoto. No próximo episódio, uma correção rápida fará o número de duplicidades subir.</p><span class="continue disabled" aria-disabled="true">Capítulo 03 · em breve</span><a class="previous" href="index.html">← Voltar ao Capítulo 01</a></section></article></main></body></html>
+10:17:29  ERP → reservation 91882</code></pre></section>
+      </aside>
+
+      <section class="decision chapter-end" aria-labelledby="chapter-end-title">
+        <p class="response-label">Fim do capítulo 02</p>
+        <h2 id="chapter-end-title">A falha terminou. A dúvida ficou.</h2>
+        <p>A equipe agora precisa descobrir como repetir uma chamada sem repetir o efeito que ela produz. No próximo episódio, uma correção rápida fará o número de duplicidades subir.</p>
+        <span class="continue disabled" aria-disabled="true">Capítulo 03 · em breve</span>
+        <a class="previous" href="index.html">← Voltar ao Capítulo 01</a>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
