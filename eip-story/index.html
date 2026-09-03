@@ -9,13 +9,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=branching-1">
+  <link rel="stylesheet" href="styles.css?v=linear-1">
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="Sinal Ruído, início">SINAL <span>/</span> RUÍDO</a>
     <div class="progress" aria-label="Progresso da história">
-      <span>Cap. 01</span><span>1 de 12</span><i><b></b></i>
+      <span>Cap. 01</span><span>1 de 20</span><i><b></b></i>
     </div>
     <button class="sound" type="button" aria-pressed="false"><span class="sound-bars" aria-hidden="true"></span><span>Ambiente: off</span></button>
   </header>
@@ -101,30 +101,16 @@
         </section>
       </aside>
 
-      <section class="decision" aria-labelledby="decision-title">
-        <div class="decision-heading"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 26V3m0 5H6l-3 4 3 4h8m0-2h8l3 4-3 4h-8"/></svg><div><p>Sua decisão</p><h2 id="decision-title">Você mudaria alguma coisa agora?</h2></div></div>
-        <p class="problem">O sistema está saudável. O volume pode crescer muito, mas ainda não cresceu. A única evidência concreta é uma pequena tendência de latência.</p>
-        <form id="decision-form">
-          <div class="choices">
-            <label><input type="radio" name="decision" value="manter" checked><span><b>Manter como está</b><small>A arquitetura atende ao cenário atual. Mudar agora também cria risco.</small></span></label>
-            <label><input type="radio" name="decision" value="instrumentar"><span><b>Instrumentar melhor</b><small>Mais visibilidade agora reduz surpresas quando o piloto começar.</small></span></label>
-            <label><input type="radio" name="decision" value="desacoplar"><span><b>Desacoplar agora</b><small>Separar responsabilidades antes que a complexidade aumente.</small></span></label>
-          </div>
-          <label class="reason"><span>Seu raciocínio <small>(opcional)</small></span><textarea name="reason" rows="3" placeholder="O que pesou na sua decisão?"></textarea></label>
-          <button class="submit" type="submit">Registrar decisão <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6"/></svg></button>
-        </form>
-        <div class="response" hidden aria-live="polite">
-          <p class="response-label">Decisão registrada</p>
-          <h3></h3><p class="response-copy"></p>
-          <div class="locked"><span aria-hidden="true">◇</span> A história pausa aqui. O próximo capítulo só começa depois desta escolha.</div>
-          <a class="continue" href="chapter-2.html">Seguir para o Capítulo 2 <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6"/></svg></a>
-          <button type="button" class="revise">Revisar decisão</button>
-        </div>
+      <section class="decision chapter-end" aria-labelledby="chapter-end-title">
+        <p class="response-label">Fim do capítulo 01</p>
+        <h2 id="chapter-end-title">Um sinal não é uma falha.</h2>
+        <p>Maya viu a latência subir antes de qualquer cliente reclamar. Na manhã seguinte, ela pediria algumas horas para tornar aquele sinal impossível de ignorar.</p>
+        <a class="continue" href="chapter-2.html">Ler “O gráfico inclina” <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6"/></svg></a>
       </section>
     </article>
   </main>
 
   <dialog id="person-dialog"><button class="close" aria-label="Fechar">×</button><p class="dialog-role"></p><h2></h2><p class="dialog-copy"></p></dialog>
-  <script src="app.js?v=branching-1"></script>
+  <script src="app.js?v=linear-1"></script>
 </body>
 </html>
