@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071421">
+  <meta name="description" content="Uma novela técnica sobre arquiteturas de integração que crescem.">
+  <title>A segunda tentativa — Sinal / Ruído</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=chapter3-1">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">SINAL <span>/</span> RUÍDO</a>
+    <div class="progress"><span>Cap. 03</span><span>3 de 20</span><i><b style="width:27px"></b></i></div>
+    <a class="sound history-link" href="chapter-2.html">← Capítulo anterior</a>
+  </header>
+  <main class="shell">
+    <aside class="rail" aria-label="Índice da história">
+      <p class="rail-label">Capítulos</p>
+      <ol><li><span>01</span><a href="index.html">Tudo funciona</a></li><li><span>02</span><a href="chapter-2.html">O gráfico inclina</a></li><li class="active"><span>03</span><a href="#chapter">A segunda tentativa</a></li><li><span>04</span><i>—</i></li><li><span>05</span><i>—</i></li><li><span>06</span><i>—</i></li><li><span>07</span><i>—</i></li><li><span>08</span><i>—</i></li><li><span>09</span><i>—</i></li><li><span>10</span><i>—</i></li><li><span>…</span><i>—</i></li><li><span>20</span><i>—</i></li></ol>
+      <div class="cast"><p class="rail-label">Neste episódio</p><p class="episode-theme">Retry e idempotência<br><span>uma chamada não é seu efeito</span></p></div>
+    </aside>
+    <article id="chapter" class="chapter chapter-two">
+      <div class="narrative">
+        <p class="chapter-no">Cap. 03</p>
+        <h1>A segunda tentativa</h1>
+        <div class="signal-line" aria-hidden="true"><span></span><i></i></div>
+
+        <p>Na terça-feira, cheguei antes das luzes do corredor acenderem por completo. O escritório parecia maior quando estava vazio. Sem conversas, teclados e telefones, restava apenas o zumbido constante do ar-condicionado — e o relatório que Maya deixara aberto no monitor da sala de incidentes.</p>
+        <p>Dezessete pedidos duplicados.</p>
+        <p>Na noite anterior, havíamos encontrado quatro. O suporte cancelara as reservas extras antes que virassem entregas. Depois que fomos embora, outros vendedores repetiram chamadas encerradas por timeout. Alguns clicaram de novo. Outros atualizaram a página. Dois fecharam o navegador, abriram o sistema e refizeram o pedido inteiro.</p>
+        <p>Para cada pessoa, aquilo era uma nova tentativa de obter uma resposta. Para o Atlas, era uma nova ordem.</p>
+        <p>Caio entrou carregando duas canecas. Colocou uma diante de mim e ficou olhando o número na tela.</p>
+        <p>— Eu passei a noite pensando no retry — disse.</p>
+        <p>— Eu passei a noite pensando no que ele repetiria.</p>
+        <p>Ele não respondeu. Sentou-se e abriu o código que não havíamos publicado.</p>
+
+        <section class="scene">
+          <p class="time">Terça-feira · 08:32</p>
+          <h2>O verbo errado</h2>
+          <p>A primeira reunião começou com uma discussão sobre palavras. Renato chamava aquilo de falha de comunicação. Lia chamava de experiência ruim. Maya chamava de estado desconhecido. Cada expressão apontava para uma solução diferente.</p>
+          <p>Renato queria repetir automaticamente as chamadas. Se o vendedor não precisasse clicar outra vez, argumentou, ao menos controlaríamos o número de tentativas. Caio explicou sua proposta: três retries, com intervalos crescentes — um, dois e quatro segundos. Falhas transitórias de rede desapareceriam sem intervenção humana.</p>
+          <p>A ideia era razoável. Muitos dos nossos erros realmente eram transitórios. Uma conexão recusada antes de a requisição chegar ao Atlas podia ser repetida com segurança. O problema estava em agrupar situações diferentes sob a mesma palavra.</p>
+          <div class="event-log"><p><time>conexão recusada</time> operação não enviada</p><p><time>HTTP 503</time> servidor declarou indisponibilidade</p><p><time>HTTP 504</time> resposta não chegou a tempo</p><p><time>conexão perdida</time> resultado desconhecido</p></div>
+          <p>— Timeout não é um verbo — Maya disse. — Ele não diz o que aconteceu com a reserva. Só diz que paramos de esperar.</p>
+          <p>A frase me fez voltar ao pedido ORB-2192. A API desistira às 10:17:06; o ERP concluíra a operação dois segundos depois. Repetir a chamada não repetia uma comunicação. Repetia o comando <em>criar uma reserva</em>.</p>
+          <p>Propus que limitássemos o retry às falhas em que conseguíssemos provar que o Atlas não recebera a requisição. Caio apontou a dificuldade: entre enviar o último byte e receber o primeiro, havia uma região inteira em que a prova simplesmente não existia.</p>
+          <p>Foi a primeira vez que percebi como a palavra “tentativa” podia nos enganar. Para a rede, era uma nova tentativa. Para o negócio, podia ser um segundo efeito.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Terça-feira · 10:10</p>
+          <h2>A correção de seis linhas</h2>
+          <p>A reunião não produziu uma resposta definitiva, mas a Mercatto continuava operando. Lia precisava reduzir os erros visíveis antes do movimento da tarde. Concordamos com uma solução temporária: uma única repetição automática para falhas de conexão e respostas 503. Os timeouts permaneceriam sem retry até entendermos como reconhecer uma operação já processada.</p>
+          <p>A alteração tinha seis linhas. Ainda assim, Maya insistiu em métricas separadas para a primeira chamada e para a repetição. Também pediu que o <strong>traceId</strong> fosse preservado e que cada tentativa recebesse seu próprio número. Sem isso, uma requisição repetida pareceria duas requisições sem relação.</p>
+          <div class="event-log"><p><time>traceId</time> e91ad0...3b7</p><p><time>attempt</time> 1 → connection_reset</p><p><time>backoff</time> 1000 ms</p><p><time>attempt</time> 2 → 201 created</p></div>
+          <p>Publicamos às onze e vinte. Durante a primeira hora, quarenta e três falhas transitórias desapareceram da tela dos vendedores. O suporte não recebeu uma única ligação. Renato apareceu na sala com o relatório e um sorriso que eu não via desde o começo do piloto.</p>
+          <p>— Era isso — disse. — Agora só precisamos incluir timeout na mesma regra.</p>
+          <p>Ninguém respondeu imediatamente. O painel mostrava uma vitória real, mas estreita. O retry aumentara a disponibilidade percebida nos casos em que a primeira chamada não chegara ao destino. Também aumentara o tráfego justamente quando algum componente já estava instável. Uma repetição parecia barata. Multiplicada por centenas de requisições, podia transformar uma oscilação em avalanche.</p>
+          <p>Configuramos um limite global e mantivemos os intervalos crescentes. O <strong>exponential backoff</strong> não criava capacidade; apenas evitava que todos voltassem a bater na mesma porta ao mesmo tempo. Mais tarde adicionaríamos uma pequena variação aleatória ao intervalo — <em>jitter</em> — para que os clientes não acordassem em sincronia.</p>
+          <p>Naquele dia, porém, nosso problema mais urgente ainda eram os pedidos que chegavam duas vezes.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Terça-feira · 13:46</p>
+          <h2>Qual pedido é o mesmo pedido?</h2>
+          <p>O Atlas já possuía um campo chamado <strong>externalReference</strong>. Parecia a solução pronta. Bastava enviar o número do pedido da Mercatto e consultar o ERP antes de criar uma nova reserva.</p>
+          <p>Helena Duarte, responsável pelo Atlas, entrou na chamada e desfez nosso entusiasmo em menos de dois minutos. O campo não era obrigatório, não tinha índice único e alguns clientes o reutilizavam depois de um cancelamento. Pior: a consulta e a criação seriam duas operações separadas.</p>
+          <p>Desenhei no quadro a sequência que pretendíamos executar:</p>
+          <div class="event-log"><p><time>13:46:01.010</time> chamada A consulta → não existe</p><p><time>13:46:01.014</time> chamada B consulta → não existe</p><p><time>13:46:01.080</time> chamada A cria reserva 92017</p><p><time>13:46:01.083</time> chamada B cria reserva 92018</p></div>
+          <p>Consultar antes de inserir reduzia duplicidades acidentais, mas não impedia concorrência. Duas chamadas simultâneas podiam observar a mesma ausência e tomar a mesma decisão. Tínhamos transformado o problema em uma corrida.</p>
+          <p>Caio sugeriu uma trava em memória na Order API. Eu perguntei o que aconteceria quando tivéssemos duas instâncias da API ou quando uma delas reiniciasse. Helena propôs uma restrição única no banco do Atlas, mas o fornecedor do ERP não autorizava mudanças em tabelas internas.</p>
+          <p>Foi Lia quem fez a pergunta que nos tirou do detalhe técnico.</p>
+          <p>— Quem decide que duas chamadas representam a mesma intenção?</p>
+          <p>Não podia ser o <strong>traceId</strong>; ele identificava uma execução técnica e mudava quando o vendedor refazia o fluxo. Também não podia ser apenas cliente, produto e quantidade; duas compras legítimas podiam ter os mesmos dados. Precisávamos de uma identidade criada no início da intenção de negócio e preservada em todas as repetições.</p>
+          <p>A Mercatto já gerava um identificador para cada confirmação de compra. Decidimos usá-lo como <strong>idempotency key</strong>. O mesmo comando reenviado carregaria a mesma chave. Uma nova compra, mesmo idêntica à anterior, receberia outra.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Terça-feira · 15:20</p>
+          <h2>A memória da fronteira</h2>
+          <p>Como não podíamos alterar o Atlas, construímos uma pequena tabela sob controle da Order API. Ela guardaria a chave, o estado da operação e a resposta produzida. A restrição única no banco decidiria quem tinha direito de executar primeiro; não uma verificação feita instantes antes.</p>
+          <div class="event-log"><p><time>idempotency_key</time> mercatto:checkout:88431</p><p><time>status</time> PROCESSING → COMPLETED</p><p><time>atlas_id</time> 92031</p><p><time>response_code</time> 201</p></div>
+          <p>Quando uma chave nova chegava, a API tentava registrá-la como <strong>PROCESSING</strong>. Se conseguisse, chamava o Atlas e armazenava o resultado. Se a chave já estivesse marcada como <strong>COMPLETED</strong>, devolvia a resposta anterior sem executar o comando outra vez.</p>
+          <p>O estado intermediário nos obrigou a encarar a parte desconfortável. Se a API caísse depois de o Atlas criar a reserva, mas antes de gravar <strong>COMPLETED</strong>, a chave ficaria presa em processamento. Não havia transação única envolvendo nosso banco e o banco do ERP. Persistir a intenção antes da chamada eliminava a corrida local, mas não eliminava a incerteza na fronteira.</p>
+          <p>Helena ofereceu uma consulta confiável pela referência externa. Com ela, uma chave antiga em <strong>PROCESSING</strong> não seria repetida imediatamente. Primeiro tentaríamos reconciliar: procurar no Atlas a reserva correspondente e completar nosso registro. Se não houvesse resultado depois de uma janela segura, a operação seguiria para análise.</p>
+          <p>Não era a promessa mágica de “exactly once”. Era algo mais concreto. Aceitávamos que a entrega de uma chamada podia ocorrer mais de uma vez e tornávamos seu efeito observável e repetível sem duplicar o negócio. Onde a atomicidade terminava, entravam idempotência e reconciliação.</p>
+          <div class="architecture-note"><span>Arquitetura v1.2</span><strong>Registrar a intenção antes de executar o efeito.</strong><p>Mercatto → Order API → Idempotency Store → ERP Atlas. Repetições com a mesma chave recebem o resultado já conhecido; estados incertos são reconciliados.</p></div>
+        </section>
+
+        <section class="scene reveal">
+          <p class="time">Leitura arquitetural</p>
+          <h2>O nome da defesa</h2>
+          <p>O comportamento que implementamos é conhecido como <strong>Idempotent Receiver</strong>. O receptor reconhece mensagens ou comandos já processados e impede que a repetição produza um novo efeito. Isso não significa ignorar silenciosamente toda duplicata: em nosso caso, a API devolvia a resposta registrada na primeira execução.</p>
+          <p>A chave de idempotência não era o mesmo que o <strong>Correlation Identifier</strong>. A primeira representava a identidade estável da intenção de negócio; o segundo nos permitia seguir uma execução através dos componentes. Uma intenção podia gerar várias tentativas e, portanto, vários eventos técnicos correlacionados, sem deixar de ser o mesmo pedido.</p>
+          <p>Retry e idempotência resolviam problemas diferentes e se complementavam. Retry reagia à indisponibilidade transitória. Idempotência limitava o efeito das repetições inevitáveis. Backoff controlava quando tentar outra vez. Reconciliação tratava o espaço em que nenhum lado conhecia sozinho a verdade completa.</p>
+          <div class="pattern-ledger"><div><span>Retry</span><strong>Repete a tentativa diante de uma falha potencialmente transitória</strong></div><div><span>Idempotent Receiver</span><strong>Impede que a mesma intenção produza o efeito novamente</strong></div><div><span>Limite real</span><strong>Sem transação distribuída, estados incertos ainda exigem reconciliação</strong></div></div>
+        </section>
+
+        <section class="scene">
+          <p class="time">Quinta-feira · 17:55</p>
+          <h2>O número na última página</h2>
+          <p>Dois dias depois, as duplicidades da Mercatto haviam caído a zero. O retry absorvia falhas curtas, as chaves protegiam as reservas e três registros presos em processamento tinham sido reconciliados sem intervenção do vendedor.</p>
+          <p>Renato levou os números à diretoria. Voltou no fim da tarde acompanhado de Lia e fechou a porta da sala.</p>
+          <p>— A Mercatto quer expandir o piloto para todas as lojas — disse. — E a Vértice assinou hoje.</p>
+          <p>Lia colocou sobre a mesa a projeção enviada pelo comercial. No lançamento conjunto, esperavam três mil pedidos por hora. Quase dez vezes o pico que levara nosso pool ao limite.</p>
+          <p>Caio observou que poderíamos aumentar conexões. Maya lembrou que o Atlas processava cento e oitenta e seis reservas por hora quando pressionado. Nenhuma chave de idempotência faria o ERP trabalhar mais depressa. Nenhum retry transformaria espera em capacidade.</p>
+          <p>Olhei o diagrama que ainda terminava numa seta direta para o Atlas. Havíamos tornado cada chamada mais segura, mas ela continuava presa ao tempo do sistema mais lento.</p>
+          <p>Desta vez, quando alguém mencionou uma fila, ninguém perguntou se o problema era grande o bastante.</p>
+        </section>
+      </div>
+
+      <aside class="evidence" aria-label="Evidências técnicas">
+        <section class="tech-panel"><header><span>Arquitetura atual</span><em>v1.2</em></header><div class="architecture-flow"><span>Order API</span><i>→</i><span class="new">Idempotency</span><i>→</i><span>ERP Atlas</span></div><p class="healthy"><i></i> Efeito protegido por chave</p></section>
+        <section class="tech-panel"><header><span>Depois da correção</span><em>48 horas</em></header><div class="compare"><p><span>retries seguros</span><strong>127</strong></p><p><span>respostas recuperadas</span><strong>121</strong></p><p><span>duplicidades</span><strong>0</strong></p><p><span>reconciliações</span><strong>3</strong></p></div></section>
+        <section class="tech-panel"><header><span>Fronteira transacional</span><em>sem 2PC</em></header><pre><code>1  reserve idempotency_key
+2  call ERP Atlas
+3  persist ERP result
+
+crash entre 2 e 3?
+→ reconciliar antes de repetir</code></pre></section>
+      </aside>
+
+      <section class="decision chapter-end" aria-labelledby="chapter-end-title">
+        <p class="response-label">Fim do capítulo 03</p>
+        <h2 id="chapter-end-title">Segurança não é capacidade.</h2>
+        <p>A mesma integração agora precisa receber trabalho muito mais rápido do que o Atlas consegue processá-lo. No próximo episódio, a equipe separará o tempo do pedido do tempo do ERP — e descobrirá o preço dessa distância.</p>
+        <span class="continue disabled" aria-disabled="true">Capítulo 04 · em breve</span>
+        <a class="previous" href="chapter-2.html">← Voltar ao Capítulo 02</a>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
