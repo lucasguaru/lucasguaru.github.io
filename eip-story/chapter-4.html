@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071421">
+  <meta name="description" content="Uma novela técnica sobre arquiteturas de integração que crescem.">
+  <title>O espaço entre dois tempos — Sinal / Ruído</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=chapter4-2">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">SINAL <span>/</span> RUÍDO</a>
+    <div class="progress"><span>Cap. 04</span><span>4 de 20</span><i><b style="width:36px"></b></i></div>
+    <a class="sound history-link" href="chapter-3.html">← Capítulo anterior</a>
+  </header>
+  <main class="shell">
+    <aside class="rail" aria-label="Índice da história">
+      <p class="rail-label">Capítulos</p>
+      <ol><li><span>01</span><a href="index.html">Tudo funciona</a></li><li><span>02</span><a href="chapter-2.html">O gráfico inclina</a></li><li><span>03</span><a href="chapter-3.html">A segunda tentativa</a></li><li class="active"><span>04</span><a href="#chapter">O espaço entre dois tempos</a></li><li><span>05</span><i>—</i></li><li><span>06</span><i>—</i></li><li><span>07</span><i>—</i></li><li><span>08</span><i>—</i></li><li><span>09</span><i>—</i></li><li><span>10</span><i>—</i></li><li><span>…</span><i>—</i></li><li><span>20</span><i>—</i></li></ol>
+      <div class="cast"><p class="rail-label">Neste episódio</p><p class="episode-theme">Message Channel<br><span>aceitar agora, processar depois</span></p></div>
+    </aside>
+    <article id="chapter" class="chapter chapter-two">
+      <div class="narrative">
+        <p class="chapter-no">Cap. 04</p>
+        <h1>O espaço entre dois tempos</h1>
+        <div class="signal-line" aria-hidden="true"><span></span><i></i></div>
+
+        <p>Na sexta-feira, Lia espalhou sobre a mesa três folhas impressas. A primeira mostrava a previsão de vendas. A segunda, a capacidade medida do Atlas. A terceira estava em branco.</p>
+        <p>— Essa é a parte que cabe a nós — ela disse, tocando a folha vazia.</p>
+        <p>A Mercatto e a Vértice lançariam suas campanhas na mesma segunda-feira. O comercial previa três mil pedidos por hora durante o pico. Nos melhores testes, o Atlas sustentava cento e oitenta e seis reservas por hora antes de a latência crescer até o timeout.</p>
+        <p>Eu fiz a conta embora todos na sala já soubessem o resultado. A cada hora de campanha, receberíamos quase dezesseis horas de trabalho do ERP.</p>
+        <p>Renato sugeriu pedir às duas empresas que escalonassem as promoções. Lia perguntou qual delas ele pretendia convencer a vender menos. Ninguém respondeu.</p>
+        <p>Durante semanas, nosso sistema vivera num único tempo: o vendedor enviava o pedido, a API chamava o Atlas e a tela esperava. Agora o negócio queria receber em minutos aquilo que o ERP levaria horas para concluir. Não precisávamos apenas tornar a chamada mais rápida. Precisávamos separar os relógios.</p>
+
+        <section class="scene">
+          <p class="time">Sexta-feira · 09:15</p>
+          <h2>A promessa precisa mudar</h2>
+          <p>Caio desenhou uma caixa entre a Order API e o Atlas. Disse que a API poderia colocar os pedidos ali e responder imediatamente. Um processo separado retiraria cada item e chamaria o ERP no ritmo que ele suportasse.</p>
+          <p>Renato gostou da primeira metade da frase.</p>
+          <p>— Então o vendedor recebe sucesso na hora.</p>
+          <p>— Recebe que aceitamos o pedido — Lia corrigiu. — Não que a reserva foi concluída.</p>
+          <p>A diferença que discutíramos na sexta-feira anterior agora deixava de ser teórica. Nossa resposta <strong>201 Created</strong> significava que a reserva existia no Atlas. Se aceitássemos trabalho para processamento posterior, não poderíamos continuar dizendo a mesma coisa.</p>
+          <p>Propus devolver <strong>202 Accepted</strong>, um identificador e o estado <strong>RECEIVED</strong>. O produto precisaria mostrar que o pedido fora recebido, mas ainda não reservado. Mais tarde, o estado mudaria para <strong>PROCESSING</strong>, <strong>CONFIRMED</strong> ou <strong>FAILED</strong>.</p>
+          <div class="event-log"><p><time>POST /orders</time> 202 Accepted</p><p><time>orderId</time> ORD-44721</p><p><time>status</time> RECEIVED</p><p><time>statusUrl</time> /orders/ORD-44721</p></div>
+          <p>Renato perguntou quanto tempo significava “mais tarde”. Eu ia responder quando Maya fechou o notebook.</p>
+          <p>— Essa é a nova pergunta — disse ela. — Antes, prometíamos resposta. Agora precisamos prometer prazo.</p>
+          <p>Definimos que noventa e cinco por cento dos pedidos seriam confirmados em até quinze minutos fora dos picos, e que a tela mostraria o atraso estimado quando a fila crescesse. O desacoplamento técnico exigia uma promessa de produto, uma operação de consulta e uma forma de comunicar o resultado. A caixa de Caio já não parecia tão pequena no quadro.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Sexta-feira · 11:40</p>
+          <h2>A caixa que não podia esquecer</h2>
+          <p>Nossa primeira proposta foi uma tabela no mesmo banco da Order API. Já tínhamos ali as chaves de idempotência; poderíamos adicionar uma coluna de estado e consultar registros pendentes a cada poucos segundos. Era simples, transacional e não exigia uma nova plataforma.</p>
+          <p>Maya perguntou o que aconteceria quando houvesse dois workers consultando a mesma linha. Caio falou em bloqueio pessimista. Eu acrescentei <em>skip locked</em>. Helena quis saber por quanto tempo manteríamos milhões de pedidos e como controlaríamos tentativas, atraso e mensagens presas.</p>
+          <p>A tabela poderia funcionar. Muitos sistemas começam assim. Mas estaríamos construindo, aos poucos, sem admitir, mecanismos que um broker já oferecia: armazenamento durável, entrega, concorrência controlada, confirmação de consumo e métricas de atraso.</p>
+          <p>Também descartamos uma fila em memória. Ela seria rápida e desapareceria junto com a instância da API — exatamente durante o tipo de falha em que mais precisaríamos dela.</p>
+          <p>Escolhemos um broker com persistência. A Order API publicaria uma mensagem somente depois de registrar o pedido. Um único tipo de worker consumiria o canal e chamaria o Atlas. Começaríamos com um consumidor, porque o ERP continuava sendo o limite e adicionar paralelismo sem medir só deslocaria a saturação.</p>
+          <div class="architecture-note"><span>Arquitetura v2</span><strong>Separar aceitação de processamento.</strong><p>Mercatto / Vértice → Order API → Order Queue → ERP Worker → Atlas. A fila persiste o trabalho e o worker o executa no ritmo suportado pelo ERP.</p></div>
+          <p>Caio perguntou se a mensagem deveria carregar o pedido completo ou apenas seu identificador. Se carregasse tudo, o worker teria autonomia, mas duplicaríamos dados e precisaríamos versionar o contrato. Se carregasse apenas o ID, dependeria da API e do banco para reconstruir cada operação.</p>
+          <p>Ficamos no meio: identidade, versão, chave de idempotência e os dados mínimos necessários para reservar. Informações sensíveis ou mutáveis permaneceriam na fonte. O contrato deixava explícito quando a mensagem fora criada e qual versão o consumidor sabia interpretar.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Segunda-feira · 08:58</p>
+          <h2>O silêncio do lançamento</h2>
+          <p>Às oito e cinquenta e oito, havia onze pessoas na sala de acompanhamento. O dashboard mostrava uma fila vazia, um worker ativo e o Atlas respondendo em quatrocentos milissegundos. Às nove, as campanhas começaram.</p>
+          <p>O contador de entrada saltou primeiro. Cem. Quinhentos. Mil e duzentos pedidos. A API continuava respondendo abaixo de duzentos milissegundos. Nenhuma conexão se acumulava no gateway. Nenhum vendedor encarava uma tela congelada.</p>
+          <p>Renato sorriu quando o gráfico cruzou três mil pedidos por hora. Por alguns minutos, a sala experimentou o tipo perigoso de tranquilidade produzido por um indicador verde.</p>
+          <p>O Atlas continuava processando cento e oitenta pedidos por hora.</p>
+          <div class="event-log"><p><time>09:05</time> entrada = 3.124 pedidos/h</p><p><time>09:05</time> processamento = 181 pedidos/h</p><p><time>09:05</time> fila = 2.407 mensagens</p><p><time>09:05</time> idade da mais antiga = 4m 12s</p></div>
+          <p>A fila absorvera a diferença sem perder pedidos e sem manter requisições HTTP abertas. Também tornara visível uma dívida que crescia a cada segundo. A API estava saudável porque transferia o trabalho depressa. O negócio, porém, só terminava quando o Atlas confirmava a reserva.</p>
+          <p>Às nove e doze, a estimativa na tela passou de quinze minutos. Às nove e vinte, chegou a uma hora. O suporte recebeu a primeira ligação de um vendedor que prometera entrega no mesmo dia e agora via apenas “recebido”.</p>
+          <p>— A fila está funcionando? — Renato perguntou.</p>
+          <p>— Perfeitamente — Maya respondeu. — Esse é o problema que ela está nos permitindo enxergar.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Segunda-feira · 09:31</p>
+          <h2>A mensagem e a confirmação</h2>
+          <p>O worker recebia uma mensagem, marcava o pedido como <strong>PROCESSING</strong>, chamava o Atlas e então enviava ao broker uma confirmação: o <strong>ACK</strong>. Somente depois dessa confirmação o broker podia considerar a entrega concluída.</p>
+          <p>Às nove e trinta e um, Caio publicou uma correção no worker. O processo reiniciou enquanto uma reserva atravessava o Atlas. Quando voltou, a mesma mensagem apareceu outra vez.</p>
+          <div class="event-log"><p><time>09:31:04.221</time> delivery ORD-45119</p><p><time>09:31:04.792</time> Atlas criou reserva 93102</p><p><time>09:31:04.799</time> worker reiniciado antes do ACK</p><p><time>09:31:34.802</time> redelivery ORD-45119</p></div>
+          <p>O broker sabia que entregara a mensagem. Não sabia que o Atlas concluíra a reserva. O worker anterior sabia do resultado, mas deixara de existir antes de confirmá-lo. O novo worker recebeu exatamente a mesma mensagem porque, diante da dúvida, o canal preferia entregar novamente a esquecer.</p>
+          <p>Nossa chave de idempotência reconheceu o pedido e devolveu o resultado já registrado. Nenhuma segunda reserva foi criada. O problema do capítulo anterior reaparecera com outra roupa — e, dessa vez, a defesa estava pronta.</p>
+          <p>Se enviássemos o ACK antes de chamar o Atlas, evitaríamos a repetição, mas poderíamos perder o pedido caso o worker caísse depois da confirmação. ACK depois do processamento produzia entrega <strong>at-least-once</strong>: o trabalho não era esquecido, mas podia reaparecer. ACK antes produzia um caminho próximo de <strong>at-most-once</strong>: não repetia, mas podia nunca executar.</p>
+          <p>Escolhemos a repetição. Para reservas, perder silenciosamente um pedido era pior do que recebê-lo outra vez — desde que o receptor continuasse idempotente.</p>
+        </section>
+
+        <section class="scene reveal">
+          <p class="time">Leitura arquitetural</p>
+          <h2>O canal entre os relógios</h2>
+          <p>A fila tornou-se nosso primeiro <strong>Message Channel</strong>: um caminho explícito pelo qual o produtor enviava trabalho sem depender da disponibilidade imediata do consumidor. Como cada mensagem era processada por um único ERP Worker, tratava-se também de um <strong>Point-to-Point Channel</strong>.</p>
+          <p>A Order API atuava como um <strong>Messaging Gateway</strong>. Para o produto, ela oferecia HTTP e estados de pedido; internamente, traduzia essa chamada para uma mensagem. O worker era o <strong>Service Activator</strong>: recebia a mensagem e invocava o serviço do Atlas.</p>
+          <p>A persistência do broker e o ACK nos davam <strong>Guaranteed Delivery</strong> dentro de limites concretos: depois que o broker confirmava a publicação, a mensagem sobreviveria a reinícios e seria redeliverada até ser confirmada. Isso não garantia que o efeito no ERP aconteceria uma única vez. A garantia de entrega do canal e a idempotência do receptor continuavam sendo responsabilidades diferentes.</p>
+          <div class="pattern-ledger"><div><span>Message Channel</span><strong>Desacopla o momento de envio do momento de processamento</strong></div><div><span>Point-to-Point</span><strong>Cada mensagem é entregue a um consumidor do canal</strong></div><div><span>Nova realidade</span><strong>O backlog é trabalho aceito que ainda não virou resultado</strong></div></div>
+        </section>
+
+        <section class="scene">
+          <p class="time">Segunda-feira · 18:26</p>
+          <h2>A mensagem que não saía do lugar</h2>
+          <p>No fim da tarde, a campanha terminou. A entrada caiu quase a zero e a fila começou, enfim, a diminuir. Projetamos que o Atlas alcançaria o último pedido durante a madrugada.</p>
+          <p>Foi então que a vazão também caiu a zero.</p>
+          <p>O mesmo pedido aparecia no log a cada trinta segundos. O worker tentava processá-lo, o Atlas devolvia erro de validação e a mensagem retornava ao canal. Havia um código de país que o ERP não reconhecia. Não importava quantas vezes esperássemos: aqueles dados não se tornariam válidos.</p>
+          <p>As mensagens seguintes continuavam na fila. Nosso único consumidor gastava toda a atenção com um pedido impossível enquanto milhares de pedidos corretos envelheciam atrás dele.</p>
+          <p>Caio abriu a configuração de retry. Renato olhou para a projeção de drenagem, que já não mostrava horário algum.</p>
+          <p>Havíamos criado um canal que não esquecia. Agora precisávamos ensiná-lo a desistir.</p>
+        </section>
+      </div>
+
+      <aside class="evidence" aria-label="Evidências técnicas">
+        <section class="tech-panel"><header><span>Arquitetura atual</span><em>v2 assíncrona</em></header><div class="architecture-flow compact"><span>Order API</span><i>→</i><span class="new">Queue</span><i>→</i><span>ERP Worker</span><i>→</i><span>Atlas</span></div><p class="healthy warning"><i></i> Backlog persistente</p></section>
+        <section class="tech-panel"><header><span>Leitura operacional</span><em>09:20</em></header><div class="compare"><p><span>entrada</span><strong>3.124/h</strong></p><p><span>processamento</span><strong>181/h</strong></p><p><span>backlog</span><strong>2.407</strong></p><p><span>mensagem mais antiga</span><strong>19 min</strong></p></div></section>
+        <section class="tech-panel"><header><span>Entrega</span><em>at-least-once</em></header><pre><code>Broker → delivery
+Worker → processa
+Worker → ACK
+
+sem ACK?
+→ visibility timeout
+→ redelivery</code></pre></section>
+      </aside>
+
+      <section class="decision chapter-end" aria-labelledby="chapter-end-title">
+        <p class="response-label">Fim do capítulo 04</p>
+        <h2 id="chapter-end-title">Nem toda falha melhora com o tempo.</h2>
+        <p>Uma mensagem inválida entrou num ciclo de redelivery e bloqueou o trabalho válido. No próximo episódio, a equipe precisará separar falhas transitórias de mensagens que jamais serão processadas.</p>
+        <span class="continue disabled" aria-disabled="true">Capítulo 05 · em breve</span>
+        <a class="previous" href="chapter-3.html">← Voltar ao Capítulo 03</a>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
