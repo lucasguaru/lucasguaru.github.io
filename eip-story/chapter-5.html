@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071421">
+  <meta name="description" content="Uma novela técnica sobre arquiteturas de integração que crescem.">
+  <title>A mensagem que não morria — Sinal / Ruído</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=chapter5-1">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">SINAL <span>/</span> RUÍDO</a>
+    <div class="progress"><span>Cap. 05</span><span>5 de 20</span><i><b style="width:45px"></b></i></div>
+    <a class="sound history-link" href="chapter-4.html">← Capítulo anterior</a>
+  </header>
+  <main class="shell">
+    <aside class="rail" aria-label="Índice da história">
+      <p class="rail-label">Capítulos</p>
+      <ol><li><span>01</span><a href="index.html">Tudo funciona</a></li><li><span>02</span><a href="chapter-2.html">O gráfico inclina</a></li><li><span>03</span><a href="chapter-3.html">A segunda tentativa</a></li><li><span>04</span><a href="chapter-4.html">O espaço entre dois tempos</a></li><li class="active"><span>05</span><a href="#chapter">A mensagem que não morria</a></li><li><span>06</span><i>—</i></li><li><span>07</span><i>—</i></li><li><span>08</span><i>—</i></li><li><span>09</span><i>—</i></li><li><span>10</span><i>—</i></li><li><span>…</span><i>—</i></li><li><span>20</span><i>—</i></li></ol>
+      <div class="cast"><p class="rail-label">Neste episódio</p><p class="episode-theme">Dead Letter Channel<br><span>desistir sem esquecer</span></p></div>
+    </aside>
+    <article id="chapter" class="chapter chapter-two">
+      <div class="narrative">
+        <p class="chapter-no">Cap. 05</p>
+        <h1>A mensagem que não morria</h1>
+        <div class="signal-line" aria-hidden="true"><span></span><i></i></div>
+
+        <p>Às dezoito e vinte e seis, o escritório já tinha a iluminação impessoal das horas extras. As janelas devolviam nosso reflexo sobre a cidade escura, e a mesma linha surgia no monitor a cada trinta segundos.</p>
+        <p><strong>ORD-46903. País inválido. Tentativa 38.</strong></p>
+        <p>O backlog da campanha esperava atrás dela. Quase oito mil pedidos aceitos, pagos e prometidos a clientes que não sabiam que uma sigla de país havia parado o único consumidor.</p>
+        <p>Caio aumentou a concorrência do worker de um para dois. Por alguns segundos, a vazão voltou. Então a mensagem reapareceu no segundo processo também. Um consumidor repetia o erro; o outro avançava lentamente pela fila.</p>
+        <p>— Colocamos mais dez — Renato disse. — Pelo menos o restante anda.</p>
+        <p>Maya não tirou os olhos do gráfico.</p>
+        <p>— E quantos processos queremos pagar para descobrir que “XX” continua não sendo um país?</p>
+        <p>Até aquela noite, retry significava resiliência para nós. Agora ele se parecia com obstinação.</p>
+
+        <section class="scene">
+          <p class="time">Segunda-feira · 18:34</p>
+          <h2>Falhar de novo não é tentar de novo</h2>
+          <p>Abri o histórico da mensagem. Todas as trinta e oito tentativas haviam terminado da mesma maneira, em menos de duzentos milissegundos. Não havia aumento gradual de latência, conexão perdida ou indisponibilidade do Atlas. O ERP rejeitava o valor antes de começar o processamento.</p>
+          <div class="event-log"><p><time>attempt 36</time> ERP-VAL-014 · countryCode "XX"</p><p><time>attempt 37</time> ERP-VAL-014 · countryCode "XX"</p><p><time>attempt 38</time> ERP-VAL-014 · countryCode "XX"</p><p><time>next delivery</time> +30 s</p></div>
+          <p>Nosso worker tratava qualquer exceção da mesma forma: não enviava ACK. Depois do prazo de visibilidade, o broker disponibilizava a mensagem novamente. O mecanismo que protegia pedidos contra quedas também mantinha vivo um pedido impossível.</p>
+          <p>Helena reconheceu o código do Atlas. Erros iniciados por <strong>ERP-VAL</strong> eram determinísticos: repetir os mesmos dados produziria a mesma rejeição. Já <strong>ERP-TEMP</strong> indicava indisponibilidade temporária, e <strong>ERP-LOCK</strong> costumava desaparecer depois que outra transação terminava.</p>
+          <p>Não tínhamos uma política de falhas. Tínhamos apenas uma política de repetição.</p>
+          <p>Classificamos o que sabíamos. Falhas transitórias receberiam novas tentativas com exponential backoff e jitter. Falhas permanentes deixariam o fluxo imediatamente. Erros desconhecidos teriam um número pequeno de tentativas antes de serem isolados. Nenhuma categoria poderia repetir para sempre.</p>
+          <p>Renato perguntou o número certo de retries. Maya respondeu que não existia um número universal. Precisávamos considerar o tempo provável de recuperação, o custo de cada chamada, o SLA do pedido e a pressão adicional sobre o Atlas.</p>
+          <p>Para bloqueios curtos, definimos cinco tentativas. Para indisponibilidade, uma janela total de quinze minutos. Para validação, zero.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Segunda-feira · 19:05</p>
+          <h2>O botão de apagar</h2>
+          <p>Caio encontrou a mensagem no console do broker. Havia um botão para removê-la. Um clique devolveria a vazão ao sistema.</p>
+          <p>— O pedido está errado — ele disse. — Podemos apagar e pedir para o suporte recriar.</p>
+          <p>A solução encerraria o incidente, mas também eliminaria a única evidência completa do que havíamos aceitado. A tela do cliente continuaria mostrando <strong>RECEIVED</strong>; o broker não teria mais a mensagem; o Atlas jamais conheceria o pedido. Três sistemas contariam três histórias diferentes.</p>
+          <p>Lia perguntou como o suporte descobriria quem precisava ser contatado. Eu procurei o pedido pelo identificador e encontrei a compra de uma cliente chamada Ana, com entrega prometida para a manhã seguinte. Apagar a mensagem transformaria um erro visível em uma perda silenciosa.</p>
+          <p>Decidimos movê-la para outro canal. Não para ser processada pelo worker principal, mas para permanecer armazenada com o motivo, a contagem de tentativas, os horários e o identificador original.</p>
+          <div class="architecture-note"><span>Contenção imediata</span><strong>Retirar do caminho sem retirar da responsabilidade.</strong><p>Após falha permanente ou esgotamento das tentativas, a mensagem segue para um canal de quarentena. O fluxo principal continua; o pedido permanece rastreável.</p></div>
+          <p>Às dezenove e doze, a ORD-46903 saiu da fila principal. O pedido seguinte foi processado em seiscentos milissegundos. O gráfico de vazão subiu como se nada tivesse acontecido.</p>
+          <p>Foi um alívio curto. A nova fila tinha uma mensagem e nenhum processo responsável por ela.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Terça-feira · 08:10</p>
+          <h2>O depósito dos esquecidos</h2>
+          <p>Na manhã seguinte, havia vinte e três mensagens na quarentena. Só uma continha o país “XX”. Sete haviam esgotado retries durante uma indisponibilidade do Atlas. Nove carregavam versões antigas do contrato. As demais falharam por razões que ninguém ainda classificara.</p>
+          <p>Renato olhou a fila e perguntou se o sistema estava saudável. O dashboard principal dizia que sim: a Order Queue diminuía, o worker processava e o Atlas respondia. Maya abriu um segundo painel, ainda improvisado, e apontou para os vinte e três pedidos sem desfecho.</p>
+          <p>— O sistema está andando — ela disse. — Não é a mesma coisa que estar saudável.</p>
+          <p>Uma Dead Letter Queue sem dono era apenas um lugar organizado para perder mensagens. Precisávamos saber quando algo chegava, por que chegava, quem agiria e como voltaria ao fluxo.</p>
+          <p>Criamos alertas por volume e idade. Cada mensagem passou a carregar a categoria do erro, a exceção original, o instante da primeira entrega e o número de tentativas. O pedido correspondente recebia o estado <strong>NEEDS_ATTENTION</strong>, visível ao suporte. Falhas de contrato iam para integração; rejeições de dados, para operações; indisponibilidades esgotadas, para SRE.</p>
+          <div class="event-log"><p><time>alerta</time> dead_letter_count &gt; 0</p><p><time>proprietário</time> por failure_category</p><p><time>SLA</time> triagem em 30 minutos</p><p><time>pedido</time> NEEDS_ATTENTION</p></div>
+          <p>Lia insistiu que o cliente não podia receber apenas um estado técnico. O produto passou a mostrar “Precisamos revisar seu pedido” e permitiu que o suporte corrigisse dados quando fosse seguro. A fila deixava de ser um detalhe invisível da infraestrutura e se tornava parte do processo operacional.</p>
+        </section>
+
+        <section class="scene">
+          <p class="time">Terça-feira · 11:27</p>
+          <h2>Voltar não significa recomeçar</h2>
+          <p>Corrigimos o país da ORD-46903 depois de confirmar o endereço com a Mercatto. Caio estava pronto para republicar a mensagem original quando notei que ela ainda continha “XX”. Alterar diretamente o conteúdo na fila apagaria a evidência recebida. Republicá-la sem alteração repetiria o erro.</p>
+          <p>Criamos uma nova mensagem, com nova identificação técnica e referência explícita à anterior. A <strong>idempotency key</strong> do pedido permaneceu a mesma, porque a intenção de negócio não mudara. O payload corrigido recebeu uma nova versão e um registro de quem autorizara a mudança.</p>
+          <div class="event-log"><p><time>messageId</time> msg-77291</p><p><time>causationId</time> msg-76404</p><p><time>orderId</time> ORD-46903</p><p><time>countryCode</time> BR</p><p><time>reason</time> corrected_by_support</p></div>
+          <p>Chamamos a operação de replay, embora ela não fosse uma simples reprodução. Era uma reentrada controlada. Antes de executá-la, o sistema verificava se o pedido já havia sido concluído, preservava a correlação e registrava a causa.</p>
+          <p>A mensagem corrigida voltou ao canal principal e foi processada. A original permaneceu na quarentena como resolvida, ligada ao novo evento. Pela primeira vez desde o lançamento, Ana tinha uma reserva no Atlas.</p>
+          <p>Então revisamos as sete mensagens que haviam esgotado tentativas durante a indisponibilidade. Seus dados eram válidos; o problema já desaparecera. Reexecutá-las em lote parecia inofensivo, mas poderia provocar outro pico. Limitamos o replay à mesma vazão do consumidor e acompanhamos cada resultado.</p>
+          <p>Até o reprocessamento precisava de backpressure.</p>
+        </section>
+
+        <section class="scene reveal">
+          <p class="time">Leitura arquitetural</p>
+          <h2>Desistir sem esquecer</h2>
+          <p>O canal de quarentena que criamos é conhecido como <strong>Dead Letter Channel</strong>. Ele recebe mensagens que não puderam ser entregues ou processadas depois da política definida. Seu propósito não é fazer o erro desaparecer; é impedir que ele bloqueie o fluxo principal enquanto preserva material para diagnóstico, correção e replay.</p>
+          <p>Uma mensagem inválida poderia seguir para um <strong>Invalid Message Channel</strong> assim que a validação estrutural ou de negócio falhasse. A diferença está na razão da separação. O Invalid Message Channel trata conteúdo reconhecidamente inadequado. O Dead Letter Channel recebe mensagens que morreram durante entrega ou processamento, frequentemente depois de retries. Em sistemas menores, os dois destinos podem compartilhar infraestrutura, mas não deveriam perder suas categorias.</p>
+          <p>A mensagem ORD-46903 era uma <strong>poison message</strong>: sempre falhava e, pela política ilimitada, contaminava a capacidade do consumidor. Retry não corrigia seus dados. Apenas convertia um erro permanente em carga permanente.</p>
+          <div class="pattern-ledger"><div><span>Retry</span><strong>Útil quando o tempo pode mudar o resultado</strong></div><div><span>Dead Letter Channel</span><strong>Isola o que esgotou a política sem apagar a evidência</strong></div><div><span>Obrigação operacional</span><strong>Alertar, atribuir, corrigir, reproduzir e reconciliar</strong></div></div>
+        </section>
+
+        <section class="scene">
+          <p class="time">Quarta-feira · 16:48</p>
+          <h2>Duas lojas, dois contratos</h2>
+          <p>Quarenta e oito horas depois, a quarentena estava vazia e o backlog havia voltado ao normal. Renato apresentou os números à Mercatto. Antes que a reunião terminasse, a Vértice enviou o primeiro lote de produção.</p>
+          <p>As mensagens chegaram válidas, completas e dentro da versão acordada. Mesmo assim, todas foram rejeitadas pelo Atlas.</p>
+          <p>A Mercatto chamava o campo de <strong>customerDocument</strong> e enviava apenas dígitos. A Vértice chamava de <strong>tax_id</strong>, preservava pontuação e incluía um prefixo de país. O Atlas esperava <strong>documentNumber</strong> com quatorze posições. Nosso worker conhecia apenas o contrato da Mercatto.</p>
+          <p>Caio propôs adicionar condições ao consumidor: se viesse de um parceiro, ler um campo; se viesse do outro, ler o segundo. Helena lembrou que um terceiro parceiro entraria no mês seguinte.</p>
+          <p>Observei as novas mensagens se acumularem no canal de inválidas. O sistema sabia separar aquilo que não conseguia processar. Ainda não sabia falar mais de um idioma.</p>
+        </section>
+      </div>
+
+      <aside class="evidence" aria-label="Evidências técnicas">
+        <section class="tech-panel"><header><span>Arquitetura atual</span><em>v2.1</em></header><div class="architecture-flow compact"><span>Order Queue</span><i>→</i><span>ERP Worker</span><i>↘</i><span class="new">Dead Letter</span></div><p class="healthy"><i></i> Fluxo principal liberado</p></section>
+        <section class="tech-panel"><header><span>Política de falhas</span><em>ativa</em></header><div class="compare"><p><span>validação</span><strong>0 retries</strong></p><p><span>lock transitório</span><strong>5 retries</strong></p><p><span>indisponibilidade</span><strong>janela 15 min</strong></p><p><span>desconhecida</span><strong>3 retries</strong></p></div></section>
+        <section class="tech-panel"><header><span>Quarentena</span><em>rastreável</em></header><pre><code>falha permanente
+ou retries esgotados
+        ↓
+Dead Letter Channel
+        ↓
+triagem → correção → replay</code></pre></section>
+      </aside>
+
+      <section class="decision chapter-end" aria-labelledby="chapter-end-title">
+        <p class="response-label">Fim do capítulo 05</p>
+        <h2 id="chapter-end-title">O próximo erro estava correto em outro idioma.</h2>
+        <p>A Vértice envia pedidos válidos num contrato que o ERP não entende. No próximo episódio, a equipe precisará decidir onde traduzir parceiros diferentes para uma linguagem comum.</p>
+        <span class="continue disabled" aria-disabled="true">Capítulo 06 · em breve</span>
+        <a class="previous" href="chapter-4.html">← Voltar ao Capítulo 04</a>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
